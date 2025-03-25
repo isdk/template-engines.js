@@ -1,6 +1,6 @@
 {
   "name": "@isdk/template-engines",
-  "description": "collect template engines: jinja2, golang, python(f-string), env etc",
+  "description": "A versatile template engine library that supports multiple template formats including environment variables, HuggingFace templates, GoLang templates, and Python f-strings. The library provides a unified interface for working with different template systems.",
   "version": "0.5.8",
   "author": "Riceball LEE <snowyu.lee@gmail.com>",
   "main": "./dist/index.js",
