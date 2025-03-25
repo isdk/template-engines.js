@@ -1,6 +1,6 @@
 import { HFTemplate } from "./template/jinja"
 import { PromptTemplate, PromptTemplateOptions } from "./prompt-template"
-import { CommonError, ErrorCode, } from '../base-error'
+import { CommonError, ErrorCode, } from '@isdk/common-error'
 
 function getVariable(statement: any, internalVars?: string[]) {
   let result: string|undefined

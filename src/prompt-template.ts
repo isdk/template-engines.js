@@ -1,7 +1,7 @@
 import { BaseFactory } from 'custom-factory';
+import { filterNullUndefined } from 'util-ex'
 
-import { CommonError, ErrorCode, NotImplementationError } from '../base-error'
-import { filterNullOrUndefined } from '../filterNullOrUndefined'
+import { CommonError, ErrorCode, NotImplementationError } from '@isdk/common-error'
 // import { type PromptTemplateType } from './consts'
 
 // register PromptTemplate alias as default.
@@ -154,7 +154,7 @@ export class PromptTemplate extends BaseFactory {
     if (options.templateFormat && PromptTemplate.get(options.templateFormat) !== this.constructor) {
       result.templateFormat = options.templateFormat
     }
-    result = filterNullOrUndefined(result)
+    result = filterNullUndefined(result)
     return result
   }
 }

@@ -1,4 +1,4 @@
-import { CommonError, ErrorCode } from "../base-error";
+import { CommonError, ErrorCode } from "@isdk/common-error";
 import { PromptTemplate, type PromptTemplateOptions } from "./prompt-template";
 import { FStringPromptTemplateNode, parseFString, interpolateFString } from './template/python'
 
