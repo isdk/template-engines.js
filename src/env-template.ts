@@ -1,10 +1,10 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
-import { PromptTemplate, type PromptTemplateOptions } from "./prompt-template";
+import { StringTemplate, type StringTemplateOptions } from "./template";
 import { getEnvVairables as getVariables, interpolateEnv } from './template/env'
 
-export class EnvPromptTemplate extends PromptTemplate {
+export class EnvStringTemplate extends StringTemplate {
 
-  static isTemplate(templateOpt: PromptTemplateOptions|string) {
+  static isTemplate(templateOpt: StringTemplateOptions|string) {
     let template: string
     let result = false
 
@@ -24,7 +24,7 @@ export class EnvPromptTemplate extends PromptTemplate {
     return getVariables(template)
   }
 
-  _initialize(options?: PromptTemplateOptions) {
+  _initialize(options?: StringTemplateOptions) {
     const template = options?.template
     if (typeof template !== 'string') {
       throw new CommonError('Prompt template must be a string', 'PromptTemplate', ErrorCode.InvalidArgument)
@@ -38,4 +38,4 @@ export class EnvPromptTemplate extends PromptTemplate {
   }
 }
 
-PromptTemplate.register(EnvPromptTemplate, {name: 'env', aliases: ['js', 'javascript']})
+StringTemplate.register(EnvStringTemplate, {name: 'env', aliases: ['js', 'javascript']})

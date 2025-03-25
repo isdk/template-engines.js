@@ -1,8 +1,8 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
-import { PromptTemplate, type PromptTemplateOptions } from "./prompt-template";
-import { FStringPromptTemplateNode, parseFString, interpolateFString } from './template/python'
+import { StringTemplate, type StringTemplateOptions } from "./template";
+import { FStringTemplateNode, parseFString, interpolateFString } from './template/python'
 
-function getVariables(template: FStringPromptTemplateNode[]) {
+function getVariables(template: FStringTemplateNode[]) {
   const result = new Set<string>()
   template.forEach((node) => {
     if (node.type === "variable") {
@@ -12,10 +12,10 @@ function getVariables(template: FStringPromptTemplateNode[]) {
   return [...result]
 }
 
-export class FStringPromptTemplate extends PromptTemplate {
-  declare compiledTemplate: FStringPromptTemplateNode[]
+export class FStringTemplate extends StringTemplate {
+  declare compiledTemplate: FStringTemplateNode[]
 
-  static isTemplate(templateOpt: PromptTemplateOptions|string) {
+  static isTemplate(templateOpt: StringTemplateOptions|string) {
     let compiledTemplate: any
     let template: string
     let result = false
@@ -40,11 +40,11 @@ export class FStringPromptTemplate extends PromptTemplate {
     return result
   }
 
-  getVariables(template: FStringPromptTemplateNode[] = this.compiledTemplate) {
+  getVariables(template: FStringTemplateNode[] = this.compiledTemplate) {
     return getVariables(template)
   }
 
-  _initialize(options?: PromptTemplateOptions) {
+  _initialize(options?: StringTemplateOptions) {
     const template = options?.template
     if (typeof template !== 'string') {
       throw new CommonError('Prompt template must be a string', 'PromptTemplate', ErrorCode.InvalidArgument)
@@ -59,4 +59,4 @@ export class FStringPromptTemplate extends PromptTemplate {
 
 }
 
-PromptTemplate.register(FStringPromptTemplate,{name: 'fstring', aliases: ['python', 'f-string', 'langchain']})
+StringTemplate.register(FStringTemplate,{name: 'fstring', aliases: ['python', 'f-string', 'langchain']})

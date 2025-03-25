@@ -1,0 +1,6 @@
+feat:
+bugs:
+  ☐ jinja2 自定义函数（filter）不支持异步处理
+  ✔ jinja2 函数返回的数组索引，这样写会报告错误：`{{ func()[-1] }}`, 必须扩起来`{{ (func())[-1] }}` @done(25-03-25 19:45)
+  ☐ JinJa2 convertToRuntimeValues 如果存在自引用的对象，就会死循环: Maximum call stack size exceeded
+    临时在上层检查数据是否存在这样的对象，如果有就设置为null.

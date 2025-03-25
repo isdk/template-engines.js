@@ -3,7 +3,7 @@
  * Type that represents a node in a parsed format string. It can be either
  * a literal text or a variable name.
  */
-export type FStringPromptTemplateNode =
+export type FStringTemplateNode =
   | { type: "literal"; text: string }
   | { type: "variable"; name: string };
 
@@ -13,11 +13,11 @@ export type FStringPromptTemplateNode =
  *
  * extract from langchain.js/langchain-core/src/prompts/template.ts
  */
-export function parseFString(template: string): FStringPromptTemplateNode[] {
+export function parseFString(template: string): FStringTemplateNode[] {
   // Core logic replicated from internals of pythons built in Formatter class.
   // https://github.com/python/cpython/blob/135ec7cefbaffd516b77362ad2b2ad1025af462e/Objects/stringlib/unicode_format.h#L700-L706
   const chars = template.split("");
-  const nodes: FStringPromptTemplateNode[] = [];
+  const nodes: FStringTemplateNode[] = [];
 
   const nextBracket = (bracket: "}" | "{" | "{}", start: number) => {
     for (let i = start; i < chars.length; i += 1) {
@@ -68,7 +68,7 @@ export function parseFString(template: string): FStringPromptTemplateNode[] {
  * of input values, and returns a string where all variables in the
  * template have been replaced with their corresponding values.
  */
-export function interpolateFString(nodes: FStringPromptTemplateNode[], values: Record<string, any>) {
+export function interpolateFString(nodes: FStringTemplateNode[], values: Record<string, any>) {
   return nodes.reduce((res, node) => {
     let result: string
     if (node.type === "variable") {

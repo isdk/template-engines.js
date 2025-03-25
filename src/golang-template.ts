@@ -1,10 +1,10 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
-import { PromptTemplate, PromptTemplateOptions } from "./prompt-template";
+import { StringTemplate, StringTemplateOptions } from "./template";
 import { interpolateGolangTemplate } from "./template/golang";
 
-export class GolangPromptTemplate extends PromptTemplate {
+export class GolangStringTemplate extends StringTemplate {
 
-  static isTemplate(templateOpt: PromptTemplateOptions|string) {
+  static isTemplate(templateOpt: StringTemplateOptions|string) {
     const template = typeof templateOpt === 'string' ? templateOpt : templateOpt.template
     return template?.includes('{{') && template.includes('}}')
   }
@@ -15,7 +15,7 @@ export class GolangPromptTemplate extends PromptTemplate {
     return [...Object.keys(result)]
   }
 
-  _initialize(options?: PromptTemplateOptions) {
+  _initialize(options?: StringTemplateOptions) {
     const template = options?.template
     if (typeof template !== 'string') {
       throw new CommonError('Prompt template must be a string', 'PromptTemplate', ErrorCode.InvalidArgument)
@@ -28,4 +28,4 @@ export class GolangPromptTemplate extends PromptTemplate {
   }
 }
 
-PromptTemplate.register(GolangPromptTemplate,{name: 'golang', aliases: ['localai', 'ollama']})
+StringTemplate.register(GolangStringTemplate,{name: 'golang', aliases: ['localai', 'ollama']})

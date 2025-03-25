@@ -1,41 +1,41 @@
-import {HfPromptTemplate, createHfValueFunc} from './hf-prompt-template'
-import {PromptTemplate} from './prompt-template'
+import {HfStringTemplate, createHfValueFunc} from './hf-template'
+import {StringTemplate} from './template'
 import { HFTemplate } from './template/jinja'
 
-describe('HfPromptTemplate', () => {
+describe('HfStringTemplate', () => {
   it('should use global env', async ()=> {
     HFTemplate.global.assign({
       say() {
         return 'hello'
       }
     })
-    expect(await HfPromptTemplate.from('{{say()}}').format()).toStrictEqual('hello')
+    expect(await HfStringTemplate.from('{{say()}}').format()).toStrictEqual('hello')
     HFTemplate.global.clear()
   })
   it('should get inputVariables from template', () => {
-    let template = HfPromptTemplate.from(`{% for s in strings[:] %}{{ s }}{% endfor %} {{strings}} {{a+b}}`)
+    let template = HfStringTemplate.from(`{% for s in strings[:] %}{{ s }}{% endfor %} {{strings}} {{a+b}}`)
     expect(template.inputVariables).toStrictEqual(['strings', 'a', 'b'])
-    template = HfPromptTemplate.from(`{% if aa == 2 %}{{ aa }}{% else %}{{ bb }}{% endif %}{{ cc }}`)
+    template = HfStringTemplate.from(`{% if aa == 2 %}{{ aa }}{% else %}{{ bb }}{% endif %}{{ cc }}`)
     expect(template.inputVariables).toStrictEqual(['aa', 'bb', 'cc'])
-    template = HfPromptTemplate.from(`{% set aa = 2 %} {% if aa == 2 %}{{ aa }}{% else %}{{ bb }}{% endif %}{{ cc }}`)
+    template = HfStringTemplate.from(`{% set aa = 2 %} {% if aa == 2 %}{{ aa }}{% else %}{{ bb }}{% endif %}{{ cc }}`)
     expect(template.inputVariables).toStrictEqual(['bb', 'cc'])
-    template = HfPromptTemplate.from(`{{ cc.abc }}`)
+    template = HfStringTemplate.from(`{{ cc.abc }}`)
     expect(template.inputVariables).toStrictEqual(['cc'])
   })
 
   it('should get registered PromptTemplate', () => {
-    expect(PromptTemplate.get('hf')).toStrictEqual(HfPromptTemplate)
-    expect(PromptTemplate.get('internal')).toStrictEqual(HfPromptTemplate)
-    expect(PromptTemplate.get('huggingface')).toStrictEqual(HfPromptTemplate)
-    expect(PromptTemplate.get('default')).toStrictEqual(HfPromptTemplate)
-    expect(new PromptTemplate('{{text}}', {templateFormat: 'hf'})).toBeInstanceOf(HfPromptTemplate)
-    expect(new PromptTemplate('{{text}}')).toBeInstanceOf(HfPromptTemplate)
+    expect(StringTemplate.get('hf')).toStrictEqual(HfStringTemplate)
+    expect(StringTemplate.get('internal')).toStrictEqual(HfStringTemplate)
+    expect(StringTemplate.get('huggingface')).toStrictEqual(HfStringTemplate)
+    expect(StringTemplate.get('default')).toStrictEqual(HfStringTemplate)
+    expect(new StringTemplate('{{text}}', {templateFormat: 'hf'})).toBeInstanceOf(HfStringTemplate)
+    expect(new StringTemplate('{{text}}')).toBeInstanceOf(HfStringTemplate)
   })
 
   it('should pass PromptTemplate to value', async () => {
-    const systemTemplate = HfPromptTemplate.from(`You are a helpful assistant that translates {{input_language}} to {{output_language}}.`)
-    const humanTemplate = HfPromptTemplate.from(`{{text}}`)
-    const template = HfPromptTemplate.from(`{{system_template}}\n{{human_template}}`)
+    const systemTemplate = HfStringTemplate.from(`You are a helpful assistant that translates {{input_language}} to {{output_language}}.`)
+    const humanTemplate = HfStringTemplate.from(`{{text}}`)
+    const template = HfStringTemplate.from(`{{system_template}}\n{{human_template}}`)
     let result = await template.format({
       system_template: systemTemplate,
       human_template: humanTemplate,
@@ -47,45 +47,45 @@ describe('HfPromptTemplate', () => {
   })
 
   it('should format text without required variables', async () => {
-    expect(await HfPromptTemplate.from(`hi{{text}}`).format({})).toStrictEqual('hi')
+    expect(await HfStringTemplate.from(`hi{{text}}`).format({})).toStrictEqual('hi')
   })
 
   it('should format text with required variables', async () => {
-    expect(await HfPromptTemplate.from(`hi {{text}}`).format({text: 'world'})).toStrictEqual('hi world')
-    expect(await HfPromptTemplate.from(`hi {{text}}`, {data: {text: 'world'}}).format()).toStrictEqual('hi world')
+    expect(await HfStringTemplate.from(`hi {{text}}`).format({text: 'world'})).toStrictEqual('hi world')
+    expect(await HfStringTemplate.from(`hi {{text}}`, {data: {text: 'world'}}).format()).toStrictEqual('hi world')
   })
 
   it('should get partial PromptTemplate(string)', async () => {
-    const promptTemplate = new PromptTemplate('{{role}}:{{text}}', {templateFormat: 'hf'})
+    const promptTemplate = new StringTemplate('{{role}}:{{text}}', {templateFormat: 'hf'})
     const p = promptTemplate.partial({role: 'user'})
-    expect(p).toBeInstanceOf(HfPromptTemplate)
+    expect(p).toBeInstanceOf(HfStringTemplate)
     expect(p.data).toStrictEqual({role: 'user'})
     expect(await p.format({text: 'hello'})).toStrictEqual('user:hello')
   })
 
   it('should get partial PromptTemplate(function)', async () => {
-    const promptTemplate = new PromptTemplate('{{role}}:{{date}}', {templateFormat: 'hf'})
+    const promptTemplate = new StringTemplate('{{role}}:{{date}}', {templateFormat: 'hf'})
     const dt = new Date()
     function getDate() {
       // console.log('getDate......', arguments)
       return dt.toISOString()
     }
     const p = promptTemplate.partial({date: getDate})
-    expect(p).toBeInstanceOf(HfPromptTemplate)
+    expect(p).toBeInstanceOf(HfStringTemplate)
     expect(p.data).toStrictEqual({date: getDate})
     expect(await p.format({role: 'user'})).toStrictEqual('user:'+dt.toISOString())
   })
 
   it('should format directly by PromptTemplate', async () => {
-    expect(await PromptTemplate.format({template: '{{text}} world', data: {text: 'hello'}})).toStrictEqual('hello world')
+    expect(await StringTemplate.format({template: '{{text}} world', data: {text: 'hello'}})).toStrictEqual('hello world')
   })
 
   it('should format directly by PromptTemplate without template variable', async () => {
-    expect(await PromptTemplate.format({template: 'hello world', data: {text: 'hello'}})).toStrictEqual('hello world')
+    expect(await StringTemplate.format({template: 'hello world', data: {text: 'hello'}})).toStrictEqual('hello world')
   })
 
   it('should format directly by PromptTemplate array last message', async () => {
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{messages[-1]}}{% for message in messages %}{% if loop.last %}{{messages[-1]}}{% endif %}{% endfor %}`,
       data: {messages: ['hello', 'world', '!']},
     })).toStrictEqual('!!')
@@ -101,7 +101,7 @@ describe('HfPromptTemplate', () => {
       builtins?: Map<string, AnyRuntimeValue>
     }
 
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ func(content) }}`,
       data: {
         content: ['hello', 'world', '!'],
@@ -129,7 +129,7 @@ describe('HfPromptTemplate', () => {
       builtins?: Map<string, AnyRuntimeValue>
     }
 
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ func(content) }}`,
       data: {
         content: ['hello', 'world', '!'],
@@ -141,7 +141,7 @@ describe('HfPromptTemplate', () => {
   })
 
   it('should format directly by PromptTemplate with createHfValueFunc for obj', async () => {
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ func(content) }}`,
       data: {
         content: {hi: 'world', x: 2, a: [1,29]},
@@ -153,7 +153,7 @@ describe('HfPromptTemplate', () => {
   })
 
   it('should format with createHfValueFunc by filter', async () => {
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ content | func }}`,
       data: {
         content: {hi: 'world', x: 2, a: [1,29]},
@@ -176,7 +176,7 @@ describe('HfPromptTemplate', () => {
     })
     const expected = obj.toString()
 
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ content }}`,
       data: {
         content: obj,
@@ -185,22 +185,22 @@ describe('HfPromptTemplate', () => {
   })
 
   it('should test isTemplate', () => {
-    expect(HfPromptTemplate.isTemplate({template: 'Hi world\n'})).toBeFalsy()
-    expect(HfPromptTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()
-    expect(HfPromptTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
-    expect(HfPromptTemplate.isTemplate({template: 'a {{strings }'})).toBeFalsy()
-    expect(HfPromptTemplate.isTemplate({template: '{{ "hello world" }}'})).toBeTruthy()
-    expect(HfPromptTemplate.isTemplate({template: '{{ "hello world }}'})).toBeFalsy()
-    expect(HfPromptTemplate.isTemplate({template: '{% if true %}hi{%endif%}'})).toBeTruthy()
+    expect(HfStringTemplate.isTemplate({template: 'Hi world\n'})).toBeFalsy()
+    expect(HfStringTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()
+    expect(HfStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
+    expect(HfStringTemplate.isTemplate({template: 'a {{strings }'})).toBeFalsy()
+    expect(HfStringTemplate.isTemplate({template: '{{ "hello world" }}'})).toBeTruthy()
+    expect(HfStringTemplate.isTemplate({template: '{{ "hello world }}'})).toBeFalsy()
+    expect(HfStringTemplate.isTemplate({template: '{% if true %}hi{%endif%}'})).toBeTruthy()
   })
 
   it('should test isTemplate directly by PromptTemplate', async () => {
-    expect(PromptTemplate.isTemplate({template: '{{text}} world'})).toBeTruthy()
-    expect(PromptTemplate.isTemplate({template: 'Hi world'})).toBeFalsy()
+    expect(StringTemplate.isTemplate({template: '{{text}} world'})).toBeTruthy()
+    expect(StringTemplate.isTemplate({template: 'Hi world'})).toBeFalsy()
   })
 
   it('should format directly by PromptTemplate with obj', async () => {
-    expect(await PromptTemplate.format({
+    expect(await StringTemplate.format({
       template: `{{ content }}`,
       data: {
         content: {hi: 'world', x: 2, a: [1,29]},
@@ -213,7 +213,7 @@ describe('HfPromptTemplate', () => {
   it('should format string with undefined value', async () => {
     const template = `{{name}}{{i['0']}}{{i['no']}}`
     //
-    let result = await PromptTemplate.format({
+    let result = await StringTemplate.format({
       template,
       data: {templateFormat: 'hf',
         type: 'char',
@@ -227,7 +227,7 @@ describe('HfPromptTemplate', () => {
   it('should format string with shortcut or value', async () => {
     const template = `{{result or name}}`
     //
-    let result = await PromptTemplate.format({
+    let result = await StringTemplate.format({
       template,
       data: {templateFormat: 'hf',
         type: 'char',

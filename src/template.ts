@@ -7,7 +7,7 @@ import { CommonError, ErrorCode, NotImplementationError } from '@isdk/common-err
 // register PromptTemplate alias as default.
 export const defaultTemplateFormat = 'default'
 
-export interface PromptTemplateOptions {
+export interface StringTemplateOptions {
   template?: string
   data?: Record<string, any>
   templateFormat?: string
@@ -17,18 +17,18 @@ export interface PromptTemplateOptions {
   [name: string]: any
 }
 
-export class PromptTemplate extends BaseFactory {
+export class StringTemplate extends BaseFactory {
   declare compiledTemplate: any
   declare template: string
   declare templateFormat: string|undefined
   declare data:Record<string, any>|undefined
   declare inputVariables: string[]|undefined
 
-  static from(template?: string|PromptTemplateOptions, options?: PromptTemplateOptions) {
+  static from(template?: string|StringTemplateOptions, options?: StringTemplateOptions) {
     return new this(template, options)
   }
 
-  static async format(options: PromptTemplateOptions) {
+  static async format(options: StringTemplateOptions) {
     const template = new this(options)
     return template.format()
   }
@@ -38,19 +38,19 @@ export class PromptTemplate extends BaseFactory {
    * @param options - The options object to check for being a template and to format.
    * @returns A Promise that resolves to the formatted result if options is a template; otherwise, no value is returned.
    */
-  static async formatIf(options: PromptTemplateOptions) {
+  static async formatIf(options: StringTemplateOptions) {
     if (this.isTemplate(options)) {
       const template = new this(options)
       return template.format()
     }
   }
 
-  static isTemplate(templateOpt: PromptTemplateOptions) {
+  static isTemplate(templateOpt: StringTemplateOptions) {
     if (templateOpt?.template) {
       const templateType = templateOpt.templateFormat || defaultTemplateFormat
-      const Template = PromptTemplate.get(templateType) as typeof PromptTemplate
+      const MyTemplate = StringTemplate.get(templateType) as typeof StringTemplate
       // const Template = (this === PromptTemplate) ? PromptTemplate.get(templateType) as typeof PromptTemplate : this
-      return Template!.isTemplate !== PromptTemplate.isTemplate && Template!.isTemplate(templateOpt)
+      return MyTemplate!.isTemplate !== StringTemplate.isTemplate && MyTemplate!.isTemplate(templateOpt)
     }
   }
 
@@ -66,7 +66,7 @@ export class PromptTemplate extends BaseFactory {
     return data
   }
 
-  constructor(template?: string|PromptTemplateOptions, options?: PromptTemplateOptions) {
+  constructor(template?: string|StringTemplateOptions, options?: StringTemplateOptions) {
     if (typeof template === 'string') {
       if (!options) { options = {} }
       options.template = template
@@ -79,8 +79,8 @@ export class PromptTemplate extends BaseFactory {
 
     super(options)
 
-    if (this.constructor === PromptTemplate) {
-      const TemplateClass = PromptTemplate.get(templateType || defaultTemplateFormat)
+    if (this.constructor === StringTemplate) {
+      const TemplateClass = StringTemplate.get(templateType || defaultTemplateFormat)
       if (TemplateClass) {
         return Reflect.construct(TemplateClass, arguments)
       } else {
@@ -89,12 +89,12 @@ export class PromptTemplate extends BaseFactory {
     }
   }
 
-  _initialize(options?: PromptTemplateOptions) {
+  _initialize(options?: StringTemplateOptions) {
     throw new NotImplementationError('Not implemented', 'PromptTemplate')
   }
 
-  initialize(options?: PromptTemplateOptions) {
-    if (this.constructor !== PromptTemplate) {
+  initialize(options?: StringTemplateOptions) {
+    if (this.constructor !== StringTemplate) {
       Object.assign(this, this.toJSON(options))
       if (!options?.ignoreInitialize) {
         this._initialize(options)
@@ -122,7 +122,7 @@ export class PromptTemplate extends BaseFactory {
     }
 
     for (const [key, value] of Object.entries(data)) {
-      if (value instanceof PromptTemplate) {
+      if (value instanceof StringTemplate) {
         // avoid infinite loop
         delete data[key]
         data[key] = await value.format(data)
@@ -136,7 +136,7 @@ export class PromptTemplate extends BaseFactory {
    * @param data the partial data
    * @returns the new partial PromptTemplate instance
    */
-  partial(data: Record<string, any>): PromptTemplate {
+  partial(data: Record<string, any>): StringTemplate {
     data = { ...this.data, ...data }
     const options = this.toJSON()
     options.data = data
@@ -144,14 +144,14 @@ export class PromptTemplate extends BaseFactory {
     return new (this.constructor as any)(options)
   }
 
-  toJSON(options: PromptTemplateOptions = this) {
-    let result: PromptTemplateOptions = {
+  toJSON(options: StringTemplateOptions = this) {
+    let result: StringTemplateOptions = {
       template: options.template,
       data: options.data,
       inputVariables: options.inputVariables,
       compiledTemplate: options.compiledTemplate,
     }
-    if (options.templateFormat && PromptTemplate.get(options.templateFormat) !== this.constructor) {
+    if (options.templateFormat && StringTemplate.get(options.templateFormat) !== this.constructor) {
       result.templateFormat = options.templateFormat
     }
     result = filterNullUndefined(result)

@@ -1,5 +1,5 @@
 import { HFTemplate } from "./template/jinja"
-import { PromptTemplate, PromptTemplateOptions } from "./prompt-template"
+import { StringTemplate, StringTemplateOptions } from "./template"
 import { CommonError, ErrorCode, } from '@isdk/common-error'
 
 function getVariable(statement: any, internalVars?: string[]) {
@@ -85,10 +85,10 @@ function getVariables(statement: any, internalVars?: string[]) {
   return result
 }
 
-export class HfPromptTemplate extends PromptTemplate {
+export class HfStringTemplate extends StringTemplate {
   declare compiledTemplate: HFTemplate
 
-  static isTemplate(templateOpt: PromptTemplateOptions|string): boolean {
+  static isTemplate(templateOpt: StringTemplateOptions|string): boolean {
     let compiledTemplate: any
     let template: string
     let result = false
@@ -118,7 +118,7 @@ export class HfPromptTemplate extends PromptTemplate {
     return result
   }
 
-  _initialize(options?: PromptTemplateOptions) {
+  _initialize(options?: StringTemplateOptions) {
     const template = options?.template
     if (typeof template !== 'string') {
       throw new CommonError('Prompt template must be a string', 'PromptTemplate', ErrorCode.InvalidArgument)
@@ -146,7 +146,7 @@ export class HfPromptTemplate extends PromptTemplate {
   }
 }
 
-PromptTemplate.register(HfPromptTemplate,{name: 'hf', aliases: ['huggingface', 'internal', 'default']})
+StringTemplate.register(HfStringTemplate,{name: 'hf', aliases: ['huggingface', 'internal', 'default']})
 
 // note:
 //  the PromptTemplate will call the func first to get the init data, so you must return the function to execute in HF-template
