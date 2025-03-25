@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.1](https://github.com/isdk/template-engines.js/compare/v0.6.0...v0.6.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* rename for name confict ([cb14459](https://github.com/isdk/template-engines.js/commit/cb1445972f4290df93d1730f7569a7c44b07e85e))
+
 ## [0.6.0](https://github.com/isdk/template-engines.js/compare/v0.5.8...v0.6.0) (2025-03-25)
 
 
