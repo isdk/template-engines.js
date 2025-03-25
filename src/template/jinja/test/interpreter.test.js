@@ -262,6 +262,16 @@ describe("Test interpreter options", () => {
 		expect(args).toEqual(['world', {k1: 12, k2: 'ok'}]);
 		expect(args[1].jinja_kargs).toBe(true)
   });
+
+	it("should support fn()[-1]", async () => {
+		const test = {
+			template: `{{ fn()[-1] }}`,
+			data: {fn() {return [2,34]}},
+			options: { lstrip_blocks: true, trim_blocks: true },
+			target: `34`,
+		}
+		testTemplate(test)
+	});
 });
 
 class TestObj {
