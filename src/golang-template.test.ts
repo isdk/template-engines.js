@@ -1,5 +1,5 @@
 import {GolangStringTemplate} from './golang-template'
-import {StringTemplate} from './template'
+import {StringTemplate} from './string-template'
 
 describe('GolangStringTemplate', () => {
   it('should get inputVariables from template', () => {

@@ -1,5 +1,5 @@
 import {HfStringTemplate, createHfValueFunc} from './hf-template'
-import {StringTemplate} from './template'
+import {StringTemplate} from './string-template'
 import { HFTemplate } from './template/jinja'
 
 describe('HfStringTemplate', () => {

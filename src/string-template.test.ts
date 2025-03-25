@@ -1,5 +1,5 @@
 import {HfStringTemplate} from './hf-template'
-import {StringTemplate, StringTemplateOptions} from './template'
+import {StringTemplate, StringTemplateOptions} from './string-template'
 
 class TestStringTemplate extends StringTemplate {
   _initialize(options?: StringTemplateOptions | undefined): void {

@@ -1,5 +1,5 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
-import { StringTemplate, type StringTemplateOptions } from "./template";
+import { StringTemplate, type StringTemplateOptions } from "./string-template";
 import { getEnvVairables as getVariables, interpolateEnv } from './template/env'
 
 export class EnvStringTemplate extends StringTemplate {

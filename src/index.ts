@@ -1,5 +1,5 @@
 export * from './consts'
-export * from './template'
+export * from './string-template'
 export * from './hf-template'
 export * from './f-string-template'
 export * from './golang-template'

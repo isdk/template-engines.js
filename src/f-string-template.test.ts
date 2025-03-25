@@ -1,5 +1,5 @@
 import {FStringTemplate} from './f-string-template'
-import {StringTemplate} from './template'
+import {StringTemplate} from './string-template'
 
 describe('FStringTemplate', () => {
   it('should get inputVariables from template', () => {

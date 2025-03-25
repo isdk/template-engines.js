@@ -1,5 +1,5 @@
 import {EnvStringTemplate} from './env-template'
-import {StringTemplate} from './template'
+import {StringTemplate} from './string-template'
 
 describe('EnvStringTemplate', () => {
   it('should get inputVariables from template', () => {

@@ -1,5 +1,5 @@
 import { HFTemplate } from "./template/jinja"
-import { StringTemplate, StringTemplateOptions } from "./template"
+import { StringTemplate, StringTemplateOptions } from "./string-template"
 import { CommonError, ErrorCode, } from '@isdk/common-error'
 
 function getVariable(statement: any, internalVars?: string[]) {

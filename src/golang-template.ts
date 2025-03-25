@@ -1,5 +1,5 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
-import { StringTemplate, StringTemplateOptions } from "./template";
+import { StringTemplate, StringTemplateOptions } from "./string-template";
 import { interpolateGolangTemplate } from "./template/golang";
 
 export class GolangStringTemplate extends StringTemplate {
