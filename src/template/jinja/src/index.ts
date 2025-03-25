@@ -17,22 +17,7 @@ import type { Program } from "./ast";
 import type { StringValue } from "./runtime";
 import { range } from "./utils";
 import { builtins } from "./builtins";
-
-class EnvironmentEx extends Environment {
-	constructor(public parent?: EnvironmentEx) {
-		super(parent);
-	}
-
-	assign(items: Record<string, unknown>) {
-		for (const [key, value] of Object.entries(items)) {
-			this.set(key, value);
-		}
-	}
-
-	clear() {
-		this.variables.clear();
-	}
-}
+import { EnvironmentEx } from "./environment-ex";
 
 export class Template {
 	parsed: Program;
