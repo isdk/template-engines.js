@@ -282,6 +282,7 @@ export class FunctionValue extends RuntimeValue<(args: AnyRuntimeValue[], scope:
  */
 export class NullValue extends RuntimeValue<null> {
 	override type = "NullValue";
+	override value = null;
 }
 
 /**
@@ -339,6 +340,7 @@ export class Environment {
 		],
 		["false", (operand) => operand.type === "BooleanValue" && !(operand as BooleanValue).value],
 		["true", (operand) => operand.type === "BooleanValue" && (operand as BooleanValue).value],
+		["none", (operand) => operand.type === "NullValue"],
 		["string", (operand) => operand.type === "StringValue"],
 		["number", (operand) => operand.type === "NumericValue"],
 		["integer", (operand) => operand.type === "NumericValue" && Number.isInteger((operand as NumericValue).value)],
