@@ -6,7 +6,7 @@
 
 # Class: FStringTemplate
 
-Defined in: [packages/template-engines/src/f-string-template.ts:15](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L15)
+Defined in: [packages/template-engines/src/f-string-template.ts:15](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L15)
 
 The `StringTemplate` class is a versatile template engine that supports dynamic template creation,
 formatting, and partial data processing. It extends the `BaseFactory` class and provides methods
@@ -45,7 +45,7 @@ console.log(result); // Output: "Formatted: Hello World"
 
 > **new FStringTemplate**(`template`?, `options`?): [`FStringTemplate`](FStringTemplate.md)
 
-Defined in: [packages/template-engines/src/template.ts:187](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L187)
+Defined in: [packages/template-engines/src/string-template.ts:187](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L187)
 
 Initializes a new instance of the `StringTemplate` class.
 
@@ -85,9 +85,9 @@ console.log(template instanceof TestStringTemplate); // Output: true
 
 ### compiledTemplate
 
-> **compiledTemplate**: `FStringTemplateNode`[]
+> **compiledTemplate**: [`FStringTemplateNode`](../type-aliases/FStringTemplateNode.md)[]
 
-Defined in: [packages/template-engines/src/f-string-template.ts:16](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L16)
+Defined in: [packages/template-engines/src/f-string-template.ts:16](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L16)
 
 Declares the compiled template instance.
 
@@ -101,7 +101,7 @@ Declares the compiled template instance.
 
 > **data**: `undefined` \| `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/template.ts:62](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L62)
+Defined in: [packages/template-engines/src/string-template.ts:62](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L62)
 
 Declares the data object used for template interpolation.
 
@@ -115,7 +115,7 @@ Declares the data object used for template interpolation.
 
 > **inputVariables**: `undefined` \| `string`[]
 
-Defined in: [packages/template-engines/src/template.ts:66](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L66)
+Defined in: [packages/template-engines/src/string-template.ts:66](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L66)
 
 Declares the list of input variables expected by the template.
 
@@ -129,7 +129,7 @@ Declares the list of input variables expected by the template.
 
 > **template**: `string`
 
-Defined in: [packages/template-engines/src/template.ts:54](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L54)
+Defined in: [packages/template-engines/src/string-template.ts:54](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L54)
 
 Declares the raw template string.
 
@@ -143,7 +143,7 @@ Declares the raw template string.
 
 > **templateFormat**: `undefined` \| `string`
 
-Defined in: [packages/template-engines/src/template.ts:58](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L58)
+Defined in: [packages/template-engines/src/string-template.ts:58](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L58)
 
 Declares the format of the template (e.g., 'default').
 
@@ -315,7 +315,7 @@ The Root Factory class
 
 > **\_format**(`data`): `string`
 
-Defined in: [packages/template-engines/src/f-string-template.ts:56](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L56)
+Defined in: [packages/template-engines/src/f-string-template.ts:56](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L56)
 
 Placeholder method for formatting the template. Must be implemented by subclasses.
 
@@ -343,7 +343,7 @@ A formatted string or a promise resolving to the formatted string.
 
 > **\_initialize**(`options`?): `void`
 
-Defined in: [packages/template-engines/src/f-string-template.ts:47](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L47)
+Defined in: [packages/template-engines/src/f-string-template.ts:47](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L47)
 
 Placeholder method for initializing the template. Must be implemented by subclasses.
 
@@ -369,7 +369,7 @@ Configuration options for initialization.
 
 > **filterData**(`data`): `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/template.ts:166](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L166)
+Defined in: [packages/template-engines/src/string-template.ts:166](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L166)
 
 Filters the input data to include only the specified input variables.
 
@@ -407,7 +407,7 @@ console.log(filteredData); // Output: { name: "Alice" }
 
 > **format**(`data`?): `Promise`\<`string`\>
 
-Defined in: [packages/template-engines/src/template.ts:255](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L255)
+Defined in: [packages/template-engines/src/string-template.ts:255](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L255)
 
 Formats the template using the provided data, supporting asynchronous processing.
 
@@ -446,13 +446,13 @@ console.log(result); // Output: { text: "Hello" }
 
 > **getVariables**(`template`): `string`[]
 
-Defined in: [packages/template-engines/src/f-string-template.ts:43](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L43)
+Defined in: [packages/template-engines/src/f-string-template.ts:43](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L43)
 
 #### Parameters
 
 ##### template
 
-`FStringTemplateNode`[] = `...`
+[`FStringTemplateNode`](../type-aliases/FStringTemplateNode.md)[] = `...`
 
 #### Returns
 
@@ -464,7 +464,7 @@ Defined in: [packages/template-engines/src/f-string-template.ts:43](https://gith
 
 > **initialize**(`options`?): `void`
 
-Defined in: [packages/template-engines/src/template.ts:222](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L222)
+Defined in: [packages/template-engines/src/string-template.ts:222](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L222)
 
 Initializes the template instance with the provided options.
 
@@ -490,7 +490,7 @@ Configuration options for initialization.
 
 > **partial**(`data`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/template.ts:307](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L307)
+Defined in: [packages/template-engines/src/string-template.ts:307](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L307)
 
 Creates a new `StringTemplate` instance with partially filled data.
 This is useful for pre-filling some variables while leaving others to be filled later.
@@ -541,7 +541,7 @@ console.log(dateResult.date instanceof Date); // Output: true
 
 > **toJSON**(`options`): [`StringTemplateOptions`](../interfaces/StringTemplateOptions.md)
 
-Defined in: [packages/template-engines/src/template.ts:331](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L331)
+Defined in: [packages/template-engines/src/string-template.ts:331](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L331)
 
 Serializes the `StringTemplate` instance into a JSON-compatible object.
 
@@ -772,7 +772,7 @@ the forEach callback function
 
 > `static` **format**(`options`): `Promise`\<`string`\>
 
-Defined in: [packages/template-engines/src/template.ts:102](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L102)
+Defined in: [packages/template-engines/src/string-template.ts:102](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L102)
 
 Formats a template using the provided options.
 
@@ -811,7 +811,7 @@ console.log(result); // Output: { text: "Hello" }
 
 > `static` **formatIf**(`options`): `Promise`\<`undefined` \| `string`\>
 
-Defined in: [packages/template-engines/src/template.ts:122](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L122)
+Defined in: [packages/template-engines/src/string-template.ts:122](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L122)
 
 Formats a template if the provided options represent a valid template.
 
@@ -910,7 +910,7 @@ the name to register
 
 > `static` **from**(`template`?, `options`?): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/template.ts:83](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L83)
+Defined in: [packages/template-engines/src/string-template.ts:83](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L83)
 
 Creates a new instance of the `StringTemplate` class.
 
@@ -1110,7 +1110,7 @@ the unique name in the factory
 
 > `static` **isTemplate**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/f-string-template.ts:18](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/f-string-template.ts#L18)
+Defined in: [packages/template-engines/src/f-string-template.ts:18](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/f-string-template.ts#L18)
 
 Determines whether the given options represent a valid template.
 

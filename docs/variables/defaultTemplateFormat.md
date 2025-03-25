@@ -8,4 +8,4 @@
 
 > `const` **defaultTemplateFormat**: `"default"` = `'default'`
 
-Defined in: [packages/template-engines/src/template.ts:7](https://github.com/isdk/template-engines.js/blob/08cf4328dccdb45c6cf35eac571525bb99782c4e/src/template.ts#L7)
+Defined in: [packages/template-engines/src/string-template.ts:7](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/string-template.ts#L7)
