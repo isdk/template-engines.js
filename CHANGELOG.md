@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.2](https://github.com/isdk/template-engines.js/compare/v0.6.1...v0.6.2) (2025-03-27)
+
+
+### Bug Fixes
+
+* **docs:** corrects the example ([466ebe2](https://github.com/isdk/template-engines.js/commit/466ebe226b36554b365e0202c4f1d42ff9f95a09))
+
 ## [0.6.1](https://github.com/isdk/template-engines.js/compare/v0.6.0...v0.6.1) (2025-03-25)
 
 
