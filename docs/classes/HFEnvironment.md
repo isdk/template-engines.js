@@ -6,7 +6,7 @@
 
 # Class: HFEnvironment
 
-Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:3](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/environment-ex.ts#L3)
+Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:3](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/environment-ex.ts#L3)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:
 
 > **new HFEnvironment**(`parent`?): [`HFEnvironment`](HFEnvironment.md)
 
-Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:4](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/environment-ex.ts#L4)
+Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:4](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/environment-ex.ts#L4)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:
 
 > `optional` **parent**: [`HFEnvironment`](HFEnvironment.md)
 
-Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:4](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/environment-ex.ts#L4)
+Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:4](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/environment-ex.ts#L4)
 
 #### Inherited from
 
@@ -52,7 +52,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:
 
 > **tests**: `Map`\<`string`, (...`value`) => `boolean`\>
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:320](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/runtime.ts#L320)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:320](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/runtime.ts#L320)
 
 The tests available in this environment.
 
@@ -66,7 +66,7 @@ The tests available in this environment.
 
 > **variables**: `Map`\<`string`, `AnyRuntimeValue`\>
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:302](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/runtime.ts#L302)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:302](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/runtime.ts#L302)
 
 The variables declared in this environment.
 
@@ -80,7 +80,7 @@ The variables declared in this environment.
 
 > **assign**(`items`): `void`
 
-Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:8](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/environment-ex.ts#L8)
+Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:8](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/environment-ex.ts#L8)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:
 
 > **clear**(): `void`
 
-Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:14](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/environment-ex.ts#L14)
+Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:14](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/environment-ex.ts#L14)
 
 #### Returns
 
@@ -110,7 +110,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/environment-ex.ts:
 
 > **lookupVariable**(`name`): `AnyRuntimeValue`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:419](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/runtime.ts#L419)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:419](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/runtime.ts#L419)
 
 #### Parameters
 
@@ -132,7 +132,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:419](ht
 
 > **set**(`name`, `value`): `AnyRuntimeValue`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:374](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/runtime.ts#L374)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:374](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/runtime.ts#L374)
 
 Set the value of a variable in the current environment.
 
@@ -160,7 +160,7 @@ Set the value of a variable in the current environment.
 
 > **setVariable**(`name`, `value`): `AnyRuntimeValue`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:396](https://github.com/isdk/template-engines.js/blob/cb1445972f4290df93d1730f7569a7c44b07e85e/src/template/jinja/src/runtime.ts#L396)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:396](https://github.com/isdk/template-engines.js/blob/466ebe226b36554b365e0202c4f1d42ff9f95a09/src/template/jinja/src/runtime.ts#L396)
 
 Set variable in the current scope.
 See https://jinja.palletsprojects.com/en/3.0.x/templates/#assignments for more information.
