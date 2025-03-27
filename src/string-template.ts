@@ -96,7 +96,7 @@ export class StringTemplate extends BaseFactory {
    *   data: { text: "Hello" },
    *   templateFormat: "Test"
    * });
-   * console.log(result); // Output: { text: "Hello" }
+   * console.log(result); // Output: "Hello"
    * ```
    */
   static async format(options: StringTemplateOptions) {
@@ -116,7 +116,7 @@ export class StringTemplate extends BaseFactory {
    *   data: { text: "Valid Template" },
    *   templateFormat: "Test"
    * });
-   * console.log(result); // Output: { text: "Valid Template" }
+   * console.log(result); // Output: "Valid Template"
    * ```
    */
   static async formatIf(options: StringTemplateOptions) {
@@ -249,7 +249,7 @@ export class StringTemplate extends BaseFactory {
    *   inputVariables: ['text']
    * });
    * const result = await template.format({ text: "Hello" });
-   * console.log(result); // Output: { text: "Hello" }
+   * console.log(result); // Output: "Hello"
    * ```
    */
   async format(data?: Record<string, any>): Promise<string> {
