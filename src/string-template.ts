@@ -155,14 +155,40 @@ export class StringTemplate extends BaseFactory {
     }
   }
 
-  static matchTemplateSegment(templateOpt: StringTemplateOptions, index = 0) {
+  /**
+   * Matches and extracts a single template segment from the provided template options.
+   * This method is designed to identify individual segments of a template string.
+   *
+   * @param templateOpt - The template options containing the template string and related configurations.
+   * @param templateOpt.template - The required template string to be matched.
+   * @param templateOpt.index - The optional starting position in the template string to begin matching.
+   *                            If provided, this value takes precedence over the `index` parameter.
+   * @param index - The default starting position in the template string to begin matching (default: 0).
+   *                This value is used only if `templateOpt.index` is not provided or invalid.
+   * @returns A `RegExpExecArray` representing the matched template segment, or `undefined` if no match is found.
+   *          The `index` property of the result can be used to calculate the next position for iteration.
+   *
+   * @example
+   * ```typescript
+   * const template = "{{name}} is {{age}} years old";
+   * let match = StringTemplate.matchTemplateSegment({ template });
+   * while (match) {
+   *   console.log(match[0]); // Output: "{{name}}"
+   *   match = StringTemplate.matchTemplateSegment({ template }, match.index + match[0].length);
+   * }
+   * ```
+   */
+  static matchTemplateSegment(templateOpt: StringTemplateOptions, index = 0): RegExpExecArray|undefined {
     if (templateOpt?.template) {
       const templateType = templateOpt.templateFormat || defaultTemplateFormat
       const MyTemplate = this === StringTemplate ? StringTemplate.get(templateType) as typeof StringTemplate : this
       if (templateOpt.index! > 0) {
         index = templateOpt.index!
       }
-      return MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment && MyTemplate!.matchTemplateSegment(templateOpt, index)
+      const hasMatchTemplateSegment = MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment
+      if (hasMatchTemplateSegment) {
+        return MyTemplate!.matchTemplateSegment(templateOpt, index)
+      }
     }
   }
 
