@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.3](https://github.com/isdk/template-engines.js/compare/v0.6.2...v0.6.3) (2025-04-24)
+
+
+### Features
+
+* add matchTemplateSegment static method ([24b1ccb](https://github.com/isdk/template-engines.js/commit/24b1ccbec627480811c0e55e7b0aa8bfa87438e3))
+
 ## [0.6.2](https://github.com/isdk/template-engines.js/compare/v0.6.1...v0.6.2) (2025-03-27)
 
 
