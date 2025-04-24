@@ -1,8 +1,16 @@
 import { CommonError, ErrorCode } from "@isdk/common-error";
 import { StringTemplate, type StringTemplateOptions } from "./string-template";
-import { getEnvVairables as getVariables, interpolateEnv } from './template/env'
+import { getEnvVairables as getVariables, interpolateEnv, matchEnvTemplateSegment } from './template/env'
 
 export class EnvStringTemplate extends StringTemplate {
+
+  static matchTemplateSegment(template: StringTemplateOptions|string, index: number = 0) {
+    if (typeof template === 'object') {
+      if (template.index) index = template.index
+      template = template.template!
+    }
+    return matchEnvTemplateSegment(template, index)
+  }
 
   static isTemplate(templateOpt: StringTemplateOptions|string) {
     let template: string

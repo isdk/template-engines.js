@@ -88,6 +88,19 @@ function getVariables(statement: any, internalVars?: string[]) {
 export class HfStringTemplate extends StringTemplate {
   declare compiledTemplate: HFTemplate
 
+  static matchTemplateSegment(template: StringTemplateOptions|string, index: number = 0) {
+    if (typeof template === 'object') {
+      if (template.index) index = template.index
+      template = template.template!
+    }
+    const regex =/\{\{.+?\}\}|\{([%#]).*?\1\}/gs
+    regex.lastIndex = index
+    const matched = regex.exec(template)
+    if (matched) {
+      return matched
+    }
+  }
+
   static isTemplate(templateOpt: StringTemplateOptions|string): boolean {
     let compiledTemplate: any
     let template: string
@@ -102,7 +115,9 @@ export class HfStringTemplate extends StringTemplate {
     if (!compiledTemplate && template) {
       try {
         compiledTemplate = new HFTemplate(template)
-      } catch (error) {}
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     if (compiledTemplate) {

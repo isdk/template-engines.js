@@ -13,6 +13,7 @@ export interface StringTemplateOptions {
   inputVariables?: string[]
   compiledTemplate?: any
   ignoreInitialize?: boolean
+  index?: number
   [name: string]: any
 }
 
@@ -143,9 +144,25 @@ export class StringTemplate extends BaseFactory {
   static isTemplate(templateOpt: StringTemplateOptions) {
     if (templateOpt?.template) {
       const templateType = templateOpt.templateFormat || defaultTemplateFormat
-      const MyTemplate = StringTemplate.get(templateType) as typeof StringTemplate
+      const MyTemplate = this === StringTemplate ? StringTemplate.get(templateType) as typeof StringTemplate : this
       // const Template = (this === PromptTemplate) ? PromptTemplate.get(templateType) as typeof PromptTemplate : this
-      return MyTemplate!.isTemplate !== StringTemplate.isTemplate && MyTemplate!.isTemplate(templateOpt)
+      const hasIsTemplate = MyTemplate!.isTemplate !== StringTemplate.isTemplate
+      if (hasIsTemplate)
+        return MyTemplate!.isTemplate(templateOpt)
+      else {
+        return !!this.matchTemplateSegment(templateOpt)
+      }
+    }
+  }
+
+  static matchTemplateSegment(templateOpt: StringTemplateOptions, index = 0) {
+    if (templateOpt?.template) {
+      const templateType = templateOpt.templateFormat || defaultTemplateFormat
+      const MyTemplate = this === StringTemplate ? StringTemplate.get(templateType) as typeof StringTemplate : this
+      if (templateOpt.index! > 0) {
+        index = templateOpt.index!
+      }
+      return MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment && MyTemplate!.matchTemplateSegment(templateOpt, index)
     }
   }
 

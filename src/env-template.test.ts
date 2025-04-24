@@ -74,4 +74,49 @@ describe('EnvStringTemplate', () => {
     expect(StringTemplate.isTemplate({template: '${text} world', templateFormat: 'js'})).toBeTruthy()
   })
 
+  describe('matchTemplateSegment', () => {
+    it('should test matchTemplateSegment', () => {
+      const templateStr = '${strings}: ${a} + \\${b}'
+      let result = EnvStringTemplate.matchTemplateSegment({template: templateStr})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('${strings}')
+      let pos = result![0].length
+      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('${a}')
+      pos = result!.index + result![0].length
+      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+3)
+      expect(result![0]).toBe('\\${b}')
+      pos = result!.index + result![0].length
+      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeUndefined()
+      expect(EnvStringTemplate.matchTemplateSegment({template: 'a ${strings '})).toBeUndefined()
+    })
+
+    it('should test matchTemplateSegment by StringTemplate', () => {
+      const templateStr = '${strings}: ${a} + \\${b}'
+      let result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('${strings}')
+      let pos = result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('${a}')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+3)
+      expect(result![0]).toBe('\\${b}')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+      expect(result).toBeUndefined()
+      expect(StringTemplate.matchTemplateSegment({template: 'a ${strings ', templateFormat: 'js'})).toBeUndefined()
+    })
+  })
 })

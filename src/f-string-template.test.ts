@@ -59,20 +59,75 @@ describe('FStringTemplate', () => {
     expect(await p.format({role: 'user'})).toStrictEqual('user:'+dt.toISOString())
   })
   it('should format directly by PromptTemplate', async () => {
-    expect(await StringTemplate.format({template: '{text} world', data: {text: 'hello'}, templateFormat: 'langchain'})).toStrictEqual('hello world')
+    expect(await StringTemplate.format({template: '{  text } world {good}!', data: {text: 'hello', good: 'better'}, templateFormat: 'langchain'})).toStrictEqual('hello world better!')
   })
 
   it('should format directly by PromptTemplate without template variable', async () => {
     expect(await StringTemplate.format({template: 'hello world', data: {text: 'hello'}, templateFormat: 'langchain'})).toStrictEqual('hello world')
   })
 
-  it('should test isTemplate', () => {
-    expect(FStringTemplate.isTemplate({template: '{strings}: {a} + {b}'})).toBeTruthy()
-    expect(FStringTemplate.isTemplate({template: 'a {strings '})).toBeFalsy()
+  describe('isTemplate', () => {
+    it('should test isTemplate true', () => {
+      expect(FStringTemplate.isTemplate({template: '{strings}: {a} + {b}'})).toBeTruthy()
+    })
+
+    it('should test isTemplate false', () => {
+      expect(FStringTemplate.isTemplate({template: 'a {strings '})).toBeFalsy()
+    })
+
+    it('should test isTemplate directly by StringTemplate', async () => {
+      expect(StringTemplate.isTemplate({template: '{text} world', templateFormat: 'langchain'})).toBeTruthy()
+    })
+
+    it('should test isTemplate false by StringTemplate', async () => {
+      expect(StringTemplate.isTemplate({template: 'a {strings ', templateFormat: 'langchain'})).toBeFalsy()
+    })
   })
 
-  it('should test isTemplate directly by PromptTemplate', async () => {
-    expect(StringTemplate.isTemplate({template: '{text} world', templateFormat: 'langchain'})).toBeTruthy()
+  describe('matchTemplateSegment', () => {
+    it('should test matchTemplateSegment', () => {
+      const templateStr = '{ strings  }: {a} + {{b}'
+      let result = FStringTemplate.matchTemplateSegment({template: templateStr})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{ strings  }')
+      let pos = result![0].length
+      result = FStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{a}')
+      pos = result!.index + result![0].length
+      result = FStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+3)
+      expect(result![0]).toBe('{{')
+      pos = result!.index + result![0].length
+      result = FStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeUndefined()
+      expect(FStringTemplate.matchTemplateSegment({template: 'a {strings '})).toBeUndefined()
+    })
+
+    it('should test matchTemplateSegment by StringTemplate', () => {
+      const templateStr = '{ strings  }: {a} + {{b}'
+      let result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'langchain'})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{ strings  }')
+      let pos = result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'langchain'}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{a}')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'langchain'}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+3)
+      expect(result![0]).toBe('{{')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'langchain'}, pos)
+      expect(result).toBeUndefined()
+      expect(StringTemplate.matchTemplateSegment({template: 'a {strings ', templateFormat: 'langchain'})).toBeUndefined()
+    })
   })
 
 })

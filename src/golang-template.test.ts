@@ -64,12 +64,57 @@ describe('GolangStringTemplate', () => {
     expect(await StringTemplate.format({template: 'hello world', data: {text: 'hello'}, templateFormat: 'golang'})).toStrictEqual('hello world')
   })
 
-  it('should test isTemplate', () => {
-    expect(GolangStringTemplate.isTemplate({template: '{{strings}}: {{a}} + {b}'})).toBeTruthy()
-    expect(GolangStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
+  describe('isTemplate', () => {
+    it('should test isTemplate true', () => {
+      expect(GolangStringTemplate.isTemplate({template: '{{.strings}}: {{.a}} + {.b}'})).toBeTruthy()
+    })
+
+    it('should test isTemplate false', () => {
+      expect(GolangStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
+    })
+
+    it('should test isTemplate directly by StringTemplate', async () => {
+      expect(StringTemplate.isTemplate({template: '{{.text}} world', templateFormat: 'golang'})).toBeTruthy()
+    })
+
+    it('should test isTemplate directly by StringTemplate false', async () => {
+      expect(StringTemplate.isTemplate({template: '{{text}} world', templateFormat: 'golang'})).toBeFalsy()
+    })
   })
 
-  it('should test isTemplate directly by PromptTemplate', async () => {
-    expect(StringTemplate.isTemplate({template: '{{text}} world', templateFormat: 'golang'})).toBeTruthy()
+  describe('matchTemplateSegment', () => {
+    it('should test matchTemplateSegment', () => {
+      const templateStr = '{{.strings}}: {{.a}} + {.b}'
+      let result = GolangStringTemplate.matchTemplateSegment({template: templateStr})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{{.strings}}')
+      let pos = result![0].length
+      result = GolangStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{{.a}}')
+      pos = result!.index + result![0].length
+      result = GolangStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeUndefined()
+      expect(GolangStringTemplate.matchTemplateSegment({template: 'a {{strings '})).toBeUndefined()
+    })
+
+    it('should test matchTemplateSegment by StringTemplate', () => {
+      const templateStr = '{{.strings}}: {{.a}} + {.b}'
+      let result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{{.strings}}')
+      let pos = result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{{.a}}')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'}, pos)
+      expect(result).toBeUndefined()
+      expect(StringTemplate.matchTemplateSegment({template: 'a {{strings ', templateFormat: 'golang'})).toBeUndefined()
+    })
   })
 })

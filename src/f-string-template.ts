@@ -15,6 +15,18 @@ function getVariables(template: FStringTemplateNode[]) {
 export class FStringTemplate extends StringTemplate {
   declare compiledTemplate: FStringTemplateNode[]
 
+  static matchTemplateSegment(template: StringTemplateOptions|string, index = 0) {
+    // f-string 的模板是 "{var}"，“{{”表示对"{"的转义，“}}表示对"}”的转义
+    const regex = /\{(?!{)(.*?)(?<!})\}|{{|}}/g;
+    if (typeof template === 'object') {
+      if (template.index) index = template.index
+      template = template.template!
+    }
+    regex.lastIndex = index;
+    const match = regex.exec(template);
+    if (match) {return match}
+  }
+
   static isTemplate(templateOpt: StringTemplateOptions|string) {
     let compiledTemplate: any
     let template: string

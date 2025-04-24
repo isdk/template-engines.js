@@ -14,9 +14,22 @@ function _resolveEscapeSequences(value: string) {
   return value.replace(/\\\$/g, '$')
 }
 
+export function matchEnvTemplateSegment(str: string, index: number = 0) {
+  DOTENV_SUBSTITUTION_REGEX.lastIndex = index
+  const matched = DOTENV_SUBSTITUTION_REGEX.exec(str)
+  if (matched) {
+    const openBrace = matched[3]
+    const closeBrace = matched[6]
+    if ((openBrace && closeBrace) || (!openBrace && !closeBrace)) {
+      return matched
+    }
+  }
+}
+
 export function getEnvVairables(value: string) {
   const result = new Set<string>()
   let matched: RegExpExecArray|null
+  DOTENV_SUBSTITUTION_REGEX.lastIndex = 0
   while (matched = DOTENV_SUBSTITUTION_REGEX.exec(value)) {
     const openBrace = matched[3]
     const closeBrace = matched[6]

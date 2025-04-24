@@ -184,21 +184,6 @@ describe('HfStringTemplate', () => {
     })).toStrictEqual(expected)
   })
 
-  it('should test isTemplate', () => {
-    expect(HfStringTemplate.isTemplate({template: 'Hi world\n'})).toBeFalsy()
-    expect(HfStringTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()
-    expect(HfStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
-    expect(HfStringTemplate.isTemplate({template: 'a {{strings }'})).toBeFalsy()
-    expect(HfStringTemplate.isTemplate({template: '{{ "hello world" }}'})).toBeTruthy()
-    expect(HfStringTemplate.isTemplate({template: '{{ "hello world }}'})).toBeFalsy()
-    expect(HfStringTemplate.isTemplate({template: '{% if true %}hi{%endif%}'})).toBeTruthy()
-  })
-
-  it('should test isTemplate directly by PromptTemplate', async () => {
-    expect(StringTemplate.isTemplate({template: '{{text}} world'})).toBeTruthy()
-    expect(StringTemplate.isTemplate({template: 'Hi world'})).toBeFalsy()
-  })
-
   it('should format directly by PromptTemplate with obj', async () => {
     expect(await StringTemplate.format({
       template: `{{ content }}`,
@@ -237,5 +222,64 @@ describe('HfStringTemplate', () => {
       },
     });
     expect(result).toStrictEqual('Yes')
+  })
+
+  describe('isTemplate', () => {
+    it('should test isTemplate true', () => {
+      expect(HfStringTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()
+      expect(HfStringTemplate.isTemplate({template: '{{ "hello world" }}'})).toBeTruthy()
+      expect(HfStringTemplate.isTemplate({template: '{% if true %}hi{%endif%}'})).toBeTruthy()
+    })
+
+    it('should test isTemplate false', () => {
+      expect(HfStringTemplate.isTemplate({template: 'Hi world\n'})).toBeFalsy()
+      expect(HfStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
+      expect(HfStringTemplate.isTemplate({template: 'a {{strings }'})).toBeFalsy()
+      expect(HfStringTemplate.isTemplate({template: '{{ "hello world }}'})).toBeFalsy()
+    })
+
+    it('should test isTemplate directly by PromptTemplate true', async () => {
+      expect(StringTemplate.isTemplate({template: '{{text}} world'})).toBeTruthy()
+    })
+
+    it('should test isTemplate directly by PromptTemplate false', async () => {
+      expect(StringTemplate.isTemplate({template: 'Hi world'})).toBeFalsy()
+    })
+  })
+
+  describe('matchTemplateSegment', () => {
+    it('should test matchTemplateSegment', () => {
+      const templateStr = '{{  strings }}: {%- a%} + {{b}'
+      let result = HfStringTemplate.matchTemplateSegment({template: templateStr})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{{  strings }}')
+      let pos = result![0].length
+      result = HfStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{%- a%}')
+      pos = result!.index + result![0].length
+      result = HfStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeUndefined()
+      expect(HfStringTemplate.matchTemplateSegment({template: 'a {{strings '})).toBeUndefined()
+    })
+
+    it('should test matchTemplateSegment by StringTemplate', () => {
+      const templateStr = '{{  strings }}: {{a}} + {{b}'
+      let result = StringTemplate.matchTemplateSegment({template: templateStr})
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(0)
+      expect(result![0]).toBe('{{  strings }}')
+      let pos = result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeDefined()
+      expect(result!.index).toStrictEqual(pos+2)
+      expect(result![0]).toBe('{{a}}')
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      expect(result).toBeUndefined()
+      expect(StringTemplate.matchTemplateSegment({template: 'a {{strings '})).toBeUndefined()
+    })
   })
 })
