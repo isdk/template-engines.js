@@ -48,4 +48,6 @@
 - [interpolateEnv](functions/interpolateEnv.md)
 - [interpolateFString](functions/interpolateFString.md)
 - [interpolateGolangTemplate](functions/interpolateGolangTemplate.md)
+- [matchEnvTemplateSegment](functions/matchEnvTemplateSegment.md)
+- [matchGolangTemplateSegment](functions/matchGolangTemplateSegment.md)
 - [parseFString](functions/parseFString.md)
