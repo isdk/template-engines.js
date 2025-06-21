@@ -708,7 +708,10 @@ export class Interpreter {
 
 			if (operand instanceof ArrayValue) {
 				switch (filterName) {
-					case "selectattr": {
+					case "selectattr":
+					case "rejectattr": {
+						const select = filterName === "selectattr";
+
 						if (operand.value.some((x) => !(x instanceof ObjectValue))) {
 							throw new Error("`selectattr` can only be applied to array of objects");
 						}
@@ -734,10 +737,8 @@ export class Interpreter {
 						// Filter the array using the test function
 						const filtered = (operand.value as ObjectValue[]).filter((item) => {
 							const a = item.value.get(attr.value);
-							if (a) {
-								return testFunction(a, value);
-							}
-							return false;
+							const result = a ? testFunction(a, value) : false;
+							return select ? result : !result;
 						});
 
 						return new ArrayValue(filtered);
