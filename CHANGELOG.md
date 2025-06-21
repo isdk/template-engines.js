@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.4](https://github.com/isdk/template-engines.js/compare/v0.6.3...v0.6.4) (2025-06-21)
+
+
+### Features
+
+* **jinja:** add keys()/values() method to object ([a9e6f2a](https://github.com/isdk/template-engines.js/commit/a9e6f2ae4de62f15ef46f07dca025ed9c1f01d1a))
+* **jinja:** add rejectattr filter to array ([0980ec5](https://github.com/isdk/template-engines.js/commit/0980ec51236148c4fd76db6d69dc25b1172476d4))
+
 ## [0.6.3](https://github.com/isdk/template-engines.js/compare/v0.6.2...v0.6.3) (2025-04-24)
 
 
