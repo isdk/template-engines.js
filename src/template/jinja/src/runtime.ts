@@ -224,15 +224,22 @@ export class ObjectValue extends RuntimeValue<Map<string, AnyRuntimeValue>> {
 				return this.value.get(key.value) ?? defaultValue ?? new NullValue();
 			}),
 		],
-		[
-			"items",
-			new FunctionValue(() => {
-				return new ArrayValue(
-					Array.from(this.value.entries()).map(([key, value]) => new ArrayValue([new StringValue(key), value]))
-				);
-			}),
-		],
+		["items", new FunctionValue(() => this.items())],
+		["keys", new FunctionValue(() => this.keys())],
+		["values", new FunctionValue(() => this.values())],
 	]);
+
+	items(): ArrayValue {
+		return new ArrayValue(
+			Array.from(this.value.entries()).map(([key, value]) => new ArrayValue([new StringValue(key), value]))
+		);
+	}
+	keys(): ArrayValue {
+		return new ArrayValue(Array.from(this.value.keys()).map((key) => new StringValue(key)));
+	}
+	values(): ArrayValue {
+		return new ArrayValue(Array.from(this.value.values()));
+	}
 }
 
 /**
@@ -649,6 +656,14 @@ export class Interpreter {
 					case "join":
 					case "string":
 						return operand; // no-op
+					case "int": {
+						const val = parseInt(operand.value, 10);
+						return new NumericValue(isNaN(val) ? 0 : val);
+					}
+					case "float": {
+						const val = parseFloat(operand.value);
+						return new NumericValue(isNaN(val) ? 0.0 : val);
+					}
 					default:
 						throw new Error(`Unknown StringValue filter: ${filter.value}`);
 				}

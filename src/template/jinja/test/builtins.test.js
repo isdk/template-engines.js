@@ -101,4 +101,17 @@ describe('Jinjia builtins functions', () => {
 
   });
 
+  describe("object builtins", () => {
+    it("should support object.keys()", async () => {
+      const template = new Template(`{{ content.keys()}}`);
+      const result = template.render({content: {hi: 'world', x: 2, a: [1,29]}});
+      expect(result).toMatchInlineSnapshot(`"hi,x,a"`)
+    })
+
+    it("should support object.values()", async () => {
+      const template = new Template(`{{ content.values()}}`);
+      const result = template.render({content: {hi: 'world', x: 2, a: 6}});
+      expect(result).toMatchInlineSnapshot(`"world,2,6"`)
+    })
+  })
 })
