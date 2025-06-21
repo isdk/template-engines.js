@@ -6,7 +6,7 @@
 
 # Class: HfStringTemplate
 
-Defined in: [packages/template-engines/src/hf-template.ts:88](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L88)
+Defined in: [packages/template-engines/src/hf-template.ts:88](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L88)
 
 The `StringTemplate` class is a versatile template engine that supports dynamic template creation,
 formatting, and partial data processing. It extends the `BaseFactory` class and provides methods
@@ -45,7 +45,7 @@ console.log(result); // Output: "Formatted: Hello World"
 
 > **new HfStringTemplate**(`template`?, `options`?): [`HfStringTemplate`](HfStringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:204](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L204)
+Defined in: [packages/template-engines/src/string-template.ts:230](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L230)
 
 Initializes a new instance of the `StringTemplate` class.
 
@@ -87,7 +87,7 @@ console.log(template instanceof TestStringTemplate); // Output: true
 
 > **compiledTemplate**: [`HFTemplate`](HFTemplate.md)
 
-Defined in: [packages/template-engines/src/hf-template.ts:89](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L89)
+Defined in: [packages/template-engines/src/hf-template.ts:89](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L89)
 
 Declares the compiled template instance.
 
@@ -101,7 +101,7 @@ Declares the compiled template instance.
 
 > **data**: `undefined` \| `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:63](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L63)
+Defined in: [packages/template-engines/src/string-template.ts:63](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L63)
 
 Declares the data object used for template interpolation.
 
@@ -115,7 +115,7 @@ Declares the data object used for template interpolation.
 
 > **inputVariables**: `undefined` \| `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:67](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L67)
+Defined in: [packages/template-engines/src/string-template.ts:67](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L67)
 
 Declares the list of input variables expected by the template.
 
@@ -129,7 +129,7 @@ Declares the list of input variables expected by the template.
 
 > **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:55](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L55)
+Defined in: [packages/template-engines/src/string-template.ts:55](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L55)
 
 Declares the raw template string.
 
@@ -143,7 +143,7 @@ Declares the raw template string.
 
 > **templateFormat**: `undefined` \| `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:59](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L59)
+Defined in: [packages/template-engines/src/string-template.ts:59](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L59)
 
 Declares the format of the template (e.g., 'default').
 
@@ -315,7 +315,7 @@ The Root Factory class
 
 > **\_format**(`data`): `string`
 
-Defined in: [packages/template-engines/src/hf-template.ts:145](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L145)
+Defined in: [packages/template-engines/src/hf-template.ts:145](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L145)
 
 Placeholder method for formatting the template. Must be implemented by subclasses.
 
@@ -343,7 +343,7 @@ A formatted string or a promise resolving to the formatted string.
 
 > **\_initialize**(`options`?): `void`
 
-Defined in: [packages/template-engines/src/hf-template.ts:136](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L136)
+Defined in: [packages/template-engines/src/hf-template.ts:136](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L136)
 
 Placeholder method for initializing the template. Must be implemented by subclasses.
 
@@ -369,7 +369,7 @@ Configuration options for initialization.
 
 > **filterData**(`data`): `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:183](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L183)
+Defined in: [packages/template-engines/src/string-template.ts:209](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L209)
 
 Filters the input data to include only the specified input variables.
 
@@ -407,7 +407,7 @@ console.log(filteredData); // Output: { name: "Alice" }
 
 > **format**(`data`?): `Promise`\<`string`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:272](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L272)
+Defined in: [packages/template-engines/src/string-template.ts:298](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L298)
 
 Formats the template using the provided data, supporting asynchronous processing.
 
@@ -446,7 +446,7 @@ console.log(result); // Output: "Hello"
 
 > **getVariables**(`template`): `string`[]
 
-Defined in: [packages/template-engines/src/hf-template.ts:129](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L129)
+Defined in: [packages/template-engines/src/hf-template.ts:129](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L129)
 
 #### Parameters
 
@@ -464,7 +464,7 @@ Defined in: [packages/template-engines/src/hf-template.ts:129](https://github.co
 
 > **initialize**(`options`?): `void`
 
-Defined in: [packages/template-engines/src/string-template.ts:239](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L239)
+Defined in: [packages/template-engines/src/string-template.ts:265](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L265)
 
 Initializes the template instance with the provided options.
 
@@ -490,7 +490,7 @@ Configuration options for initialization.
 
 > **partial**(`data`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:324](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L324)
+Defined in: [packages/template-engines/src/string-template.ts:350](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L350)
 
 Creates a new `StringTemplate` instance with partially filled data.
 This is useful for pre-filling some variables while leaving others to be filled later.
@@ -541,7 +541,7 @@ console.log(dateResult.date instanceof Date); // Output: true
 
 > **toJSON**(`options`): [`StringTemplateOptions`](../interfaces/StringTemplateOptions.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:348](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L348)
+Defined in: [packages/template-engines/src/string-template.ts:374](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L374)
 
 Serializes the `StringTemplate` instance into a JSON-compatible object.
 
@@ -772,7 +772,7 @@ the forEach callback function
 
 > `static` **format**(`options`): `Promise`\<`string`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:103](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L103)
+Defined in: [packages/template-engines/src/string-template.ts:103](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L103)
 
 Formats a template using the provided options.
 
@@ -811,7 +811,7 @@ console.log(result); // Output: "Hello"
 
 > `static` **formatIf**(`options`): `Promise`\<`undefined` \| `string`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:123](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L123)
+Defined in: [packages/template-engines/src/string-template.ts:123](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L123)
 
 Formats a template if the provided options represent a valid template.
 
@@ -910,7 +910,7 @@ the name to register
 
 > `static` **from**(`template`?, `options`?): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:84](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/string-template.ts#L84)
+Defined in: [packages/template-engines/src/string-template.ts:84](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L84)
 
 Creates a new instance of the `StringTemplate` class.
 
@@ -1110,7 +1110,7 @@ the unique name in the factory
 
 > `static` **isTemplate**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/hf-template.ts:104](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L104)
+Defined in: [packages/template-engines/src/hf-template.ts:104](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L104)
 
 Determines whether the given options represent a valid template.
 
@@ -1148,7 +1148,10 @@ console.log(isValid); // Output: true
 
 > `static` **matchTemplateSegment**(`template`, `index`): `undefined` \| `RegExpExecArray`
 
-Defined in: [packages/template-engines/src/hf-template.ts:91](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/hf-template.ts#L91)
+Defined in: [packages/template-engines/src/hf-template.ts:91](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/hf-template.ts#L91)
+
+Matches and extracts a single template segment from the provided template options.
+This method is designed to identify individual segments of a template string.
 
 #### Parameters
 
@@ -1160,9 +1163,26 @@ Defined in: [packages/template-engines/src/hf-template.ts:91](https://github.com
 
 `number` = `0`
 
+The default starting position in the template string to begin matching (default: 0).
+               This value is used only if `templateOpt.index` is not provided or invalid.
+
 #### Returns
 
 `undefined` \| `RegExpExecArray`
+
+A `RegExpExecArray` representing the matched template segment, or `undefined` if no match is found.
+         The `index` property of the result can be used to calculate the next position for iteration.
+
+#### Example
+
+```typescript
+const template = "{{name}} is {{age}} years old";
+let match = StringTemplate.matchTemplateSegment({ template });
+while (match) {
+  console.log(match[0]); // Output: "{{name}}"
+  match = StringTemplate.matchTemplateSegment({ template }, match.index + match[0].length);
+}
+```
 
 #### Overrides
 

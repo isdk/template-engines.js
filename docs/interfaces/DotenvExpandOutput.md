@@ -6,7 +6,7 @@
 
 # Interface: DotenvExpandOutput
 
-Defined in: [packages/template-engines/src/template/env.ts:236](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/template/env.ts#L236)
+Defined in: [packages/template-engines/src/template/env.ts:236](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/template/env.ts#L236)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [packages/template-engines/src/template/env.ts:236](https://github.c
 
 > `optional` **error**: `Error`
 
-Defined in: [packages/template-engines/src/template/env.ts:237](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/template/env.ts#L237)
+Defined in: [packages/template-engines/src/template/env.ts:237](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/template/env.ts#L237)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [packages/template-engines/src/template/env.ts:237](https://github.c
 
 > `optional` **parsed**: [`DotenvParseOutput`](DotenvParseOutput.md)
 
-Defined in: [packages/template-engines/src/template/env.ts:238](https://github.com/isdk/template-engines.js/blob/24b1ccbec627480811c0e55e7b0aa8bfa87438e3/src/template/env.ts#L238)
+Defined in: [packages/template-engines/src/template/env.ts:238](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/template/env.ts#L238)
