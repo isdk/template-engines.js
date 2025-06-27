@@ -116,7 +116,7 @@ export class HfStringTemplate extends StringTemplate {
       try {
         compiledTemplate = new HFTemplate(template)
       } catch (error) {
-        console.error(error)
+        // console.error(error)
       }
     }
 
