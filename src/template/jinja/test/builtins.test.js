@@ -114,4 +114,15 @@ describe('Jinjia builtins functions', () => {
       expect(result).toMatchInlineSnapshot(`"world,2,6"`)
     })
   })
+
+  it("should customize filter", async () => {
+    const participants = [ '陌生人', '李思' ];
+    const event = {
+      participants,
+      entities: participants,
+    }
+    const template = new Template(`{{ event | toText }}`);
+    const result = template.render({event, toText: (value) => JSON.stringify(value)});
+    expect(JSON.parse(result)).toEqual(event);
+  })
 })
