@@ -6,7 +6,7 @@
 
 # Interface: StringTemplateOptions
 
-Defined in: [packages/template-engines/src/string-template.ts:9](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L9)
+Defined in: [packages/template-engines/src/string-template.ts:9](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L9)
 
 ## Indexable
 
@@ -18,7 +18,7 @@ Defined in: [packages/template-engines/src/string-template.ts:9](https://github.
 
 > `optional` **compiledTemplate**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:14](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L14)
+Defined in: [packages/template-engines/src/string-template.ts:14](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L14)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [packages/template-engines/src/string-template.ts:14](https://github
 
 > `optional` **data**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:11](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L11)
+Defined in: [packages/template-engines/src/string-template.ts:11](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L11)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [packages/template-engines/src/string-template.ts:11](https://github
 
 > `optional` **ignoreInitialize**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L15)
+Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L15)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [packages/template-engines/src/string-template.ts:15](https://github
 
 > `optional` **index**: `number`
 
-Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L16)
+Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L16)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [packages/template-engines/src/string-template.ts:16](https://github
 
 > `optional` **inputVariables**: `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:13](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L13)
+Defined in: [packages/template-engines/src/string-template.ts:13](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L13)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [packages/template-engines/src/string-template.ts:13](https://github
 
 > `optional` **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:10](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L10)
+Defined in: [packages/template-engines/src/string-template.ts:10](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L10)
 
 ***
 
@@ -66,4 +66,4 @@ Defined in: [packages/template-engines/src/string-template.ts:10](https://github
 
 > `optional` **templateFormat**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:12](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/string-template.ts#L12)
+Defined in: [packages/template-engines/src/string-template.ts:12](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/string-template.ts#L12)

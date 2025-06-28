@@ -8,7 +8,7 @@
 
 > **expandObjEnv**(`obj`, `options`, `parsedObjs`?): `any`
 
-Defined in: [packages/template-engines/src/template/env.ts:171](https://github.com/isdk/template-engines.js/blob/0980ec51236148c4fd76db6d69dc25b1172476d4/src/template/env.ts#L171)
+Defined in: [packages/template-engines/src/template/env.ts:171](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/env.ts#L171)
 
 Expands environment variables in an object/array or string.
 
