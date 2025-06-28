@@ -224,6 +224,38 @@ describe('HfStringTemplate', () => {
     expect(result).toStrictEqual('Yes')
   })
 
+  it('should handle repeated objects correctly without triming as a circular reference', async () => {
+    const template = '{{obj}}';
+    const shared_obj = { key: 'value' };
+    const obj = {
+      obj1: shared_obj,
+      obj2: shared_obj,
+    };
+    const result =  await StringTemplate.format({
+      template,
+      data: {templateFormat: 'hf',
+        obj
+      }
+    });
+    expect(result).toBe('{"obj1":{"key":"value"},"obj2":{"key":"value"}}');
+  });
+
+  it('should handle repeated array correctly without throwing a circular reference error', async () => {
+    const template = '{{arr}}';
+    const shared_obj: any[] = [1];
+    const obj = {
+      obj1: shared_obj,
+      obj2: shared_obj,
+    };
+    shared_obj.push(obj)
+    await expect(StringTemplate.format({
+      template,
+      data: {templateFormat: 'hf',
+        obj
+      }
+    })).rejects.toThrow('Circular reference detected: .obj -> .obj.obj1[1]')
+  });
+
   describe('isTemplate', () => {
     it('should test isTemplate true', () => {
       expect(HfStringTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()

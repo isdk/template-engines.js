@@ -143,20 +143,9 @@ export class HfStringTemplate extends StringTemplate {
   }
 
   _format(data: Record<string, any>): string {
-    // clean the self references object in the data
-    data = Object.fromEntries(Object.entries(data).filter(([key, value]) => !isSelfReference(value)))
-    function isSelfReference(value: any, visited?: Set<any>) {
-      if (!visited) {visited = new Set()}
-      if (visited.has(value)) {
-        return true
-      }
+    // throw error if self references object in the data
+    detectCircularReference(data, '', new WeakMap())
 
-      if (typeof value === 'object' && value !== null) {
-        visited.add(value)
-        return Object.values(value).some(v => isSelfReference(v, visited))
-      }
-      return false
-    }
     return this.compiledTemplate.render(data)
   }
 }
@@ -169,5 +158,32 @@ StringTemplate.register(HfStringTemplate,{name: 'hf', aliases: ['huggingface', '
 export function createHfValueFunc(fn: Function) {
   return function(_data: any) {
     return fn
+  }
+}
+
+/**
+ * Checks if the given value contains a circular reference.
+ * @throws {Error} If a circular reference is detected.
+ * @param value - The value to check.
+ * @param path - Current path in the object graph for error reporting.
+ * @param visited - A map to track visited objects and their paths.
+ */
+function detectCircularReference(value: any, path: string, visited: WeakMap<object, string>) {
+  if (!value || typeof value !== 'object') { return }
+  const visitedPath = visited.get(value)
+  visited.set(value, path)
+  if (visitedPath !== undefined) {
+    if (path.startsWith(visitedPath)) {
+      throw new Error(`Circular reference detected: ${visitedPath} -> ${path}`)
+    }
+  }
+  if (Array.isArray(value)) {
+    for (let i = 0; i < value.length; i++) {
+      detectCircularReference(value[i], `${path}[${i}]`, visited)
+    }
+  } else {
+    for (const [key, val] of Object.entries(value)) {
+      detectCircularReference(val, `${path}.${key}`, visited)
+    }
   }
 }
