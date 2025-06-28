@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.5](https://github.com/isdk/template-engines.js/compare/v0.6.4...v0.6.5) (2025-06-28)
+
+
+### Bug Fixes
+
+* do not console.error ([02364b5](https://github.com/isdk/template-engines.js/commit/02364b53247b8b74e818a040d1be6ebd8252e2d9))
+* **hf-template:** handle circular references correctly ([3fa19a5](https://github.com/isdk/template-engines.js/commit/3fa19a5e2f28080ee5224b7dd1b89ad779956584))
+
 ## [0.6.4](https://github.com/isdk/template-engines.js/compare/v0.6.3...v0.6.4) (2025-06-21)
 
 
