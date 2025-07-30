@@ -167,6 +167,26 @@ export class StringValue extends RuntimeValue<string> {
 				return new ArrayValue(result.map((part) => new StringValue(part)));
 			}),
 		],
+		[
+			"startswith",
+			new FunctionValue((args) => {
+				const searchString = args[0];
+				if (!(searchString instanceof StringValue)) {throw new TypeError("startswith() argument must be a string")}
+				const position = args[1];
+				if (position && !(position instanceof NumericValue)) {throw new TypeError("startswith() argument 2 must be an integer or None for position")}
+				return new BooleanValue(this.value.startsWith(searchString.value, position?.value));
+			}),
+		],
+		[
+			"endswith",
+			new FunctionValue((args) => {
+				const searchString = args[0];
+				if (!(searchString instanceof StringValue)) {throw new TypeError("startswith() argument must be a string")}
+				const position = args[1];
+				if (position && !(position instanceof NumericValue)) {throw new TypeError("startswith() argument 2 must be an integer or None for position")}
+				return new BooleanValue(this.value.endsWith(searchString.value, position?.value));
+			}),
+		],
 	]);
 }
 

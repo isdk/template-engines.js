@@ -272,6 +272,42 @@ describe("Test interpreter options", () => {
 		}
 		testTemplate(test)
 	});
+
+	it("should support string.startswith()", () => {
+		const test = {
+			template: '{{ "hello world".startswith("hello") }}',
+			options: { lstrip_blocks: true, trim_blocks: true },
+			target: `true`,
+		}
+		testTemplate(test)
+	});
+
+	it("should support string.startswith() with false result", () => {
+		const test = {
+			template: '{{ "hello world".startswith("world") }}',
+			options: { lstrip_blocks: true, trim_blocks: true },
+			target: `false`,
+		}
+		testTemplate(test)
+	});
+
+	it("should support string.endswith()", () => {
+		const test = {
+			template: '{{ "hello world".endswith("world") }}',
+			options: { lstrip_blocks: true, trim_blocks: true },
+			target: `true`,
+		}
+		testTemplate(test)
+	});
+
+	it("should support string.endswith() with false result", () => {
+		const test = {
+			template: '{{ "hello world".endswith("hello") }}',
+			options: { lstrip_blocks: true, trim_blocks: true },
+			target: `false`,
+		}
+		testTemplate(test)
+	});
 });
 
 class TestObj {
