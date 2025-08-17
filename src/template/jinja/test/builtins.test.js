@@ -115,6 +115,14 @@ describe('Jinjia builtins functions', () => {
     })
   })
 
+  it("should randomInt", async () => {
+      const template = new Template(`{{ randomInt(3) }}`);
+      const result = template.render({});
+      // expect result to be between 0 and 3
+      expect(parseInt(result)).toBeGreaterThanOrEqual(0);
+      expect(parseInt(result)).toBeLessThanOrEqual(3);
+  })
+
   it("should customize filter", async () => {
     const participants = [ '陌生人', '李思' ];
     const event = {
