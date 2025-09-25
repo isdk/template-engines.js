@@ -8,9 +8,9 @@
 
 > `const` **HFBuiltins**: `object`
 
-Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:68](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/builtins.ts#L68)
+Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:68](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/builtins.ts#L68)
 
-## Type declaration
+## Type Declaration
 
 ### join()
 
@@ -50,7 +50,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:68](ht
 
 ### select()
 
-> **select**: (`obj`, `index`?) => `any`
+> **select**: (`obj`, `index?`) => `any`
 
 Selects an element from the given object, array, or string.
 
@@ -101,7 +101,7 @@ console.log(select(str, -1)) // Last character
 
 ### tojson()
 
-> **tojson**: (`value`, `indent`?, `depth`?) => `string`
+> **tojson**: (`value`, `indent?`, `depth?`) => `string`
 
 #### Parameters
 
@@ -111,7 +111,7 @@ console.log(select(str, -1)) // Last character
 
 ##### indent?
 
-`number` | \{ `depth`: `number`; `indent`: `number`; \}
+`number` | \{ `depth?`: `number`; `indent?`: `number`; \}
 
 ##### depth?
 

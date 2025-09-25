@@ -6,15 +6,15 @@
 
 # Class: HFTemplate
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:22](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/index.ts#L22)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:22](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/index.ts#L22)
 
 ## Constructors
 
-### new HFTemplate()
+### Constructor
 
-> **new HFTemplate**(`template`, `options`): [`HFTemplate`](HFTemplate.md)
+> **new HFTemplate**(`template`, `options`): `Template`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:30](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/index.ts#L30)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:30](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/index.ts#L30)
 
 #### Parameters
 
@@ -30,7 +30,7 @@ The template string
 
 #### Returns
 
-[`HFTemplate`](HFTemplate.md)
+`Template`
 
 ## Properties
 
@@ -38,7 +38,7 @@ The template string
 
 > **parsed**: `Program`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/index.ts#L23)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/index.ts#L23)
 
 ***
 
@@ -46,15 +46,15 @@ Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https
 
 > `static` **global**: [`HFEnvironment`](HFEnvironment.md)
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:25](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/index.ts#L25)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:25](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/index.ts#L25)
 
 ## Methods
 
 ### render()
 
-> **render**(`items`?): `string`
+> **render**(`items?`): `string`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:40](https://github.com/isdk/template-engines.js/blob/3fa19a5e2f28080ee5224b7dd1b89ad779956584/src/template/jinja/src/index.ts#L40)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:40](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/index.ts#L40)
 
 #### Parameters
 
