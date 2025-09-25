@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.6](https://github.com/isdk/template-engines.js/compare/v0.6.5...v0.6.6) (2025-09-25)
+
+
+### Features
+
+* **jinja:** add startswith and endswith to string type ([baa2e94](https://github.com/isdk/template-engines.js/commit/baa2e94c54f44cd01fa55da51d9e5859f1c99bc8))
+
 ## [0.6.5](https://github.com/isdk/template-engines.js/compare/v0.6.4...v0.6.5) (2025-06-28)
 
 
