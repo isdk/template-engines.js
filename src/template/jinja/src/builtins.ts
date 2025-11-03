@@ -65,11 +65,88 @@ export function join(value: any, separator: string = ',') {
   return value
 }
 
+export function strftime(date: Date, format: string, locale?: string): string {
+  const padZero = (num: number): string => num.toString().padStart(2, '0');
+
+  // 如果提供了locale，则使用Intl API获取本地化的名称
+  let months: readonly string[];
+  let shortMonths: readonly string[];
+  let weekdays: readonly string[];
+  let shortWeekdays: readonly string[];
+
+  if (locale) {
+    // 使用Intl API获取本地化的月份和星期名称
+    months = Array.from({ length: 12 }, (_, i) =>
+      new Intl.DateTimeFormat(locale, { month: 'long' }).format(new Date(2000, i, 1))
+    );
+
+    shortMonths = Array.from({ length: 12 }, (_, i) =>
+      new Intl.DateTimeFormat(locale, { month: 'short' }).format(new Date(2000, i, 1))
+    );
+
+    weekdays = Array.from({ length: 7 }, (_, i) =>
+      new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(new Date(2000, 0, 2 + i)) // 2000/1/2 is Sunday
+    );
+
+    shortWeekdays = Array.from({ length: 7 }, (_, i) =>
+      new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(new Date(2000, 0, 2 + i))
+    );
+  } else {
+    // 默认英语
+    months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    shortMonths = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    weekdays = [
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday',
+      'Thursday', 'Friday', 'Saturday'
+    ];
+
+    shortWeekdays = [
+      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+    ];
+  }
+
+  const replacements: Record<string, string> = {
+    '%Y': date.getFullYear().toString(),
+    '%y': (date.getFullYear() % 100).toString().padStart(2, '0'),
+    '%m': padZero(date.getMonth() + 1),
+    '%B': months[date.getMonth()],
+    '%b': shortMonths[date.getMonth()],
+    '%d': padZero(date.getDate()),
+    '%H': padZero(date.getHours()),
+    '%I': padZero(date.getHours() % 12 || 12),
+    '%p': date.getHours() >= 12 ? 'PM' : 'AM',
+    '%M': padZero(date.getMinutes()),
+    '%S': padZero(date.getSeconds()),
+    '%A': weekdays[date.getDay()],
+    '%a': shortWeekdays[date.getDay()],
+    '%w': date.getDay().toString(),
+    '%f': Math.floor(date.getMilliseconds() * 1000).toString().padStart(6, '0'),
+    '%%': '%'
+  };
+
+  // 处理替换
+  let result = format;
+  for (const [pattern, replacement] of Object.entries(replacements)) {
+    result = result.replace(new RegExp(pattern, 'g'), replacement);
+  }
+
+  return result;
+}
+
 export const builtins = {
   randomInt,
   select,
   tojson,
   join,
+  strftime,
 }
 
 
