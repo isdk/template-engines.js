@@ -8,7 +8,7 @@
 
 > `const` **HFBuiltins**: `object`
 
-Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:68](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/jinja/src/builtins.ts#L68)
+Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:173](https://github.com/isdk/template-engines.js/blob/de3f8eca6a17c7f333701a696e9cbd6e3b036c3b/src/template/jinja/src/builtins.ts#L173)
 
 ## Type Declaration
 
@@ -98,6 +98,46 @@ console.log(select(str)) // Random character from the string
 console.log(select(str, 1)) // Second character
 console.log(select(str, -1)) // Last character
 ```
+
+### strftime()
+
+> **strftime**: (`date`, `format`, `locale?`) => `string`
+
+#### Parameters
+
+##### date
+
+`Date`
+
+##### format
+
+`string`
+
+##### locale?
+
+`string`
+
+#### Returns
+
+`string`
+
+### strftime\_now()
+
+> **strftime\_now**: (`format`, `locale?`) => `string`
+
+#### Parameters
+
+##### format
+
+`string`
+
+##### locale?
+
+`string`
+
+#### Returns
+
+`string`
 
 ### tojson()
 

@@ -8,7 +8,7 @@
 
 > **interpolateEnv**(`value`, `processEnv`, `parsed?`): `any`
 
-Defined in: [packages/template-engines/src/template/env.ts:44](https://github.com/isdk/template-engines.js/blob/ac967510ba7106fd9435480a9cf25b40e72c30bc/src/template/env.ts#L44)
+Defined in: [packages/template-engines/src/template/env.ts:44](https://github.com/isdk/template-engines.js/blob/de3f8eca6a17c7f333701a696e9cbd6e3b036c3b/src/template/env.ts#L44)
 
 ## Parameters
 
