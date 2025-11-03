@@ -113,6 +113,7 @@ export function strftime(date: Date, format: string, locale?: string): string {
     ];
   }
 
+  // 格式化规则映射
   const replacements: Record<string, string> = {
     '%Y': date.getFullYear().toString(),
     '%y': (date.getFullYear() % 100).toString().padStart(2, '0'),
@@ -128,14 +129,38 @@ export function strftime(date: Date, format: string, locale?: string): string {
     '%A': weekdays[date.getDay()],
     '%a': shortWeekdays[date.getDay()],
     '%w': date.getDay().toString(),
-    '%f': Math.floor(date.getMilliseconds() * 1000).toString().padStart(6, '0'),
-    '%%': '%'
+    '%f': Math.floor(date.getMilliseconds() * 1000).toString().padStart(6, '0')
   };
 
-  // 处理替换
-  let result = format;
-  for (const [pattern, replacement] of Object.entries(replacements)) {
-    result = result.replace(new RegExp(pattern, 'g'), replacement);
+  // 逐字符处理格式字符串
+  let result = '';
+  let i = 0;
+
+  while (i < format.length) {
+    // 如果当前字符是%，并且不是最后一个字符
+    if (format[i] === '%' && i + 1 < format.length) {
+      // 获取下一个字符
+      const nextChar = format[i + 1];
+
+      // 处理转义%%
+      if (nextChar === '%') {
+        result += '%';
+        i += 2; // 跳过两个%
+        continue;
+      }
+
+      // 查找是否是有效的格式符
+      const formatSpecifier = '%' + nextChar;
+      if (replacements.hasOwnProperty(formatSpecifier)) {
+        result += replacements[formatSpecifier];
+        i += 2; // 跳过%和下一个字符
+        continue;
+      }
+    }
+
+    // 如果不是格式符或者无效的格式符，直接添加字符
+    result += format[i];
+    i += 1;
   }
 
   return result;

@@ -35,6 +35,7 @@ describe('strftime', () => {
   it('should handle literal percent sign', () => {
     expect(strftime(testDate, '%%')).toBe('%');
     expect(strftime(testDate, 'Year: %%Y')).toBe('Year: %Y');
+    expect(strftime(testDate, '%%Y-%%m-%%d')).toBe('%Y-%m-%d');
   });
 
   it('should format full datetime strings', () => {
