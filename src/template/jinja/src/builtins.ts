@@ -166,12 +166,17 @@ export function strftime(date: Date, format: string, locale?: string): string {
   return result;
 }
 
+export function strftime_now(format: string, locale?: string) {
+  return strftime(new Date(), format, locale);
+}
+
 export const builtins = {
   randomInt,
   select,
   tojson,
   join,
   strftime,
+  strftime_now,
 }
 
 
