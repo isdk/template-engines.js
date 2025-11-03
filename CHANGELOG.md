@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.7](https://github.com/isdk/template-engines.js/compare/v0.6.6...v0.6.7) (2025-11-03)
+
+
+### Features
+
+* **jinja:** add strftime_now func to builtins ([de3f8ec](https://github.com/isdk/template-engines.js/commit/de3f8eca6a17c7f333701a696e9cbd6e3b036c3b))
+* **jinja:** implement strftime function with localization support ([98ec8d7](https://github.com/isdk/template-engines.js/commit/98ec8d78d5d100f2efe730ee2b330384f332c006))
+
+
+### Bug Fixes
+
+* **jinja:** fixes the strftime issue where %%Y was incorrectly converted to %2023 instead of %Y ([23bb0e3](https://github.com/isdk/template-engines.js/commit/23bb0e3dce5f35f1453263e9fa8f375b09aa87c1))
+
 ## [0.6.6](https://github.com/isdk/template-engines.js/compare/v0.6.5...v0.6.6) (2025-09-25)
 
 
