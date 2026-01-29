@@ -256,6 +256,15 @@ describe('HfStringTemplate', () => {
     })).rejects.toThrow('Circular reference detected: .obj -> .obj.obj1[1]')
   });
 
+  it('should handle \\n is template data', async () => {
+    expect(await StringTemplate.format({
+      template: `{{text}} world`,
+      data: {
+        text: '\n'
+      },
+    })).toStrictEqual('\n world')
+  })
+
   describe('isTemplate', () => {
     it('should test isTemplate true', () => {
       expect(HfStringTemplate.isTemplate({template: '{{ strings }}: {{a}} + {b}'})).toBeTruthy()
