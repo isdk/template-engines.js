@@ -1,13 +1,16 @@
 // the golang text/template implementation
 // It's quick and ugly implementation, need to refactor
-import { getValueByPath } from './util';
+import { getValueByPath } from './util'
 
-const reReplaceRegex = /{{\s*re_replace\s+\.(.+?)\s+(["'])((?:(?!\2).)*?)\2\s+(["'])((?:(?!\4).)*?)\4\s*}}/g;
-const joinReplaceRegex = /{{\s*join\s+\.(.+?)\s+(["'])((?:(?!\2).)*?)\2\s*}}/g;
-const ifElseReplaceRegex = /{{\s*if\s*(\S+?)\s*}}([^{]*)({{\s*else\s*}}([^{]*))?{{\s*end\s*}}/g;
-const rangeReplaceRegex = /{{\s*range\s*[.$]([^{}\s]+?)\s*}}([^{]*?){{\.}}([^{]*?){{\s*end\s*}}/g;
-const variableReplaceRegex = /{{\s*\.([^{}\s]+?)\s*}}/g;
-const indexReplaceRegex = /{{\s*index\s*\.(.+?)\s+(.+?)\s*}}/g;
+const reReplaceRegex =
+  /{{\s*re_replace\s+\.(.+?)\s+(["'])((?:(?!\2).)*?)\2\s+(["'])((?:(?!\4).)*?)\4\s*}}/g
+const joinReplaceRegex = /{{\s*join\s+\.(.+?)\s+(["'])((?:(?!\2).)*?)\2\s*}}/g
+const ifElseReplaceRegex =
+  /{{\s*if\s*(\S+?)\s*}}([^{]*)({{\s*else\s*}}([^{]*))?{{\s*end\s*}}/g
+const rangeReplaceRegex =
+  /{{\s*range\s*[.$]([^{}\s]+?)\s*}}([^{]*?){{\.}}([^{]*?){{\s*end\s*}}/g
+const variableReplaceRegex = /{{\s*\.([^{}\s]+?)\s*}}/g
+const indexReplaceRegex = /{{\s*index\s*\.(.+?)\s+(.+?)\s*}}/g
 
 const golangRegexList = [
   reReplaceRegex,
@@ -15,8 +18,8 @@ const golangRegexList = [
   ifElseReplaceRegex,
   rangeReplaceRegex,
   variableReplaceRegex,
-  indexReplaceRegex
-];
+  indexReplaceRegex,
+]
 /**
  * Replaces re_replace expressions in the given template string with the result of applying a regular expression replacement on the specified variable's value.
  *
@@ -26,32 +29,39 @@ const golangRegexList = [
  * @returns The template string with the re_replace expression replaced by the result of the regular expression replacement.
  *
  * @example Regular re_replace replacement
-* const template = "Original text: {{.text}}, Replaced text: {{re_replace .text 'apple' 'orange'}}";
-* const variables = { text: 'An apple a day keeps the doctor away.' };
-* const result = reReplace(template, variables);
-* console.log(result); // Output: "Original text: An apple a day keeps the doctor away., Replaced text: An orange a day keeps the doctor away."
-*
-* @example Variable initialization (initVars = true)
-* const template = "Replaced text: {{re_replace .text 'apple' 'orange'}}";
-* const variablesWithInit = {};
-* const resultWithInit = reReplace(template, variablesWithInit, true);
-* console.log(resultWithInit); // Output: "Replaced text: {{re_replace .text 'apple' 'orange'}}"
-* console.log(variablesWithInit); // Output: { text: null }
-*/
-function reReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  reReplaceRegex.lastIndex = 0;
-  return template.replace(reReplaceRegex, (match, prop, _regDelimiter, regexp, _newValueDelimiter, newValue) => {
-    if (initVars) {
-      variables[prop] = null;
-      return match;
+ * const template = "Original text: {{.text}}, Replaced text: {{re_replace .text 'apple' 'orange'}}";
+ * const variables = { text: 'An apple a day keeps the doctor away.' };
+ * const result = reReplace(template, variables);
+ * console.log(result); // Output: "Original text: An apple a day keeps the doctor away., Replaced text: An orange a day keeps the doctor away."
+ *
+ * @example Variable initialization (initVars = true)
+ * const template = "Replaced text: {{re_replace .text 'apple' 'orange'}}";
+ * const variablesWithInit = {};
+ * const resultWithInit = reReplace(template, variablesWithInit, true);
+ * console.log(resultWithInit); // Output: "Replaced text: {{re_replace .text 'apple' 'orange'}}"
+ * console.log(variablesWithInit); // Output: { text: null }
+ */
+function reReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  reReplaceRegex.lastIndex = 0
+  return template.replace(
+    reReplaceRegex,
+    (match, prop, _regDelimiter, regexp, _newValueDelimiter, newValue) => {
+      if (initVars) {
+        variables[prop] = null
+        return match
+      }
+
+      const replaceRegex = new RegExp(regexp, 'g')
+      const input: string = getValueByPath(variables, prop)
+      const expanded = input.replace(replaceRegex, newValue)
+
+      return expanded
     }
-
-    const replaceRegex = new RegExp(regexp, 'g');
-    const input: string = getValueByPath(variables, prop);
-    const expanded = input.replace(replaceRegex, newValue);
-
-    return expanded;
-  });
+  )
 }
 
 /**
@@ -63,31 +73,38 @@ function reReplace(template: string, variables: Record<string, any>, initVars?: 
  * @returns The template string with the join expression replaced by the joined array values.
  *
  * @example <caption>Regular join replacement</caption>
-* const template = `Colors: {{join .colors ", "}}`;
-* const variables = { colors: ['Red', 'Green', 'Blue'] };
-* const result = joinReplace(template, variables);
-* console.log(result); // Output: "Colors: Red, Green, Blue"
-*
-* @example <caption>Variable initialization (initVars = true)</caption>
-* const template = `Colors: {{join .colors ", "}}`;
-* const variablesWithInit = {};
-* const resultWithInit = joinReplace(template, variablesWithInit, true);
-* console.log(resultWithInit); // Output: "Colors: {{join .colors ", "}}"
-* console.log(variablesWithInit); // Output: { colors: null }
-*/
-function joinReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  joinReplaceRegex.lastIndex = 0;
-  return template.replace(joinReplaceRegex, (match, prop, _quote, delimiter) => {
-    if (initVars) {
-      variables[prop] = null;
-      return match;
+ * const template = `Colors: {{join .colors ", "}}`;
+ * const variables = { colors: ['Red', 'Green', 'Blue'] };
+ * const result = joinReplace(template, variables);
+ * console.log(result); // Output: "Colors: Red, Green, Blue"
+ *
+ * @example <caption>Variable initialization (initVars = true)</caption>
+ * const template = `Colors: {{join .colors ", "}}`;
+ * const variablesWithInit = {};
+ * const resultWithInit = joinReplace(template, variablesWithInit, true);
+ * console.log(resultWithInit); // Output: "Colors: {{join .colors ", "}}"
+ * console.log(variablesWithInit); // Output: { colors: null }
+ */
+function joinReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  joinReplaceRegex.lastIndex = 0
+  return template.replace(
+    joinReplaceRegex,
+    (match, prop, _quote, delimiter) => {
+      if (initVars) {
+        variables[prop] = null
+        return match
+      }
+
+      const input: string[] = getValueByPath(variables, prop)
+      const expanded = input.join(delimiter)
+
+      return expanded
     }
-
-    const input: string[] = getValueByPath(variables, prop);
-    const expanded = input.join(delimiter);
-
-    return expanded;
-  });
+  )
 }
 
 /**
@@ -118,35 +135,46 @@ function joinReplace(template: string, variables: Record<string, any>, initVars?
  * console.log(resultWithInit); // Output: "Is color defined? No"
  * console.log(variablesWithInit); // Output: { color: null }
  */
-function ifElseReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  ifElseReplaceRegex.lastIndex = 0;
-  return template.replace(ifElseReplaceRegex, (match, condition, onTrue, _elseMarker, onFalse) => {
-    if (initVars) {
-      if (condition.startsWith('.')) {condition = condition.substring(1)}
-      variables[condition] = null;
-      return match;
-    }
-
-    let conditionResult: string;
-    if (condition.startsWith('.')) {
-      const value = getValueByPath(variables, condition.substring(1));
-      if (value === null || value === undefined) {
-        conditionResult = onFalse ?? '';
-      } else if (typeof value === 'string') {
-        conditionResult = value.length > 0 ? onTrue : onFalse ?? '';
-      } else if (Array.isArray(value)) {
-        conditionResult = value.length > 0 ? onTrue : onFalse ?? '';
-      } else if (typeof value === 'boolean') {
-        conditionResult = value ? onTrue : onFalse ?? '';
-      } else {
-        throw new Error(`Unexpected type for variable ${condition}: ${typeof value}`);
+function ifElseReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  ifElseReplaceRegex.lastIndex = 0
+  return template.replace(
+    ifElseReplaceRegex,
+    (match, condition, onTrue, _elseMarker, onFalse) => {
+      if (initVars) {
+        if (condition.startsWith('.')) {
+          condition = condition.substring(1)
+        }
+        variables[condition] = null
+        return match
       }
-    } else {
-      throw new Error('Functionality not implemented');
-    }
 
-    return conditionResult;
-  });
+      let conditionResult: string
+      if (condition.startsWith('.')) {
+        const value = getValueByPath(variables, condition.substring(1))
+        if (value === null || value === undefined) {
+          conditionResult = onFalse ?? ''
+        } else if (typeof value === 'string') {
+          conditionResult = value.length > 0 ? onTrue : (onFalse ?? '')
+        } else if (Array.isArray(value)) {
+          conditionResult = value.length > 0 ? onTrue : (onFalse ?? '')
+        } else if (typeof value === 'boolean') {
+          conditionResult = value ? onTrue : (onFalse ?? '')
+        } else {
+          throw new Error(
+            `Unexpected type for variable ${condition}: ${typeof value}`
+          )
+        }
+      } else {
+        throw new Error('Functionality not implemented')
+      }
+
+      return conditionResult
+    }
+  )
 }
 
 /**
@@ -158,37 +186,41 @@ function ifElseReplace(template: string, variables: Record<string, any>, initVar
  * @returns The template string with the range expression replaced by the expanded array values.
  *
  * @example Regular range replacement
-* const template = "Colors: \n{{range .colors}}This is {{.}} color.\n{{end}}";
-* const variables = { colors: ['Red', 'Green', 'Blue'] };
-* const result = rangeReplace(template, variables);
-* console.log(result); // Output: "Colors: \nThis is Red color.\nThis is Green color.\nThis is Blue color.\n"
-*
-* @example Variable initialization (initVars = true)
-* const template = "Colors: {{range .colors}}{{.}}{{end}}";
-* const variablesWithInit = {};
-* const resultWithInit = rangeReplace(template, variablesWithInit, true);
-* console.log(resultWithInit); // Output: "Colors: {{range .colors}}{{.}}{{end}}"
-* console.log(variablesWithInit); // Output: { colors: null }
-*/
-function rangeReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  rangeReplaceRegex.lastIndex = 0;
+ * const template = "Colors: \n{{range .colors}}This is {{.}} color.\n{{end}}";
+ * const variables = { colors: ['Red', 'Green', 'Blue'] };
+ * const result = rangeReplace(template, variables);
+ * console.log(result); // Output: "Colors: \nThis is Red color.\nThis is Green color.\nThis is Blue color.\n"
+ *
+ * @example Variable initialization (initVars = true)
+ * const template = "Colors: {{range .colors}}{{.}}{{end}}";
+ * const variablesWithInit = {};
+ * const resultWithInit = rangeReplace(template, variablesWithInit, true);
+ * console.log(resultWithInit); // Output: "Colors: {{range .colors}}{{.}}{{end}}"
+ * console.log(variablesWithInit); // Output: { colors: null }
+ */
+function rangeReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  rangeReplaceRegex.lastIndex = 0
   return template.replace(rangeReplaceRegex, (match, prop, prefix, postfix) => {
     if (initVars) {
-      variables[prop] = null;
-      return match;
+      variables[prop] = null
+      return match
     }
 
-    const arr = getValueByPath(variables, prop);
+    const arr = getValueByPath(variables, prop)
     if (Array.isArray(arr)) {
-      let expanded = '';
+      let expanded = ''
       for (const value of arr as string[]) {
-        expanded += `${prefix}${value}${postfix}`;
+        expanded += `${prefix}${value}${postfix}`
       }
-      return expanded;
+      return expanded
     }
 
-    return match;
-  });
+    return match
+  })
 }
 
 /**
@@ -213,15 +245,19 @@ function rangeReplace(template: string, variables: Record<string, any>, initVars
  * console.log(variablesWithInit); // Output: { name: null, date: null }
  *
  */
-function variableReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  variableReplaceRegex.lastIndex = 0;
+function variableReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  variableReplaceRegex.lastIndex = 0
   return template.replace(variableReplaceRegex, (match, key) => {
     if (initVars) {
-      variables[key] = null;
+      variables[key] = null
       return match
     }
-    return getValueByPath(variables, key) || '';
-  });
+    return getValueByPath(variables, key) || ''
+  })
 }
 
 /**
@@ -233,42 +269,46 @@ function variableReplace(template: string, variables: Record<string, any>, initV
  * @returns The string with indexed variables replaced.
  *
  * @example Regular variable replacement
-* const str = "The item at index {{index .someArray 0}} is {{index .someObject 'key'}}.";
-* const variables = {
-*   someArray: ['apple', 'banana'],
-*   someObject: { key: 'orange' },
-* };
-* const result = indexReplace(str, variables);
-* console.log(result); // Output: "The item at index apple is orange."
-*
-* @example Variable initialization (initVars = true)
-* const str = "The item at index {{index.someArray.0}} is {{index.someObject.'key'}}.";
-* const variablesWithInit = {};
-* const resultWithInit = indexReplace(str, variablesWithInit, true);
-* console.log(resultWithInit); // Output: "The item at index {{index.someArray.0}} is {{index.someObject.'key'}}."
-* console.log(variablesWithInit); // Output: { someArray: null, someObject: null }
-*/
-function indexReplace(template: string, variables: Record<string, any>, initVars?: boolean): string {
-  indexReplaceRegex.lastIndex = 0;
+ * const str = "The item at index {{index .someArray 0}} is {{index .someObject 'key'}}.";
+ * const variables = {
+ *   someArray: ['apple', 'banana'],
+ *   someObject: { key: 'orange' },
+ * };
+ * const result = indexReplace(str, variables);
+ * console.log(result); // Output: "The item at index apple is orange."
+ *
+ * @example Variable initialization (initVars = true)
+ * const str = "The item at index {{index.someArray.0}} is {{index.someObject.'key'}}.";
+ * const variablesWithInit = {};
+ * const resultWithInit = indexReplace(str, variablesWithInit, true);
+ * console.log(resultWithInit); // Output: "The item at index {{index.someArray.0}} is {{index.someObject.'key'}}."
+ * console.log(variablesWithInit); // Output: { someArray: null, someObject: null }
+ */
+function indexReplace(
+  template: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  indexReplaceRegex.lastIndex = 0
   return template.replace(indexReplaceRegex, (match, prop, index) => {
     if (initVars) {
-      variables[prop] = null;
-      return match;
+      variables[prop] = null
+      return match
     }
 
-    const top = getValueByPath(variables, prop);
+    const top = getValueByPath(variables, prop)
 
-    let value;
+    let value
     if (!isNaN(index)) {
-      value = top[parseInt(index, 10)];
+      value = top[parseInt(index, 10)]
     } else {
       // Assuming the non-numeric index is wrapped in quotes (e.g., "key")
-      const quotedIndex = index.substring(1, index.length - 1);
-      value = top[quotedIndex];
+      const quotedIndex = index.substring(1, index.length - 1)
+      value = top[quotedIndex]
     }
 
-    return value || '';
-  });
+    return value || ''
+  })
 }
 
 /**
@@ -276,21 +316,25 @@ function indexReplace(template: string, variables: Record<string, any>, initVars
  * @param str golang style template
  * @param variables object of variables to insert
  */
-export function interpolateGolangTemplate(str: string, variables: Record<string, any>, initVars?: boolean): string {
-  let result = reReplace(str, variables, initVars);
-  result = joinReplace(result, variables, initVars);
-  result = ifElseReplace(result, variables, initVars);
-  result = rangeReplace(result, variables, initVars);
-  result = variableReplace(result, variables, initVars);
-  result = indexReplace(result, variables, initVars);
-  return result;
+export function interpolateGolangTemplate(
+  str: string,
+  variables: Record<string, any>,
+  initVars?: boolean
+): string {
+  let result = reReplace(str, variables, initVars)
+  result = joinReplace(result, variables, initVars)
+  result = ifElseReplace(result, variables, initVars)
+  result = rangeReplace(result, variables, initVars)
+  result = variableReplace(result, variables, initVars)
+  result = indexReplace(result, variables, initVars)
+  return result
 }
 
 export function matchGolangTemplateSegment(str: string, index: number = 0) {
   for (let i = 0; i < golangRegexList.length; i++) {
     const regex = golangRegexList[i]
-    regex.lastIndex = index;
-    const match = regex.exec(str);
-    if (match) return match;
+    regex.lastIndex = index
+    const match = regex.exec(str)
+    if (match) return match
   }
 }

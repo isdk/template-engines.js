@@ -1,45 +1,70 @@
-import { CommonError, ErrorCode } from "@isdk/common-error";
-import { StringTemplate, type StringTemplateOptions } from "./string-template";
-import { FStringTemplateNode, parseFString, interpolateFString } from './template/python'
+import { CommonError, ErrorCode } from '@isdk/common-error'
+import { StringTemplate, type StringTemplateOptions } from './string-template'
+import {
+  FStringTemplateNode,
+  parseFString,
+  interpolateFString,
+} from './template/python'
 
 function getVariables(template: FStringTemplateNode[]) {
   const result = new Set<string>()
   template.forEach((node) => {
-    if (node.type === "variable") {
-      result.add(node.name);
+    if (node.type === 'variable') {
+      result.add(node.name)
     }
-  });
+  })
   return [...result]
 }
 
 export class FStringTemplate extends StringTemplate {
   declare compiledTemplate: FStringTemplateNode[]
 
-  static matchTemplateSegment(template: StringTemplateOptions|string, index = 0) {
+  static matchTemplateSegment(
+    template: StringTemplateOptions | string,
+    index = 0
+  ) {
     // f-string 的模板是 "{var}"，“{{”表示对"{"的转义，“}}表示对"}”的转义
-    const regex = /\{(?!{)(.*?)(?<!})\}|{{|}}/g;
+    const regex = /\{(?!{)(.*?)(?<!})\}|{{|}}/g
     if (typeof template === 'object') {
       if (template.index) index = template.index
       template = template.template!
     }
-    regex.lastIndex = index;
-    const match = regex.exec(template);
-    if (match) {return match}
+    regex.lastIndex = index
+    const match = regex.exec(template)
+    if (match) {
+      return match
+    }
   }
 
-  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
-    let template = typeof templateOpt === 'object' ? templateOpt.template : templateOpt
-    if (!template) return false
+  static getPurePlaceholderVariable(
+    templateOpt: StringTemplateOptions | string
+  ): string | undefined {
+    let template =
+      typeof templateOpt === 'object' ? templateOpt.template : templateOpt
+    if (!template) return undefined
 
     template = template.trim()
     const match = this.matchTemplateSegment(template, 0)
     // In FStringTemplate, the regex is /\{(?!{)(.*?)(?<!})\}|{{|}}/g
     // match[1] captures the variable name if it's a real placeholder.
     // If match[1] is undefined, it means it matched '{{' or '}}' (escaped braces).
-    return !!(match && match.index === 0 && match[0].length === template.length && match[1] !== undefined)
+    if (
+      match &&
+      match.index === 0 &&
+      match[0].length === template.length &&
+      match[1] !== undefined
+    ) {
+      return match[1]
+    }
   }
 
-  static isTemplate(templateOpt: StringTemplateOptions|string) {
+  static isPurePlaceholder(
+    templateOpt: StringTemplateOptions | string
+  ): boolean {
+    return !!this.getPurePlaceholderVariable(templateOpt)
+  }
+
+  static isTemplate(templateOpt: StringTemplateOptions | string) {
     let compiledTemplate: any
     let template: string
     let result = false
@@ -71,16 +96,24 @@ export class FStringTemplate extends StringTemplate {
   _initialize(options?: StringTemplateOptions) {
     const template = options?.template
     if (typeof template !== 'string') {
-      throw new CommonError('Prompt template must be a string', 'PromptTemplate', ErrorCode.InvalidArgument)
+      throw new CommonError(
+        'Prompt template must be a string',
+        'PromptTemplate',
+        ErrorCode.InvalidArgument
+      )
     }
     this.compiledTemplate = parseFString(template)
-    this.inputVariables = Array.isArray(options?.inputVariables) ? options.inputVariables : this.getVariables()
+    this.inputVariables = Array.isArray(options?.inputVariables)
+      ? options.inputVariables
+      : this.getVariables()
   }
 
   _format(data: Record<string, any>): string {
     return interpolateFString(this.compiledTemplate, data)
   }
-
 }
 
-StringTemplate.register(FStringTemplate,{name: 'fstring', aliases: ['python', 'f-string', 'langchain']})
+StringTemplate.register(FStringTemplate, {
+  name: 'fstring',
+  aliases: ['python', 'f-string', 'langchain'],
+})

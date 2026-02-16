@@ -1,5 +1,5 @@
-import {EnvStringTemplate} from './env-template'
-import {StringTemplate} from './string-template'
+import { EnvStringTemplate } from './env-template'
+import { StringTemplate } from './string-template'
 
 describe('EnvStringTemplate', () => {
   it('should get inputVariables from template', () => {
@@ -11,127 +11,239 @@ describe('EnvStringTemplate', () => {
     expect(StringTemplate.get('env')).toStrictEqual(EnvStringTemplate)
     expect(StringTemplate.get('js')).toStrictEqual(EnvStringTemplate)
     expect(StringTemplate.get('javascript')).toStrictEqual(EnvStringTemplate)
-    expect(new StringTemplate('${text}', {templateFormat: 'env'})).toBeInstanceOf(EnvStringTemplate)
+    expect(
+      new StringTemplate('${text}', { templateFormat: 'env' })
+    ).toBeInstanceOf(EnvStringTemplate)
   })
 
   it('should pass PromptTemplate to value', async () => {
-    const systemTemplate = EnvStringTemplate.from('You are a helpful assistant that translates ${input_language} to ${output_language}.')
+    const systemTemplate = EnvStringTemplate.from(
+      'You are a helpful assistant that translates ${input_language} to ${output_language}.'
+    )
     const humanTemplate = EnvStringTemplate.from('${text}')
-    const template = EnvStringTemplate.from('${system_template}\n${human_template}')
+    const template = EnvStringTemplate.from(
+      '${system_template}\n${human_template}'
+    )
     let result = await template.format({
       system_template: systemTemplate,
       human_template: humanTemplate,
       input_language: 'English',
       output_language: 'Chinese',
-      text: 'Hello, how are you?'
+      text: 'Hello, how are you?',
     })
-    expect(result).toStrictEqual('You are a helpful assistant that translates English to Chinese.\nHello, how are you?')
+    expect(result).toStrictEqual(
+      'You are a helpful assistant that translates English to Chinese.\nHello, how are you?'
+    )
   })
 
   it('should format text without required variables', async () => {
-    expect(await EnvStringTemplate.from('hi${text}').format({})).toStrictEqual('hi')
+    expect(await EnvStringTemplate.from('hi${text}').format({})).toStrictEqual(
+      'hi'
+    )
   })
 
   it('should format text with required variables', async () => {
-    expect(await EnvStringTemplate.from('hi ${text}').format({text: 'world'})).toStrictEqual('hi world')
-    expect(await EnvStringTemplate.from('hi ${text}', {data: {text: 'world'}}).format()).toStrictEqual('hi world')
+    expect(
+      await EnvStringTemplate.from('hi ${text}').format({ text: 'world' })
+    ).toStrictEqual('hi world')
+    expect(
+      await EnvStringTemplate.from('hi ${text}', {
+        data: { text: 'world' },
+      }).format()
+    ).toStrictEqual('hi world')
   })
 
   it('should get partial PromptTemplate(string)', async () => {
-    const promptTemplate = new StringTemplate('${role}:${text}', {templateFormat: 'js'})
-    const p = promptTemplate.partial({role: 'user'})
+    const promptTemplate = new StringTemplate('${role}:${text}', {
+      templateFormat: 'js',
+    })
+    const p = promptTemplate.partial({ role: 'user' })
     expect(p).toBeInstanceOf(EnvStringTemplate)
-    expect(p.data).toStrictEqual({role: 'user'})
-    expect(await p.format({text: 'hello'})).toStrictEqual('user:hello')
+    expect(p.data).toStrictEqual({ role: 'user' })
+    expect(await p.format({ text: 'hello' })).toStrictEqual('user:hello')
   })
 
   it('should get partial PromptTemplate(function)', async () => {
-    const promptTemplate = new StringTemplate('${role}:${date}', {templateFormat: 'js'})
+    const promptTemplate = new StringTemplate('${role}:${date}', {
+      templateFormat: 'js',
+    })
     const dt = new Date()
     function getDate() {
       // console.log('getDate......', arguments)
       return dt.toISOString()
     }
-    const p = promptTemplate.partial({date: getDate})
+    const p = promptTemplate.partial({ date: getDate })
     expect(p).toBeInstanceOf(EnvStringTemplate)
-    expect(p.data).toStrictEqual({date: getDate})
-    expect(await p.format({role: 'user'})).toStrictEqual('user:'+dt.toISOString())
+    expect(p.data).toStrictEqual({ date: getDate })
+    expect(await p.format({ role: 'user' })).toStrictEqual(
+      'user:' + dt.toISOString()
+    )
   })
   it('should format directly by PromptTemplate', async () => {
-    expect(await StringTemplate.format({template: '${text} world', data: {text: 'hello'}, templateFormat: 'env'})).toStrictEqual('hello world')
+    expect(
+      await StringTemplate.format({
+        template: '${text} world',
+        data: { text: 'hello' },
+        templateFormat: 'env',
+      })
+    ).toStrictEqual('hello world')
   })
 
   it('should format directly by PromptTemplate without template variable', async () => {
-    expect(await StringTemplate.format({template: 'hello world', data: {text: 'hello'}, templateFormat: 'env'})).toStrictEqual('hello world')
+    expect(
+      await StringTemplate.format({
+        template: 'hello world',
+        data: { text: 'hello' },
+        templateFormat: 'env',
+      })
+    ).toStrictEqual('hello world')
+  })
+
+  it('should return raw value for pure placeholder with raw option', async () => {
+    const data = { CONFIG: { port: 8080 } }
+    const result = await EnvStringTemplate.from('${CONFIG}', {
+      raw: true,
+    }).format(data)
+    expect(result).toStrictEqual(data.CONFIG)
   })
 
   it('should test isTemplate', () => {
-    expect(EnvStringTemplate.isTemplate({template: '${strings}: ${a} + ${b}'})).toBeTruthy()
-    expect(EnvStringTemplate.isTemplate({template: 'a ${strings '})).toBeFalsy()
+    expect(
+      EnvStringTemplate.isTemplate({ template: '${strings}: ${a} + ${b}' })
+    ).toBeTruthy()
+    expect(
+      EnvStringTemplate.isTemplate({ template: 'a ${strings ' })
+    ).toBeFalsy()
   })
 
   it('should test isTemplate directly by PromptTemplate', async () => {
-    expect(StringTemplate.isTemplate({template: '${text} world', templateFormat: 'js'})).toBeTruthy()
+    expect(
+      StringTemplate.isTemplate({
+        template: '${text} world',
+        templateFormat: 'js',
+      })
+    ).toBeTruthy()
   })
 
   describe('matchTemplateSegment', () => {
     it('should test matchTemplateSegment', () => {
       const templateStr = '${strings}: ${a} + \\${b}'
-      let result = EnvStringTemplate.matchTemplateSegment({template: templateStr})
+      let result = EnvStringTemplate.matchTemplateSegment({
+        template: templateStr,
+      })
       expect(result).toBeDefined()
       expect(result!.index).toStrictEqual(0)
       expect(result![0]).toBe('${strings}')
       let pos = result![0].length
-      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      result = EnvStringTemplate.matchTemplateSegment(
+        { template: templateStr },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+2)
+      expect(result!.index).toStrictEqual(pos + 2)
       expect(result![0]).toBe('${a}')
       pos = result!.index + result![0].length
-      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      result = EnvStringTemplate.matchTemplateSegment(
+        { template: templateStr },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+3)
+      expect(result!.index).toStrictEqual(pos + 3)
       expect(result![0]).toBe('\\${b}')
       pos = result!.index + result![0].length
-      result = EnvStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      result = EnvStringTemplate.matchTemplateSegment(
+        { template: templateStr },
+        pos
+      )
       expect(result).toBeUndefined()
-      expect(EnvStringTemplate.matchTemplateSegment({template: 'a ${strings '})).toBeUndefined()
+      expect(
+        EnvStringTemplate.matchTemplateSegment({ template: 'a ${strings ' })
+      ).toBeUndefined()
     })
 
     it('should test matchTemplateSegment by StringTemplate', () => {
       const templateStr = '${strings}: ${a} + \\${b}'
-      let result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'})
+      let result = StringTemplate.matchTemplateSegment({
+        template: templateStr,
+        templateFormat: 'env',
+      })
       expect(result).toBeDefined()
       expect(result!.index).toStrictEqual(0)
       expect(result![0]).toBe('${strings}')
       let pos = result![0].length
-      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+      result = StringTemplate.matchTemplateSegment(
+        { template: templateStr, templateFormat: 'env' },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+2)
+      expect(result!.index).toStrictEqual(pos + 2)
       expect(result![0]).toBe('${a}')
       pos = result!.index + result![0].length
-      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+      result = StringTemplate.matchTemplateSegment(
+        { template: templateStr, templateFormat: 'env' },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+3)
+      expect(result!.index).toStrictEqual(pos + 3)
       expect(result![0]).toBe('\\${b}')
-            pos = result!.index + result![0].length
-            result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
-            expect(result).toBeUndefined()
-            expect(StringTemplate.matchTemplateSegment({template: 'a ${strings ', templateFormat: 'js'})).toBeUndefined()
-          })
+      pos = result!.index + result![0].length
+      result = StringTemplate.matchTemplateSegment(
+        { template: templateStr, templateFormat: 'env' },
+        pos
+      )
+      expect(result).toBeUndefined()
+      expect(
+        StringTemplate.matchTemplateSegment({
+          template: 'a ${strings ',
+          templateFormat: 'js',
         })
-      
-        describe('isPurePlaceholder', () => {
-          it('should detect pure placeholders', () => {
-            expect(EnvStringTemplate.isPurePlaceholder('$VAR')).toBe(true)
-            expect(EnvStringTemplate.isPurePlaceholder('${VAR}')).toBe(true)
-            expect(EnvStringTemplate.isPurePlaceholder('  ${VAR:-default}  ')).toBe(true)
-            expect(StringTemplate.isPurePlaceholder({ template: '$VAR', templateFormat: 'env' })).toBe(true)
-          })
-      
-          it('should not detect mixed content or escaped variables', () => {
-            expect(EnvStringTemplate.isPurePlaceholder('prefix $VAR')).toBe(false)
-            expect(EnvStringTemplate.isPurePlaceholder('\\$VAR')).toBe(false)
-          })
+      ).toBeUndefined()
+    })
+  })
+
+  describe('isPurePlaceholder', () => {
+    it('should detect pure placeholders', () => {
+      expect(EnvStringTemplate.isPurePlaceholder('$VAR')).toBe(true)
+      expect(EnvStringTemplate.isPurePlaceholder('${VAR}')).toBe(true)
+      expect(EnvStringTemplate.isPurePlaceholder('  ${VAR:-default}  ')).toBe(
+        true
+      )
+      expect(
+        StringTemplate.isPurePlaceholder({
+          template: '$VAR',
+          templateFormat: 'env',
         })
-      })
-      
+      ).toBe(true)
+    })
+
+    it('should not detect mixed content or escaped variables', () => {
+      expect(EnvStringTemplate.isPurePlaceholder('prefix $VAR')).toBe(false)
+      expect(EnvStringTemplate.isPurePlaceholder('\\$VAR')).toBe(false)
+    })
+  })
+
+  describe('getPurePlaceholderVariable', () => {
+    it('should extract variable name from pure placeholders', () => {
+      expect(EnvStringTemplate.getPurePlaceholderVariable('$VAR')).toBe('VAR')
+      expect(EnvStringTemplate.getPurePlaceholderVariable('${VAR}')).toBe('VAR')
+      expect(
+        EnvStringTemplate.getPurePlaceholderVariable('  ${VAR:-default}  ')
+      ).toBe('VAR')
+      expect(
+        StringTemplate.getPurePlaceholderVariable({
+          template: '$VAR',
+          templateFormat: 'env',
+        })
+      ).toBe('VAR')
+    })
+
+    it('should return undefined for mixed content or escaped variables', () => {
+      expect(
+        EnvStringTemplate.getPurePlaceholderVariable('prefix $VAR')
+      ).toBeUndefined()
+      expect(
+        EnvStringTemplate.getPurePlaceholderVariable('\\$VAR')
+      ).toBeUndefined()
+    })
+  })
+})

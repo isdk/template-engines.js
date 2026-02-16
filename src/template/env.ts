@@ -8,7 +8,8 @@
 // *   (?::-((?:\$\{(?:\$\{(?:\$\{[^}]*\}|[^}])*}|[^}])*}|[^}])+))? # optional default nested 3 times
 // *   (\}?)            # last brace warp closing
 // * /xi
-const DOTENV_SUBSTITUTION_REGEX = /(\\)?(\$)(?!\()(\{?)([\w.]+)(?::?-((?:\$\{(?:\$\{(?:\$\{[^}]*\}|[^}])*}|[^}])*}|[^}])+))?(\}?)/gi
+const DOTENV_SUBSTITUTION_REGEX =
+  /(\\)?(\$)(?!\()(\{?)([\w.]+)(?::?-((?:\$\{(?:\$\{(?:\$\{[^}]*\}|[^}])*}|[^}])*}|[^}])+))?(\}?)/gi
 
 function _resolveEscapeSequences(value: string) {
   return value.replace(/\\\$/g, '$')
@@ -28,9 +29,9 @@ export function matchEnvTemplateSegment(str: string, index: number = 0) {
 
 export function getEnvVairables(value: string) {
   const result = new Set<string>()
-  let matched: RegExpExecArray|null
+  let matched: RegExpExecArray | null
   DOTENV_SUBSTITUTION_REGEX.lastIndex = 0
-  while (matched = DOTENV_SUBSTITUTION_REGEX.exec(value)) {
+  while ((matched = DOTENV_SUBSTITUTION_REGEX.exec(value))) {
     const openBrace = matched[3]
     const closeBrace = matched[6]
     if ((openBrace && closeBrace) || (!openBrace && !closeBrace)) {
@@ -41,42 +42,51 @@ export function getEnvVairables(value: string) {
   return [...result]
 }
 
-export function interpolateEnv(value: string, processEnv: Record<string, any>, parsed?: Record<string, any>) {
+export function interpolateEnv(
+  value: string,
+  processEnv: Record<string, any>,
+  parsed?: Record<string, any>
+) {
   value += ''
-  return value.replace(DOTENV_SUBSTITUTION_REGEX, (match, escaped, dollarSign, openBrace, key, defaultValue, closeBrace) => {
-    if (openBrace && !closeBrace) {return match}
-    if (escaped === '\\') {
-      return match.slice(1)
-    } else {
-      if (processEnv[key]) {
-        if (processEnv[key] === parsed?.[key]) {
-          return processEnv[key]
-        } else {
-          // scenario: PASSWORD_EXPAND_NESTED=${PASSWORD_EXPAND}
-          return interpolateEnv(processEnv[key], processEnv, parsed)
-        }
+  return value.replace(
+    DOTENV_SUBSTITUTION_REGEX,
+    (match, escaped, dollarSign, openBrace, key, defaultValue, closeBrace) => {
+      if (openBrace && !closeBrace) {
+        return match
       }
-
-      if (parsed?.[key]) {
-        // avoid recursion from EXPAND_SELF=$EXPAND_SELF
-        if (parsed[key] === value) {
-          return parsed[key]
-        } else {
-          return interpolateEnv(parsed[key], processEnv, parsed)
+      if (escaped === '\\') {
+        return match.slice(1)
+      } else {
+        if (processEnv[key]) {
+          if (processEnv[key] === parsed?.[key]) {
+            return processEnv[key]
+          } else {
+            // scenario: PASSWORD_EXPAND_NESTED=${PASSWORD_EXPAND}
+            return interpolateEnv(processEnv[key], processEnv, parsed)
+          }
         }
-      }
 
-      if (defaultValue) {
-        if (defaultValue.startsWith('$')) {
-          return interpolateEnv(defaultValue, processEnv, parsed)
-        } else {
-          return defaultValue
+        if (parsed?.[key]) {
+          // avoid recursion from EXPAND_SELF=$EXPAND_SELF
+          if (parsed[key] === value) {
+            return parsed[key]
+          } else {
+            return interpolateEnv(parsed[key], processEnv, parsed)
+          }
         }
-      }
 
-      return ''
+        if (defaultValue) {
+          if (defaultValue.startsWith('$')) {
+            return interpolateEnv(defaultValue, processEnv, parsed)
+          } else {
+            return defaultValue
+          }
+        }
+
+        return ''
+      }
     }
-  })
+  )
 }
 
 /**
@@ -115,8 +125,10 @@ export function expandEnv(options: DotenvExpandOptions) {
   }
 
   for (const key in options.parsed) {
-    let value: string|undefined = options.parsed[key]
-    if (!value) {continue}
+    let value: string | undefined = options.parsed[key]
+    if (!value) {
+      continue
+    }
 
     const inProcessEnv = Object.prototype.hasOwnProperty.call(processEnv, key)
     if (inProcessEnv) {
@@ -168,10 +180,20 @@ export function expandEnv(options: DotenvExpandOptions) {
  * const expandedObj = expandObjEnv(obj, { processEnv: myCustomEnv }); // Assuming 'ENV_VAR_NAME' is defined as 'Production' and 'HOST', 'PORT', 'ITEM2' are set,
  *
  */
-export function expandObjEnv(obj: any, options: DotenvExpandOptions = {}, parsedObjs?: WeakSet<any>) {
-  if (!parsedObjs) { parsedObjs = new WeakSet() }
-  if (!options.processEnv) {options.processEnv = {...process.env}}
-  if (!options.parsed) {options.parsed = options.processEnv as DotenvParseOutput}
+export function expandObjEnv(
+  obj: any,
+  options: DotenvExpandOptions = {},
+  parsedObjs?: WeakSet<any>
+) {
+  if (!parsedObjs) {
+    parsedObjs = new WeakSet()
+  }
+  if (!options.processEnv) {
+    options.processEnv = { ...process.env }
+  }
+  if (!options.parsed) {
+    options.parsed = options.processEnv as DotenvParseOutput
+  }
   switch (typeof obj) {
     case 'string': {
       const processEnv = options.processEnv
@@ -179,10 +201,12 @@ export function expandObjEnv(obj: any, options: DotenvExpandOptions = {}, parsed
       break
     }
     case 'object': {
-      if (parsedObjs.has(obj) || obj === null) { return obj }
+      if (parsedObjs.has(obj) || obj === null) {
+        return obj
+      }
       parsedObjs.add(obj)
       if (Array.isArray(obj)) {
-        for (let i=0; i < obj.length; i++) {
+        for (let i = 0; i < obj.length; i++) {
           const value = obj[i]
           if (typeof value === 'string' || typeof value === 'object') {
             obj[i] = expandObjEnv(obj[i], options, parsedObjs)
@@ -202,19 +226,19 @@ export function expandObjEnv(obj: any, options: DotenvExpandOptions = {}, parsed
 }
 
 export interface DotenvPopulateInput {
-  [name: string]: string|undefined;
+  [name: string]: string | undefined
 }
 
 export interface DotenvParseInput {
-  [name: string]: string|undefined;
+  [name: string]: string | undefined
 }
 
 export interface DotenvParseOutput {
-  [name: string]: string|undefined;
+  [name: string]: string | undefined
 }
 
 export interface DotenvExpandOptions {
-  error?: Error;
+  error?: Error
 
   /**
    * Default: `process.env`
@@ -223,17 +247,17 @@ export interface DotenvExpandOptions {
    *
    * example: `const processEnv = {}; require('dotenv').config({ processEnv: processEnv })`
    */
-  processEnv?: DotenvPopulateInput;
+  processEnv?: DotenvPopulateInput
 
   /**
    * Default: `object`
    *
    * Object coming from dotenv's parsed result.
    */
-  parsed?: DotenvParseInput;
+  parsed?: DotenvParseInput
 }
 
 export interface DotenvExpandOutput {
-  error?: Error;
-  parsed?: DotenvParseOutput;
+  error?: Error
+  parsed?: DotenvParseOutput
 }

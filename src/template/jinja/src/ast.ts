@@ -1,35 +1,35 @@
-import type { Token } from "./lexer";
+import type { Token } from './lexer'
 
 /**
  * Statements do not result in a value at runtime. They contain one or more expressions internally.
  */
 export class Statement {
-	declare isStatement?: boolean;
+  declare isStatement?: boolean
 
-	type = "Statement";
+  type = 'Statement'
 }
 
 /**
  * Defines a block which contains many statements. Each chat template corresponds to one Program.
  */
 export class Program extends Statement {
-	override type = "Program";
+  override type = 'Program'
 
-	constructor(public body: Statement[]) {
-		super();
-	}
+  constructor(public body: Statement[]) {
+    super()
+  }
 }
 
 export class If extends Statement {
-	override type = "If";
+  override type = 'If'
 
-	constructor(
-		public test: Expression,
-		public body: Statement[],
-		public alternate: Statement[]
-	) {
-		super();
-	}
+  constructor(
+    public test: Expression,
+    public body: Statement[],
+    public alternate: Statement[]
+  ) {
+    super()
+  }
 }
 
 /**
@@ -37,82 +37,82 @@ export class If extends Statement {
  * https://jinja.palletsprojects.com/en/3.0.x/templates/#for
  */
 export class For extends Statement {
-	override type = "For";
+  override type = 'For'
 
-	constructor(
-		public loopvar: Identifier | TupleLiteral,
-		public iterable: Expression,
-		public body: Statement[],
-		public defaultBlock: Statement[] // if no iteration took place
-	) {
-		super();
-	}
+  constructor(
+    public loopvar: Identifier | TupleLiteral,
+    public iterable: Expression,
+    public body: Statement[],
+    public defaultBlock: Statement[] // if no iteration took place
+  ) {
+    super()
+  }
 }
 
 export class SetStatement extends Statement {
-	override type = "Set";
-	constructor(
-		public assignee: Expression,
-		public value: Expression
-	) {
-		super();
-	}
+  override type = 'Set'
+  constructor(
+    public assignee: Expression,
+    public value: Expression
+  ) {
+    super()
+  }
 }
 
 export class Macro extends Statement {
-	override type = "Macro";
+  override type = 'Macro'
 
-	constructor(
-		public name: Identifier,
-		public args: Expression[],
-		public body: Statement[]
-	) {
-		super();
-	}
+  constructor(
+    public name: Identifier,
+    public args: Expression[],
+    public body: Statement[]
+  ) {
+    super()
+  }
 }
 
 /**
  * Expressions will result in a value at runtime (unlike statements).
  */
 export class Expression extends Statement {
-	override type = "Expression";
+  override type = 'Expression'
 }
 
 export class MemberExpression extends Expression {
-	override type = "MemberExpression";
+  override type = 'MemberExpression'
 
-	constructor(
-		public object: Expression,
-		public property: Expression,
-		public computed: boolean
-	) {
-		super();
-	}
+  constructor(
+    public object: Expression,
+    public property: Expression,
+    public computed: boolean
+  ) {
+    super()
+  }
 }
 
 export class CallExpression extends Expression {
-	override type = "CallExpression";
+  override type = 'CallExpression'
 
-	constructor(
-		public callee: Expression,
-		public args: Expression[]
-	) {
-		super();
-	}
+  constructor(
+    public callee: Expression,
+    public args: Expression[]
+  ) {
+    super()
+  }
 }
 
 /**
  * Represents a user-defined variable or symbol in the template.
  */
 export class Identifier extends Expression {
-	override type = "Identifier";
+  override type = 'Identifier'
 
-	/**
-	 * @param {string} value The name of the identifier
-	 */
-	constructor(public value: string) {
-		super();
-	}
+  /**
+   * @param {string} value The name of the identifier
+   */
+  constructor(public value: string) {
+    super()
+  }
 }
 
 /**
@@ -120,60 +120,60 @@ export class Identifier extends Expression {
  * Should not be instantiated directly.
  */
 abstract class Literal<T> extends Expression {
-	override type = "Literal";
+  override type = 'Literal'
 
-	constructor(public value: T) {
-		super();
-	}
+  constructor(public value: T) {
+    super()
+  }
 }
 
 /**
  * Represents a numeric constant in the template.
  */
 export class NumericLiteral extends Literal<number> {
-	override type = "NumericLiteral";
+  override type = 'NumericLiteral'
 }
 
 /**
  * Represents a text constant in the template.
  */
 export class StringLiteral extends Literal<string> {
-	override type = "StringLiteral";
+  override type = 'StringLiteral'
 }
 
 /**
  * Represents a boolean constant in the template.
  */
 export class BooleanLiteral extends Literal<boolean> {
-	override type = "BooleanLiteral";
+  override type = 'BooleanLiteral'
 }
 
 /**
  * Represents null (none) in the template.
  */
 export class NullLiteral extends Literal<null> {
-	override type = "NullLiteral";
+  override type = 'NullLiteral'
 }
 
 /**
  * Represents an array literal in the template.
  */
 export class ArrayLiteral extends Literal<Expression[]> {
-	override type = "ArrayLiteral";
+  override type = 'ArrayLiteral'
 }
 
 /**
  * Represents a tuple literal in the template.
  */
 export class TupleLiteral extends Literal<Expression[]> {
-	override type = "TupleLiteral";
+  override type = 'TupleLiteral'
 }
 
 /**
  * Represents an object literal in the template.
  */
 export class ObjectLiteral extends Literal<Map<Expression, Expression>> {
-	override type = "ObjectLiteral";
+  override type = 'ObjectLiteral'
 }
 
 /**
@@ -182,15 +182,15 @@ export class ObjectLiteral extends Literal<Map<Expression, Expression>> {
  * of operations being determined by the operator.
  */
 export class BinaryExpression extends Expression {
-	override type = "BinaryExpression";
+  override type = 'BinaryExpression'
 
-	constructor(
-		public operator: Token,
-		public left: Expression,
-		public right: Expression
-	) {
-		super();
-	}
+  constructor(
+    public operator: Token,
+    public left: Expression,
+    public right: Expression
+  ) {
+    super()
+  }
 }
 
 /**
@@ -198,14 +198,14 @@ export class BinaryExpression extends Expression {
  * Operator precedence: https://github.com/pallets/jinja/issues/379#issuecomment-168076202
  */
 export class FilterExpression extends Expression {
-	override type = "FilterExpression";
+  override type = 'FilterExpression'
 
-	constructor(
-		public operand: Expression,
-		public filter: Identifier | CallExpression
-	) {
-		super();
-	}
+  constructor(
+    public operand: Expression,
+    public filter: Identifier | CallExpression
+  ) {
+    super()
+  }
 }
 
 /**
@@ -213,75 +213,75 @@ export class FilterExpression extends Expression {
  * and only selecting the objects with the test succeeding.
  */
 export class SelectExpression extends Expression {
-	override type = "SelectExpression";
+  override type = 'SelectExpression'
 
-	constructor(
-		public iterable: Expression,
-		public test: Expression
-	) {
-		super();
-	}
+  constructor(
+    public iterable: Expression,
+    public test: Expression
+  ) {
+    super()
+  }
 }
 
 /**
  * An operation with two sides, separated by the "is" operator.
  */
 export class TestExpression extends Expression {
-	override type = "TestExpression";
+  override type = 'TestExpression'
 
-	constructor(
-		public operand: Expression,
-		public negate: boolean,
-		public test: Identifier // TODO: Add support for non-identifier tests
-	) {
-		super();
-	}
+  constructor(
+    public operand: Expression,
+    public negate: boolean,
+    public test: Identifier // TODO: Add support for non-identifier tests
+  ) {
+    super()
+  }
 }
 
 /**
  * An operation with one side (operator on the left).
  */
 export class UnaryExpression extends Expression {
-	override type = "UnaryExpression";
+  override type = 'UnaryExpression'
 
-	constructor(
-		public operator: Token,
-		public argument: Expression
-	) {
-		super();
-	}
+  constructor(
+    public operator: Token,
+    public argument: Expression
+  ) {
+    super()
+  }
 }
 
 /**
  * Logical negation of an expression.
  */
 export class LogicalNegationExpression extends Expression {
-	override type = "LogicalNegationExpression";
+  override type = 'LogicalNegationExpression'
 
-	constructor(public argument: Expression) {
-		super();
-	}
+  constructor(public argument: Expression) {
+    super()
+  }
 }
 
 export class SliceExpression extends Expression {
-	override type = "SliceExpression";
+  override type = 'SliceExpression'
 
-	constructor(
-		public start: Expression | undefined = undefined,
-		public stop: Expression | undefined = undefined,
-		public step: Expression | undefined = undefined
-	) {
-		super();
-	}
+  constructor(
+    public start: Expression | undefined = undefined,
+    public stop: Expression | undefined = undefined,
+    public step: Expression | undefined = undefined
+  ) {
+    super()
+  }
 }
 
 export class KeywordArgumentExpression extends Expression {
-	override type = "KeywordArgumentExpression";
+  override type = 'KeywordArgumentExpression'
 
-	constructor(
-		public key: Identifier,
-		public value: Expression
-	) {
-		super();
-	}
+  constructor(
+    public key: Identifier,
+    public value: Expression
+  ) {
+    super()
+  }
 }

@@ -1,5 +1,5 @@
-import {GolangStringTemplate} from './golang-template'
-import {StringTemplate} from './string-template'
+import { GolangStringTemplate } from './golang-template'
+import { StringTemplate } from './string-template'
 
 describe('GolangStringTemplate', () => {
   it('should get inputVariables from template', () => {
@@ -11,123 +11,237 @@ describe('GolangStringTemplate', () => {
     expect(StringTemplate.get('golang')).toStrictEqual(GolangStringTemplate)
     expect(StringTemplate.get('localai')).toStrictEqual(GolangStringTemplate)
     expect(StringTemplate.get('ollama')).toStrictEqual(GolangStringTemplate)
-    expect(new StringTemplate('{{.text}}', {templateFormat: 'golang'})).toBeInstanceOf(GolangStringTemplate)
+    expect(
+      new StringTemplate('{{.text}}', { templateFormat: 'golang' })
+    ).toBeInstanceOf(GolangStringTemplate)
   })
 
   it('should pass PromptTemplate to value', async () => {
-    const systemTemplate = GolangStringTemplate.from(`You are a helpful assistant that translates {{.input_language}} to {{.output_language}}.`)
+    const systemTemplate = GolangStringTemplate.from(
+      `You are a helpful assistant that translates {{.input_language}} to {{.output_language}}.`
+    )
     const humanTemplate = GolangStringTemplate.from(`{{.text}}`)
-    const template = GolangStringTemplate.from(`{{.system_template}}\n{{.human_template}}`)
+    const template = GolangStringTemplate.from(
+      `{{.system_template}}\n{{.human_template}}`
+    )
     let result = await template.format({
       system_template: systemTemplate,
       human_template: humanTemplate,
       input_language: 'English',
       output_language: 'Chinese',
-      text: 'Hello, how are you?'
+      text: 'Hello, how are you?',
     })
-    expect(result).toStrictEqual(`You are a helpful assistant that translates English to Chinese.\nHello, how are you?`)
+    expect(result).toStrictEqual(
+      `You are a helpful assistant that translates English to Chinese.\nHello, how are you?`
+    )
   })
 
   it('should format text without required variables', async () => {
-    expect(await GolangStringTemplate.from(`hi{{.text}}`).format({})).toStrictEqual('hi')
+    expect(
+      await GolangStringTemplate.from(`hi{{.text}}`).format({})
+    ).toStrictEqual('hi')
   })
 
   it('should format text with required variables', async () => {
-    expect(await GolangStringTemplate.from(`hi {{.text}}`).format({text: 'world'})).toStrictEqual('hi world')
-    expect(await GolangStringTemplate.from(`hi {{.text}}`, {data: {text: 'world'}}).format()).toStrictEqual('hi world')
+    expect(
+      await GolangStringTemplate.from(`hi {{.text}}`).format({ text: 'world' })
+    ).toStrictEqual('hi world')
+    expect(
+      await GolangStringTemplate.from(`hi {{.text}}`, {
+        data: { text: 'world' },
+      }).format()
+    ).toStrictEqual('hi world')
   })
 
   it('should get partial PromptTemplate(string)', async () => {
-    const promptTemplate = new StringTemplate('{{.role}}:{{.text}}', {templateFormat: 'golang'})
-    const p = promptTemplate.partial({role: 'user'})
+    const promptTemplate = new StringTemplate('{{.role}}:{{.text}}', {
+      templateFormat: 'golang',
+    })
+    const p = promptTemplate.partial({ role: 'user' })
     expect(p).toBeInstanceOf(GolangStringTemplate)
-    expect(p.data).toStrictEqual({role: 'user'})
-    expect(await p.format({text: 'hello'})).toStrictEqual('user:hello')
+    expect(p.data).toStrictEqual({ role: 'user' })
+    expect(await p.format({ text: 'hello' })).toStrictEqual('user:hello')
   })
 
   it('should get partial PromptTemplate(function)', async () => {
-    const promptTemplate = new StringTemplate('{{.role}}:{{.date}}', {templateFormat: 'golang'})
+    const promptTemplate = new StringTemplate('{{.role}}:{{.date}}', {
+      templateFormat: 'golang',
+    })
     const dt = new Date()
     function getDate() {
       // console.log('getDate......', arguments)
       return dt.toISOString()
     }
-    const p = promptTemplate.partial({date: getDate})
+    const p = promptTemplate.partial({ date: getDate })
     expect(p).toBeInstanceOf(GolangStringTemplate)
-    expect(p.data).toStrictEqual({date: getDate})
-    expect(await p.format({role: 'user'})).toStrictEqual('user:'+dt.toISOString())
+    expect(p.data).toStrictEqual({ date: getDate })
+    expect(await p.format({ role: 'user' })).toStrictEqual(
+      'user:' + dt.toISOString()
+    )
   })
   it('should format directly by PromptTemplate', async () => {
-    expect(await StringTemplate.format({template: '{{.text}} world', data: {text: 'hello'}, templateFormat: 'golang'})).toStrictEqual('hello world')
+    expect(
+      await StringTemplate.format({
+        template: '{{.text}} world',
+        data: { text: 'hello' },
+        templateFormat: 'golang',
+      })
+    ).toStrictEqual('hello world')
   })
   it('should format directly by PromptTemplate without template variable', async () => {
-    expect(await StringTemplate.format({template: 'hello world', data: {text: 'hello'}, templateFormat: 'golang'})).toStrictEqual('hello world')
+    expect(
+      await StringTemplate.format({
+        template: 'hello world',
+        data: { text: 'hello' },
+        templateFormat: 'golang',
+      })
+    ).toStrictEqual('hello world')
+  })
+
+  it('should return raw value for pure placeholder with raw option', async () => {
+    const data = { state: { ok: true } }
+    const result = await GolangStringTemplate.from('{{.state}}', {
+      raw: true,
+    }).format(data)
+    expect(result).toStrictEqual(data.state)
   })
 
   describe('isTemplate', () => {
     it('should test isTemplate true', () => {
-      expect(GolangStringTemplate.isTemplate({template: '{{.strings}}: {{.a}} + {.b}'})).toBeTruthy()
+      expect(
+        GolangStringTemplate.isTemplate({
+          template: '{{.strings}}: {{.a}} + {.b}',
+        })
+      ).toBeTruthy()
     })
 
     it('should test isTemplate false', () => {
-      expect(GolangStringTemplate.isTemplate({template: 'a {{strings '})).toBeFalsy()
+      expect(
+        GolangStringTemplate.isTemplate({ template: 'a {{strings ' })
+      ).toBeFalsy()
     })
 
     it('should test isTemplate directly by StringTemplate', async () => {
-      expect(StringTemplate.isTemplate({template: '{{.text}} world', templateFormat: 'golang'})).toBeTruthy()
+      expect(
+        StringTemplate.isTemplate({
+          template: '{{.text}} world',
+          templateFormat: 'golang',
+        })
+      ).toBeTruthy()
     })
 
     it('should test isTemplate directly by StringTemplate false', async () => {
-      expect(StringTemplate.isTemplate({template: '{{text}} world', templateFormat: 'golang'})).toBeFalsy()
+      expect(
+        StringTemplate.isTemplate({
+          template: '{{text}} world',
+          templateFormat: 'golang',
+        })
+      ).toBeFalsy()
     })
   })
 
   describe('matchTemplateSegment', () => {
     it('should test matchTemplateSegment', () => {
       const templateStr = '{{.strings}}: {{.a}} + {.b}'
-      let result = GolangStringTemplate.matchTemplateSegment({template: templateStr})
+      let result = GolangStringTemplate.matchTemplateSegment({
+        template: templateStr,
+      })
       expect(result).toBeDefined()
       expect(result!.index).toStrictEqual(0)
       expect(result![0]).toBe('{{.strings}}')
       let pos = result![0].length
-      result = GolangStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      result = GolangStringTemplate.matchTemplateSegment(
+        { template: templateStr },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+2)
+      expect(result!.index).toStrictEqual(pos + 2)
       expect(result![0]).toBe('{{.a}}')
       pos = result!.index + result![0].length
-      result = GolangStringTemplate.matchTemplateSegment({template: templateStr}, pos)
+      result = GolangStringTemplate.matchTemplateSegment(
+        { template: templateStr },
+        pos
+      )
       expect(result).toBeUndefined()
-      expect(GolangStringTemplate.matchTemplateSegment({template: 'a {{strings '})).toBeUndefined()
+      expect(
+        GolangStringTemplate.matchTemplateSegment({ template: 'a {{strings ' })
+      ).toBeUndefined()
     })
 
     it('should test matchTemplateSegment by StringTemplate', () => {
       const templateStr = '{{.strings}}: {{.a}} + {.b}'
-      let result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'})
+      let result = StringTemplate.matchTemplateSegment({
+        template: templateStr,
+        templateFormat: 'golang',
+      })
       expect(result).toBeDefined()
       expect(result!.index).toStrictEqual(0)
       expect(result![0]).toBe('{{.strings}}')
       let pos = result![0].length
-      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'}, pos)
+      result = StringTemplate.matchTemplateSegment(
+        { template: templateStr, templateFormat: 'golang' },
+        pos
+      )
       expect(result).toBeDefined()
-      expect(result!.index).toStrictEqual(pos+2)
+      expect(result!.index).toStrictEqual(pos + 2)
       expect(result![0]).toBe('{{.a}}')
       pos = result!.index + result![0].length
-      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'golang'}, pos)
+      result = StringTemplate.matchTemplateSegment(
+        { template: templateStr, templateFormat: 'golang' },
+        pos
+      )
       expect(result).toBeUndefined()
-      expect(StringTemplate.matchTemplateSegment({template: 'a {{strings ', templateFormat: 'golang'})).toBeUndefined()
+      expect(
+        StringTemplate.matchTemplateSegment({
+          template: 'a {{strings ',
+          templateFormat: 'golang',
+        })
+      ).toBeUndefined()
     })
   })
 
   describe('isPurePlaceholder', () => {
     it('should detect pure placeholders', () => {
       expect(GolangStringTemplate.isPurePlaceholder('{{.var}}')).toBe(true)
-      expect(GolangStringTemplate.isPurePlaceholder('  {{ .var }}  ')).toBe(true)
-      expect(StringTemplate.isPurePlaceholder({ template: '{{.var}}', templateFormat: 'golang' })).toBe(true)
+      expect(GolangStringTemplate.isPurePlaceholder('  {{ .var }}  ')).toBe(
+        true
+      )
+      expect(
+        StringTemplate.isPurePlaceholder({
+          template: '{{.var}}',
+          templateFormat: 'golang',
+        })
+      ).toBe(true)
     })
 
     it('should not detect mixed content or variables without dot', () => {
-      expect(GolangStringTemplate.isPurePlaceholder('Hello {{.var}}')).toBe(false)
+      expect(GolangStringTemplate.isPurePlaceholder('Hello {{.var}}')).toBe(
+        false
+      )
       expect(GolangStringTemplate.isPurePlaceholder('{{var}}')).toBe(false)
+    })
+  })
+
+  describe('getPurePlaceholderVariable', () => {
+    it('should extract variable name from pure placeholders', () => {
+      expect(GolangStringTemplate.getPurePlaceholderVariable('{{.var}}')).toBe(
+        'var'
+      )
+      expect(
+        GolangStringTemplate.getPurePlaceholderVariable('  {{ .var }}  ')
+      ).toBe('var')
+      expect(
+        StringTemplate.getPurePlaceholderVariable({
+          template: '{{.var}}',
+          templateFormat: 'golang',
+        })
+      ).toBe('var')
+    })
+
+    it('should return undefined for mixed content', () => {
+      expect(
+        GolangStringTemplate.getPurePlaceholderVariable('Hello {{.var}}')
+      ).toBeUndefined()
     })
   })
 })

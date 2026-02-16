@@ -1,7 +1,13 @@
-import { BaseFactory } from 'custom-factory';
+import { BaseFactory } from 'custom-factory'
 import { filterNullUndefined } from 'util-ex'
 
-import { CommonError, ErrorCode, NotImplementationError } from '@isdk/common-error'
+import {
+  CommonError,
+  ErrorCode,
+  NotImplementationError,
+} from '@isdk/common-error'
+
+import { getValueByPath } from './template/util'
 
 // register PromptTemplate alias as default.
 export const defaultTemplateFormat = 'default'
@@ -14,6 +20,7 @@ export interface StringTemplateOptions {
   compiledTemplate?: any
   ignoreInitialize?: boolean
   index?: number
+  raw?: boolean
   [name: string]: any
 }
 
@@ -23,27 +30,27 @@ export interface StringTemplateOptions {
  * for handling template strings, validating input variables, and managing template configurations.
  *
  * @example
-* ```typescript
-* import { StringTemplate } from './template';
-*
-* // Register a custom template class
-* class CustomTemplate extends StringTemplate {
-*   _initialize(options?: StringTemplateOptions): void {}
-*   _format(data: Record<string, any>): string {
-*     return `Formatted: ${data.text}`;
-*   }
-* }
-* StringTemplate.register(CustomTemplate);
-*
-* // Create a new instance with a custom template format
-* const template = new StringTemplate("{{text}}", { templateFormat: "Custom" });
-* console.log(template instanceof CustomTemplate); // Output: true
-*
-* // Format the template with data
-* const result = await template.format({ text: "Hello World" });
-* console.log(result); // Output: "Formatted: Hello World"
-* ```
-*/
+ * ```typescript
+ * import { StringTemplate } from './template';
+ *
+ * // Register a custom template class
+ * class CustomTemplate extends StringTemplate {
+ *   _initialize(options?: StringTemplateOptions): void {}
+ *   _format(data: Record<string, any>): string {
+ *     return `Formatted: ${data.text}`;
+ *   }
+ * }
+ * StringTemplate.register(CustomTemplate);
+ *
+ * // Create a new instance with a custom template format
+ * const template = new StringTemplate("{{text}}", { templateFormat: "Custom" });
+ * console.log(template instanceof CustomTemplate); // Output: true
+ *
+ * // Format the template with data
+ * const result = await template.format({ text: "Hello World" });
+ * console.log(result); // Output: "Formatted: Hello World"
+ * ```
+ */
 export class StringTemplate extends BaseFactory {
   /**
    * Declares the compiled template instance.
@@ -56,15 +63,19 @@ export class StringTemplate extends BaseFactory {
   /**
    * Declares the format of the template (e.g., 'default').
    */
-  declare templateFormat: string|undefined
+  declare templateFormat: string | undefined
   /**
    * Declares the data object used for template interpolation.
    */
-  declare data:Record<string, any>|undefined
+  declare data: Record<string, any> | undefined
   /**
    * Declares the list of input variables expected by the template.
    */
-  declare inputVariables: string[]|undefined
+  declare inputVariables: string[] | undefined
+  /**
+   * Declares whether to return the raw value if the template is a pure placeholder.
+   */
+  declare raw: boolean | undefined
 
   /**
    * Creates a new instance of the `StringTemplate` class.
@@ -81,7 +92,10 @@ export class StringTemplate extends BaseFactory {
    * console.log(template instanceof TestStringTemplate); // Output: true
    * ```
    */
-  static from(template?: string|StringTemplateOptions, options?: StringTemplateOptions) {
+  static from(
+    template?: string | StringTemplateOptions,
+    options?: StringTemplateOptions
+  ) {
     return new this(template, options)
   }
 
@@ -144,11 +158,13 @@ export class StringTemplate extends BaseFactory {
   static isTemplate(templateOpt: StringTemplateOptions) {
     if (templateOpt?.template) {
       const templateType = templateOpt.templateFormat || defaultTemplateFormat
-      const MyTemplate = this === StringTemplate ? StringTemplate.get(templateType) as typeof StringTemplate : this
+      const MyTemplate =
+        this === StringTemplate
+          ? (StringTemplate.get(templateType) as typeof StringTemplate)
+          : this
       // const Template = (this === PromptTemplate) ? PromptTemplate.get(templateType) as typeof PromptTemplate : this
       const hasIsTemplate = MyTemplate!.isTemplate !== StringTemplate.isTemplate
-      if (hasIsTemplate)
-        return MyTemplate!.isTemplate(templateOpt)
+      if (hasIsTemplate) return MyTemplate!.isTemplate(templateOpt)
       else {
         return !!this.matchTemplateSegment(templateOpt)
       }
@@ -178,18 +194,87 @@ export class StringTemplate extends BaseFactory {
    * }
    * ```
    */
-  static matchTemplateSegment(templateOpt: StringTemplateOptions, index = 0): RegExpExecArray|undefined {
+  static matchTemplateSegment(
+    templateOpt: StringTemplateOptions,
+    index = 0
+  ): RegExpExecArray | undefined {
     if (templateOpt?.template) {
       const templateType = templateOpt.templateFormat || defaultTemplateFormat
-      const MyTemplate = this === StringTemplate ? StringTemplate.get(templateType) as typeof StringTemplate : this
+      const MyTemplate =
+        this === StringTemplate
+          ? (StringTemplate.get(templateType) as typeof StringTemplate)
+          : this
       if (templateOpt.index! > 0) {
         index = templateOpt.index!
       }
-      const hasMatchTemplateSegment = MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment
+      const hasMatchTemplateSegment =
+        MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment
       if (hasMatchTemplateSegment) {
         return MyTemplate!.matchTemplateSegment(templateOpt, index)
       }
     }
+  }
+
+  /**
+   * Returns the variable name if the template is a pure placeholder.
+   *
+   * @param templateOpt - The template options or template string to check.
+   * @returns The variable name if the template is a pure placeholder, undefined otherwise.
+   *
+   * @example
+   * ```typescript
+   * StringTemplate.getPurePlaceholderVariable("{{text}}"); // "text"
+   * StringTemplate.getPurePlaceholderVariable("  {{text}}  "); // "text"
+   * StringTemplate.getPurePlaceholderVariable("Hello {{text}}"); // undefined
+   * ```
+   */
+  static getPurePlaceholderVariable(
+    templateOpt: StringTemplateOptions | string
+  ): string | undefined {
+    let template: string | undefined
+    let options: StringTemplateOptions
+
+    if (typeof templateOpt === 'object') {
+      options = templateOpt
+      template = options.template
+    } else {
+      template = templateOpt
+      options = { template }
+    }
+
+    if (!template) return undefined
+
+    // Dispatch to subclass if called from StringTemplate base class
+    if (this === StringTemplate) {
+      const templateType = options.templateFormat || defaultTemplateFormat
+      const MyTemplate = StringTemplate.get(
+        templateType
+      ) as typeof StringTemplate
+      if (
+        MyTemplate &&
+        MyTemplate.getPurePlaceholderVariable !==
+          StringTemplate.getPurePlaceholderVariable
+      ) {
+        return MyTemplate.getPurePlaceholderVariable(templateOpt)
+      }
+    }
+
+    const trimmedTemplate = template.trim()
+    if (!trimmedTemplate) return undefined
+
+    const match = this.matchTemplateSegment(
+      { ...options, template: trimmedTemplate },
+      0
+    )
+
+    if (
+      match &&
+      match.index === 0 &&
+      match[0].length === trimmedTemplate.length
+    ) {
+      return match[1] || match[0]
+    }
+    return undefined
   }
 
   /**
@@ -207,35 +292,41 @@ export class StringTemplate extends BaseFactory {
    * StringTemplate.isPurePlaceholder("{{text1}}{{text2}}"); // false
    * ```
    */
-  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
-    let template: string | undefined
+  static isPurePlaceholder(
+    templateOpt: StringTemplateOptions | string
+  ): boolean {
     let options: StringTemplateOptions
-
     if (typeof templateOpt === 'object') {
       options = templateOpt
-      template = options.template
     } else {
-      template = templateOpt
-      options = { template }
+      options = { template: templateOpt }
     }
-
-    if (!template) return false
 
     // Dispatch to subclass if called from StringTemplate base class
     if (this === StringTemplate) {
       const templateType = options.templateFormat || defaultTemplateFormat
-      const MyTemplate = StringTemplate.get(templateType) as typeof StringTemplate
-      if (MyTemplate && MyTemplate.isPurePlaceholder !== StringTemplate.isPurePlaceholder) {
+      const MyTemplate = StringTemplate.get(
+        templateType
+      ) as typeof StringTemplate
+      if (
+        MyTemplate &&
+        MyTemplate.isPurePlaceholder !== StringTemplate.isPurePlaceholder
+      ) {
         return MyTemplate.isPurePlaceholder(templateOpt)
       }
     }
 
-    const trimmedTemplate = template.trim()
-    if (!trimmedTemplate) return false
+    return !!this.getPurePlaceholderVariable(templateOpt)
+  }
 
-    const match = this.matchTemplateSegment({ ...options, template: trimmedTemplate }, 0)
-
-    return !!(match && match.index === 0 && match[0].length === trimmedTemplate.length)
+  /**
+   * Returns the variable name if this template instance is a pure placeholder.
+   * @returns The variable name if the template is a pure placeholder, undefined otherwise.
+   */
+  getPurePlaceholderVariable(): string | undefined {
+    return (
+      this.constructor as typeof StringTemplate
+    ).getPurePlaceholderVariable(this)
   }
 
   /**
@@ -262,7 +353,11 @@ export class StringTemplate extends BaseFactory {
    */
   filterData(data: Record<string, any>) {
     if (Array.isArray(this.inputVariables)) {
-      data = Object.fromEntries(Object.entries(data).filter(([key]) => this.inputVariables!.includes(key)))
+      data = Object.fromEntries(
+        Object.entries(data).filter(([key]) =>
+          this.inputVariables!.includes(key)
+        )
+      )
     }
     return data
   }
@@ -281,9 +376,14 @@ export class StringTemplate extends BaseFactory {
    * console.log(template instanceof TestStringTemplate); // Output: true
    * ```
    */
-  constructor(template?: string|StringTemplateOptions, options?: StringTemplateOptions) {
+  constructor(
+    template?: string | StringTemplateOptions,
+    options?: StringTemplateOptions
+  ) {
     if (typeof template === 'string') {
-      if (!options) { options = {} }
+      if (!options) {
+        options = {}
+      }
       options.template = template
     } else if (template) {
       options = template
@@ -295,11 +395,17 @@ export class StringTemplate extends BaseFactory {
     super(options)
 
     if (this.constructor === StringTemplate) {
-      const TemplateClass = StringTemplate.get(templateType || defaultTemplateFormat)
+      const TemplateClass = StringTemplate.get(
+        templateType || defaultTemplateFormat
+      )
       if (TemplateClass) {
         return Reflect.construct(TemplateClass, arguments)
       } else {
-        throw new CommonError(`Prompt template type ${templateType} not found`, 'PromptTemplate', ErrorCode.InvalidArgument)
+        throw new CommonError(
+          `Prompt template type ${templateType} not found`,
+          'PromptTemplate',
+          ErrorCode.InvalidArgument
+        )
       }
     }
   }
@@ -330,7 +436,7 @@ export class StringTemplate extends BaseFactory {
    * @param data - The data object used for interpolation.
    * @returns A formatted string or a promise resolving to the formatted string.
    */
-  _format(data: Record<string, any>): string|Promise<string> {
+  _format(data: Record<string, any>): string | Promise<string> {
     throw new NotImplementationError('Not implemented', 'PromptTemplate')
   }
 
@@ -349,9 +455,24 @@ export class StringTemplate extends BaseFactory {
    * console.log(result); // Output: "Hello"
    * ```
    */
-  async format(data?: Record<string, any>): Promise<string> {
+  async format(data?: Record<string, any>): Promise<any> {
     const partialData = this.data
-    data = { ...partialData, ...data, }
+    data = { ...partialData, ...data }
+
+    if (this.raw) {
+      const varName = this.getPurePlaceholderVariable()
+      if (varName) {
+        let value = getValueByPath(data, varName)
+        if (value instanceof StringTemplate) {
+          value.raw = true
+          return value.format(data)
+        }
+        if (value !== undefined) {
+          return value
+        }
+      }
+    }
+
     if (partialData) {
       // process partial data
       for (const [key, value] of Object.entries(partialData)) {
@@ -431,8 +552,12 @@ export class StringTemplate extends BaseFactory {
       data: options.data,
       inputVariables: options.inputVariables,
       compiledTemplate: options.compiledTemplate,
+      raw: options.raw,
     }
-    if (options.templateFormat && StringTemplate.get(options.templateFormat) !== this.constructor) {
+    if (
+      options.templateFormat &&
+      StringTemplate.get(options.templateFormat) !== this.constructor
+    ) {
       result.templateFormat = options.templateFormat
     }
     result = filterNullUndefined(result)
