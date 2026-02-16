@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.8](https://github.com/isdk/template-engines.js/compare/v0.6.7...v0.6.8) (2026-02-16)
+
+
+### Features
+
+* add isPurePlaceholder to detect strings consisting solely of a placeholder ([e7fd562](https://github.com/isdk/template-engines.js/commit/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12))
+
 ## [0.6.7](https://github.com/isdk/template-engines.js/compare/v0.6.6...v0.6.7) (2025-11-03)
 
 
