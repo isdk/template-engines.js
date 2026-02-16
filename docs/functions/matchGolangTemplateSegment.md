@@ -6,9 +6,9 @@
 
 # Function: matchGolangTemplateSegment()
 
-> **matchGolangTemplateSegment**(`str`, `index`): `undefined` \| `RegExpExecArray`
+> **matchGolangTemplateSegment**(`str`, `index`): `RegExpExecArray` \| `undefined`
 
-Defined in: [packages/template-engines/src/template/golang.ts:289](https://github.com/isdk/template-engines.js/blob/de3f8eca6a17c7f333701a696e9cbd6e3b036c3b/src/template/golang.ts#L289)
+Defined in: [packages/template-engines/src/template/golang.ts:289](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/golang.ts#L289)
 
 ## Parameters
 
@@ -22,4 +22,4 @@ Defined in: [packages/template-engines/src/template/golang.ts:289](https://githu
 
 ## Returns
 
-`undefined` \| `RegExpExecArray`
+`RegExpExecArray` \| `undefined`

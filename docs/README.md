@@ -41,6 +41,11 @@ const template = StringTemplate.from("Hello, {{name}}!");
 // Format template
 const result = await template.format({ name: "World" });
 console.log(result); // Output: "Hello, World!"
+
+// Check if a template is a pure placeholder
+console.log(StringTemplate.isPurePlaceholder("{{name}}")); // true
+console.log(StringTemplate.isPurePlaceholder("  {{name}}  ")); // true
+console.log(StringTemplate.isPurePlaceholder("Hello {{name}}")); // false
 ```
 
 ## API Documentation
@@ -55,12 +60,14 @@ The main entry point for working with templates.
 * `async format(options: StringTemplateOptions)` Formats a template using provided options.
 * `async formatIf(options: StringTemplateOptions)` Formats a template if it's valid.
 * `isTemplate(templateOpt: StringTemplateOptions)` Checks if given options represent a valid template.
+* `isPurePlaceholder(templateOpt: StringTemplateOptions|string)` Checks if the template is a pure placeholder (optionally surrounded by whitespace).
 
 #### Instance Methods
 
 * `filterData(data: Record<string, any>)` Filters input data to include only specified variables.
 * `partial(data: Record<string, any>)` Creates a new template instance with partially filled data.
 * `async format(data?: Record<string, any>):` Formats a template using provided options.
+* `isPurePlaceholder()` Checks if the template instance is a pure placeholder.
 * `toJSON()` Serializes the template instance to JSON.
 
 ### Template Engines

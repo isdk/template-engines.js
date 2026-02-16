@@ -6,8 +6,8 @@
 
 # Interface: DotenvParseInput
 
-Defined in: [packages/template-engines/src/template/env.ts:208](https://github.com/isdk/template-engines.js/blob/de3f8eca6a17c7f333701a696e9cbd6e3b036c3b/src/template/env.ts#L208)
+Defined in: [packages/template-engines/src/template/env.ts:208](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/env.ts#L208)
 
 ## Indexable
 
-\[`name`: `string`\]: `undefined` \| `string`
+\[`name`: `string`\]: `string` \| `undefined`
