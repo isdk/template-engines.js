@@ -193,6 +193,60 @@ export class StringTemplate extends BaseFactory {
   }
 
   /**
+   * Checks if the template string is a pure placeholder (optionally surrounded by whitespace).
+   * A pure placeholder means the template contains only one template segment and no other text.
+   *
+   * @param templateOpt - The template options or template string to check.
+   * @returns True if the template is a pure placeholder, false otherwise.
+   *
+   * @example
+   * ```typescript
+   * StringTemplate.isPurePlaceholder("{{text}}"); // true
+   * StringTemplate.isPurePlaceholder("  {{text}}  "); // true
+   * StringTemplate.isPurePlaceholder("Hello {{text}}"); // false
+   * StringTemplate.isPurePlaceholder("{{text1}}{{text2}}"); // false
+   * ```
+   */
+  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
+    let template: string | undefined
+    let options: StringTemplateOptions
+
+    if (typeof templateOpt === 'object') {
+      options = templateOpt
+      template = options.template
+    } else {
+      template = templateOpt
+      options = { template }
+    }
+
+    if (!template) return false
+
+    // Dispatch to subclass if called from StringTemplate base class
+    if (this === StringTemplate) {
+      const templateType = options.templateFormat || defaultTemplateFormat
+      const MyTemplate = StringTemplate.get(templateType) as typeof StringTemplate
+      if (MyTemplate && MyTemplate.isPurePlaceholder !== StringTemplate.isPurePlaceholder) {
+        return MyTemplate.isPurePlaceholder(templateOpt)
+      }
+    }
+
+    const trimmedTemplate = template.trim()
+    if (!trimmedTemplate) return false
+
+    const match = this.matchTemplateSegment({ ...options, template: trimmedTemplate }, 0)
+
+    return !!(match && match.index === 0 && match[0].length === trimmedTemplate.length)
+  }
+
+  /**
+   * Checks if this template instance is a pure placeholder.
+   * @returns True if the template is a pure placeholder, false otherwise.
+   */
+  isPurePlaceholder(): boolean {
+    return (this.constructor as typeof StringTemplate).isPurePlaceholder(this)
+  }
+
+  /**
    * Filters the input data to include only the specified input variables.
    * @param data - The data object to validate and filter.
    * @returns The filtered data object containing only the allowed keys.

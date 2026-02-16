@@ -12,6 +12,17 @@ export class EnvStringTemplate extends StringTemplate {
     return matchEnvTemplateSegment(template, index)
   }
 
+  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
+    let template = typeof templateOpt === 'object' ? templateOpt.template : templateOpt
+    if (!template) return false
+
+    template = template.trim()
+    const match = this.matchTemplateSegment(template, 0)
+    // match[1] in EnvStringTemplate regex captures the escape character (backslash).
+    // A pure placeholder should not be escaped.
+    return !!(match && match.index === 0 && match[0].length === template.length && match[1] !== '\\')
+  }
+
   static isTemplate(templateOpt: StringTemplateOptions|string) {
     let template: string
     let result = false

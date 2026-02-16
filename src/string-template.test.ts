@@ -5,8 +5,14 @@ class TestStringTemplate extends StringTemplate {
   _initialize(options?: StringTemplateOptions | undefined): void {
 
   }
-  _format(data) {
+  _format(data: any) {
     return data
+  }
+  static matchTemplateSegment(templateOpt: StringTemplateOptions, index = 0) {
+    const regex = /{{(.*?)}}/g
+    const template = typeof templateOpt === 'string' ? templateOpt : templateOpt.template
+    regex.lastIndex = index
+    return regex.exec(template!) as any
   }
 }
 
@@ -50,5 +56,15 @@ describe('Template', () => {
     expect(p).toBeInstanceOf(TestStringTemplate)
     expect(p.data).toStrictEqual({date: getDate})
     expect(await p.format({role: 'user'})).toStrictEqual({role: 'user', date: dt})
+  })
+
+  describe('isPurePlaceholder', () => {
+    it('should test isPurePlaceholder on instance', () => {
+      const template = StringTemplate.from('{{text}}', { templateFormat: 'Test' })
+      expect(template.isPurePlaceholder()).toBe(true)
+
+      const mixed = StringTemplate.from('Hello {{text}}', { templateFormat: 'Test' })
+      expect(mixed.isPurePlaceholder()).toBe(false)
+    })
   })
 })

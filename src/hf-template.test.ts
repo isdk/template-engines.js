@@ -135,7 +135,7 @@ describe('HfStringTemplate', () => {
         content: ['hello', 'world', '!'],
         x:1,
         apple: 'pear',
-        func: createHfValueFunc(content => content.join(' '))
+        func: createHfValueFunc((content: any) => content.join(' '))
       },
     })).toStrictEqual('hello world !')
   })
@@ -147,7 +147,7 @@ describe('HfStringTemplate', () => {
         content: {hi: 'world', x: 2, a: [1,29]},
         x:1,
         apple: 'pear',
-        func: createHfValueFunc(content => Object.entries(content).flat().join(' '))
+        func: createHfValueFunc((content: any) => Object.entries(content).flat().join(' '))
       },
     })).toStrictEqual('hi world x 2 a 1,29')
   })
@@ -159,7 +159,7 @@ describe('HfStringTemplate', () => {
         content: {hi: 'world', x: 2, a: [1,29]},
         x:1,
         apple: 'pear',
-        func: createHfValueFunc(content => Object.entries(content).flat().join(' '))
+        func: createHfValueFunc((content: any) => Object.entries(content).flat().join(' '))
       },
     })).toStrictEqual('hi world x 2 a 1,29')
   })
@@ -321,6 +321,19 @@ describe('HfStringTemplate', () => {
       result = StringTemplate.matchTemplateSegment({template: templateStr}, pos)
       expect(result).toBeUndefined()
       expect(StringTemplate.matchTemplateSegment({template: 'a {{strings '})).toBeUndefined()
+    })
+  })
+
+  describe('isPurePlaceholder', () => {
+    it('should detect pure placeholders', () => {
+      expect(HfStringTemplate.isPurePlaceholder('{{ var }}')).toBe(true)
+      expect(HfStringTemplate.isPurePlaceholder('  {{ var }}  ')).toBe(true)
+      expect(StringTemplate.isPurePlaceholder({ template: '{{ var }}', templateFormat: 'hf' })).toBe(true)
+    })
+
+    it('should not detect statements or comments as pure placeholders', () => {
+      expect(HfStringTemplate.isPurePlaceholder('{% if true %}')).toBe(false)
+      expect(HfStringTemplate.isPurePlaceholder('{# comment #}')).toBe(false)
     })
   })
 })

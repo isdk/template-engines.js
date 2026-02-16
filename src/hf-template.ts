@@ -101,6 +101,17 @@ export class HfStringTemplate extends StringTemplate {
     }
   }
 
+  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
+    let template = typeof templateOpt === 'object' ? templateOpt.template : templateOpt
+    if (!template) return false
+
+    template = template.trim()
+    const match = this.matchTemplateSegment(template, 0)
+    // match[1] captures '%' for statements or '#' for comments in HfStringTemplate regex.
+    // A pure placeholder must be an expression {{ ... }}, so match[1] should be undefined.
+    return !!(match && match.index === 0 && match[0].length === template.length && !match[1])
+  }
+
   static isTemplate(templateOpt: StringTemplateOptions|string): boolean {
     let compiledTemplate: any
     let template: string

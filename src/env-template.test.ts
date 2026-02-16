@@ -113,10 +113,25 @@ describe('EnvStringTemplate', () => {
       expect(result).toBeDefined()
       expect(result!.index).toStrictEqual(pos+3)
       expect(result![0]).toBe('\\${b}')
-      pos = result!.index + result![0].length
-      result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
-      expect(result).toBeUndefined()
-      expect(StringTemplate.matchTemplateSegment({template: 'a ${strings ', templateFormat: 'js'})).toBeUndefined()
-    })
-  })
-})
+            pos = result!.index + result![0].length
+            result = StringTemplate.matchTemplateSegment({template: templateStr, templateFormat: 'env'}, pos)
+            expect(result).toBeUndefined()
+            expect(StringTemplate.matchTemplateSegment({template: 'a ${strings ', templateFormat: 'js'})).toBeUndefined()
+          })
+        })
+      
+        describe('isPurePlaceholder', () => {
+          it('should detect pure placeholders', () => {
+            expect(EnvStringTemplate.isPurePlaceholder('$VAR')).toBe(true)
+            expect(EnvStringTemplate.isPurePlaceholder('${VAR}')).toBe(true)
+            expect(EnvStringTemplate.isPurePlaceholder('  ${VAR:-default}  ')).toBe(true)
+            expect(StringTemplate.isPurePlaceholder({ template: '$VAR', templateFormat: 'env' })).toBe(true)
+          })
+      
+          it('should not detect mixed content or escaped variables', () => {
+            expect(EnvStringTemplate.isPurePlaceholder('prefix $VAR')).toBe(false)
+            expect(EnvStringTemplate.isPurePlaceholder('\\$VAR')).toBe(false)
+          })
+        })
+      })
+      

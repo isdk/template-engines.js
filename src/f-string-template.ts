@@ -27,6 +27,18 @@ export class FStringTemplate extends StringTemplate {
     if (match) {return match}
   }
 
+  static isPurePlaceholder(templateOpt: StringTemplateOptions | string): boolean {
+    let template = typeof templateOpt === 'object' ? templateOpt.template : templateOpt
+    if (!template) return false
+
+    template = template.trim()
+    const match = this.matchTemplateSegment(template, 0)
+    // In FStringTemplate, the regex is /\{(?!{)(.*?)(?<!})\}|{{|}}/g
+    // match[1] captures the variable name if it's a real placeholder.
+    // If match[1] is undefined, it means it matched '{{' or '}}' (escaped braces).
+    return !!(match && match.index === 0 && match[0].length === template.length && match[1] !== undefined)
+  }
+
   static isTemplate(templateOpt: StringTemplateOptions|string) {
     let compiledTemplate: any
     let template: string

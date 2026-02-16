@@ -117,4 +117,17 @@ describe('GolangStringTemplate', () => {
       expect(StringTemplate.matchTemplateSegment({template: 'a {{strings ', templateFormat: 'golang'})).toBeUndefined()
     })
   })
+
+  describe('isPurePlaceholder', () => {
+    it('should detect pure placeholders', () => {
+      expect(GolangStringTemplate.isPurePlaceholder('{{.var}}')).toBe(true)
+      expect(GolangStringTemplate.isPurePlaceholder('  {{ .var }}  ')).toBe(true)
+      expect(StringTemplate.isPurePlaceholder({ template: '{{.var}}', templateFormat: 'golang' })).toBe(true)
+    })
+
+    it('should not detect mixed content or variables without dot', () => {
+      expect(GolangStringTemplate.isPurePlaceholder('Hello {{.var}}')).toBe(false)
+      expect(GolangStringTemplate.isPurePlaceholder('{{var}}')).toBe(false)
+    })
+  })
 })
