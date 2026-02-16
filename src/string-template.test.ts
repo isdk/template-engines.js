@@ -152,6 +152,95 @@ describe('Template', () => {
       expect(result).toBe(123)
     })
 
+    it('should return raw value from complex path with bracket notation', async () => {
+      const data = { users: [{ profile: { id: 456 } }] }
+      const result = await StringTemplate.format({
+        template: '{{users[0].profile}}',
+        data,
+        templateFormat: 'Test',
+        raw: true,
+      })
+      expect(result).toStrictEqual(data.users[0].profile)
+    })
+
+    it('should return recursively resolved raw object for pure placeholder', async () => {
+      const data = {
+        user: { name: '{{name}}', profile: '{{prof}}' },
+        name: 'Alice',
+        prof: { bio: 'developer' },
+      }
+      const result = await StringTemplate.format({
+        template: '{{user}}',
+        data,
+        templateFormat: 'Test',
+        raw: true,
+      })
+      expect(result).toStrictEqual({
+        name: 'Alice',
+        profile: { bio: 'developer' },
+      })
+    })
+
+    it('should handle circular references in raw mode without infinite loop', async () => {
+      const data: any = { a: '{{b}}', b: '{{a}}' }
+      const result = await StringTemplate.format({
+        template: '{{a}}',
+        data,
+        templateFormat: 'Test',
+        raw: true,
+      })
+      expect(result).toBe('{{a}}')
+    })
+
+    it('should handle multi-level circular references', async () => {
+      const data: any = { a: '{{b}}', b: '{{c}}', c: '{{a}}' }
+      const result = await StringTemplate.format({
+        template: '{{a}}',
+        data,
+        templateFormat: 'Test',
+        raw: true,
+      })
+      expect(result).toBe('{{a}}')
+    })
+
+    it('should handle deep mixed recursion in raw mode', async () => {
+      const data = {
+        a: '{{b}}',
+        b: {
+          c: '{{d}}',
+          e: [1, '{{f}}'],
+        },
+        d: 'final',
+        f: { g: true },
+      }
+      const result = await StringTemplate.format({
+        template: '{{a}}',
+        data,
+        templateFormat: 'Test',
+        raw: true,
+      })
+      expect(result).toStrictEqual({
+        c: 'final',
+        e: [1, { g: true }],
+      })
+    })
+
+    it('should correctly fallback to string for mixed content even if some parts are pure placeholders elsewhere', async () => {
+      const data = {
+        name: { first: 'Alice' },
+        greeting: 'Hello',
+      }
+      // Although {{name}} would be a pure placeholder if used alone,
+      // here it's part of a larger string.
+      const result = await StringTemplate.format({
+        template: '{{greeting}} {{name}}',
+        data,
+        templateFormat: 'hf',
+        raw: true,
+      })
+      expect(result).toBe('Hello {"first":"Alice"}')
+    })
+
     it('should handle nested templates with raw option', async () => {
       const subTemplate = new StringTemplate('{{value}}', {
         templateFormat: 'Test',

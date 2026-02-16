@@ -1,16 +1,10 @@
+import get from 'lodash-es/get'
+
 /**
- * Gets the value at `path` of `object`.
+ * Gets the value at `path` of `object`. Supports complex paths (e.g., users[0].profile).
+ *
  * @param object
  * @param path
  * @returns value if exists else undefined
  */
-export function getValueByPath(
-  object: Record<string, any>,
-  path: string | any[]
-): any {
-  if (typeof path === 'string') {
-    path = path.split('.').filter((key) => key.length)
-  }
-
-  return path.reduce((dive, key) => dive?.[key], object)
-}
+export { get as getValueByPath }

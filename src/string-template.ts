@@ -320,9 +320,13 @@ export class StringTemplate extends BaseFactory {
   }
 
   /**
-   * Returns the variable name if this template instance is a pure placeholder.
-   * @returns The variable name if the template is a pure placeholder, undefined otherwise.
-   */
+
+     * Returns the variable name if this template instance is a pure placeholder.
+
+     * @returns The variable name if the template is a pure placeholder, undefined otherwise.
+
+     */
+
   getPurePlaceholderVariable(): string | undefined {
     return (
       this.constructor as typeof StringTemplate
@@ -330,7 +334,88 @@ export class StringTemplate extends BaseFactory {
   }
 
   /**
-   * Checks if this template instance is a pure placeholder.
+
+     * Renders the raw value recursively, resolving any nested templates.
+
+     * @param value - The value to render.
+
+     * @param data - The data object used for interpolation.
+
+     * @param visited - A set to track visited objects to avoid infinite recursion.
+
+     * @returns A promise that resolves to the rendered raw value.
+
+     */
+
+  async renderRawValue(
+    value: any,
+
+    data: Record<string, any>,
+
+    visited?: Set<any>
+  ): Promise<any> {
+    if (value && typeof value === 'object') {
+      if (value instanceof StringTemplate) {
+        value.raw = true
+
+        return value.format(data, visited)
+      }
+
+      if (!visited) {
+        visited = new Set()
+      }
+
+      if (visited.has(value)) {
+        return value
+      }
+
+      visited.add(value)
+
+      let result: any
+
+      if (Array.isArray(value)) {
+        result = await Promise.all(
+          value.map((v) => this.renderRawValue(v, data, visited))
+        )
+      } else {
+        result = {}
+
+        for (const [k, v] of Object.entries(value)) {
+          result[k] = await this.renderRawValue(v, data, visited)
+        }
+      }
+
+      visited.delete(value)
+
+      return result
+    }
+
+    if (typeof value === 'string') {
+      const MyClass = this.constructor as typeof StringTemplate
+
+      const options = this.toJSON()
+
+      if (MyClass.isTemplate({ ...options, template: value })) {
+        const t = new (this.constructor as any)({
+          ...options,
+
+          template: value,
+
+          raw: true,
+        })
+
+        return t.format(data, visited)
+      }
+    }
+
+    return value
+  }
+
+  /**
+
+     * Checks if this template instance is a pure placeholder.
+
+  
    * @returns True if the template is a pure placeholder, false otherwise.
    */
   isPurePlaceholder(): boolean {
@@ -455,20 +540,29 @@ export class StringTemplate extends BaseFactory {
    * console.log(result); // Output: "Hello"
    * ```
    */
-  async format(data?: Record<string, any>): Promise<any> {
+  async format(data?: Record<string, any>, visited?: Set<any>): Promise<any> {
     const partialData = this.data
     data = { ...partialData, ...data }
 
     if (this.raw) {
       const varName = this.getPurePlaceholderVariable()
-      if (varName) {
-        let value = getValueByPath(data, varName)
-        if (value instanceof StringTemplate) {
-          value.raw = true
-          return value.format(data)
+      if (varName !== undefined) {
+        if (!visited) {
+          visited = new Set()
         }
+        if (visited.has(this.template)) {
+          return this.template
+        }
+        visited.add(this.template)
+
+        const value = varName ? getValueByPath(data, varName) : data
+        let result: any
         if (value !== undefined) {
-          return value
+          result = await this.renderRawValue(value, data, visited)
+        }
+        visited.delete(this.template)
+        if (result !== undefined) {
+          return result
         }
       }
     }
