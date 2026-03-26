@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.9](https://github.com/isdk/template-engines.js/compare/v0.6.8...v0.6.9) (2026-03-26)
+
+
+### Features
+
+* add getPurePlaceholderVariable and 'raw' option for raw value return ([f83fdef](https://github.com/isdk/template-engines.js/commit/f83fdef38dadb696bf7fb4e5c86628a6ccca8931))
+* support complex paths and recursive resolution in raw mode ([bd30045](https://github.com/isdk/template-engines.js/commit/bd30045e3486cb2f08f9d805525cbc3f6a1f8fab))
+
+
+### Bug Fixes
+
+* **jinja:** the filter function can not pass options: `text | filter({"opt": true})` ([8468b3d](https://github.com/isdk/template-engines.js/commit/8468b3d69f22c554f3c3c1a209861ed95f2c96bb))
+* oclif crash can not get from lodash-es/get ([31ac3de](https://github.com/isdk/template-engines.js/commit/31ac3deff7ac35e7dde18c7047f8e98d8f63fbf0))
+
 ## [0.6.8](https://github.com/isdk/template-engines.js/compare/v0.6.7...v0.6.8) (2026-02-16)
 
 ### Features
