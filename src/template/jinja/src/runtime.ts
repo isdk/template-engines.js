@@ -1487,6 +1487,16 @@ function parseRuntimeValue(
         {
           if ((arg as ObjectValue).orgValue) {
             result = (arg as ObjectValue).orgValue
+            if (result instanceof Map) {
+              const _result = {}
+              result.forEach((item: AnyRuntimeValue, key: StringLiteral|string) => {
+                if (key && typeof key !== 'string' && key.value) {
+                  key = key.value
+                }
+                _result[key as any] = parseRuntimeValue(item)
+              })
+              result = _result
+            }
             // } else if (!arg.forEach) {
             // 	result = parseRuntimeValue(arg.value)
           } else {
