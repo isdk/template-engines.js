@@ -8,7 +8,7 @@
 
 > **createHfValueFunc**(`fn`): (`_data`) => `Function`
 
-Defined in: [packages/template-engines/src/hf-template.ts:169](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/hf-template.ts#L169)
+Defined in: [packages/template-engines/src/hf-template.ts:227](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/hf-template.ts#L227)
 
 ## Parameters
 

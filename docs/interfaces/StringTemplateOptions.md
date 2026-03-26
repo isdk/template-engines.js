@@ -6,7 +6,7 @@
 
 # Interface: StringTemplateOptions
 
-Defined in: [packages/template-engines/src/string-template.ts:9](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L9)
+Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L15)
 
 ## Indexable
 
@@ -18,7 +18,7 @@ Defined in: [packages/template-engines/src/string-template.ts:9](https://github.
 
 > `optional` **compiledTemplate**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:14](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L14)
+Defined in: [packages/template-engines/src/string-template.ts:20](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L20)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [packages/template-engines/src/string-template.ts:14](https://github
 
 > `optional` **data**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:11](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L11)
+Defined in: [packages/template-engines/src/string-template.ts:17](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L17)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [packages/template-engines/src/string-template.ts:11](https://github
 
 > `optional` **ignoreInitialize**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L15)
+Defined in: [packages/template-engines/src/string-template.ts:21](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L21)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [packages/template-engines/src/string-template.ts:15](https://github
 
 > `optional` **index**: `number`
 
-Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L16)
+Defined in: [packages/template-engines/src/string-template.ts:22](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L22)
 
 ***
 
@@ -50,7 +50,15 @@ Defined in: [packages/template-engines/src/string-template.ts:16](https://github
 
 > `optional` **inputVariables**: `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:13](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L13)
+Defined in: [packages/template-engines/src/string-template.ts:19](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L19)
+
+***
+
+### raw?
+
+> `optional` **raw**: `boolean`
+
+Defined in: [packages/template-engines/src/string-template.ts:23](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L23)
 
 ***
 
@@ -58,7 +66,7 @@ Defined in: [packages/template-engines/src/string-template.ts:13](https://github
 
 > `optional` **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:10](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L10)
+Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L16)
 
 ***
 
@@ -66,4 +74,4 @@ Defined in: [packages/template-engines/src/string-template.ts:10](https://github
 
 > `optional` **templateFormat**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:12](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/string-template.ts#L12)
+Defined in: [packages/template-engines/src/string-template.ts:18](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L18)

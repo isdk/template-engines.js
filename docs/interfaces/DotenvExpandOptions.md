@@ -6,7 +6,7 @@
 
 # Interface: DotenvExpandOptions
 
-Defined in: [packages/template-engines/src/template/env.ts:216](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/env.ts#L216)
+Defined in: [packages/template-engines/src/template/env.ts:240](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/env.ts#L240)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [packages/template-engines/src/template/env.ts:216](https://github.c
 
 > `optional` **error**: `Error`
 
-Defined in: [packages/template-engines/src/template/env.ts:217](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/env.ts#L217)
+Defined in: [packages/template-engines/src/template/env.ts:241](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/env.ts#L241)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [packages/template-engines/src/template/env.ts:217](https://github.c
 
 > `optional` **parsed**: [`DotenvParseInput`](DotenvParseInput.md)
 
-Defined in: [packages/template-engines/src/template/env.ts:233](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/env.ts#L233)
+Defined in: [packages/template-engines/src/template/env.ts:257](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/env.ts#L257)
 
 Default: `object`
 
@@ -34,7 +34,7 @@ Object coming from dotenv's parsed result.
 
 > `optional` **processEnv**: [`DotenvPopulateInput`](DotenvPopulateInput.md)
 
-Defined in: [packages/template-engines/src/template/env.ts:226](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/env.ts#L226)
+Defined in: [packages/template-engines/src/template/env.ts:250](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/env.ts#L250)
 
 Default: `process.env`
 

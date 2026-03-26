@@ -6,7 +6,7 @@
 
 # Class: HFInterpreter
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:455](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/jinja/src/runtime.ts#L455)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:513](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/runtime.ts#L513)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:455](ht
 
 > **new HFInterpreter**(`env?`): `Interpreter`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:458](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/jinja/src/runtime.ts#L458)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:516](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/runtime.ts#L516)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:458](ht
 
 > **global**: `Environment`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:456](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/jinja/src/runtime.ts#L456)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:514](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/runtime.ts#L514)
 
 ## Methods
 
@@ -40,7 +40,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:456](ht
 
 > **evaluate**(`statement`, `environment`): `AnyRuntimeValue`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:1147](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/jinja/src/runtime.ts#L1147)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:1316](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/runtime.ts#L1316)
 
 #### Parameters
 
@@ -62,7 +62,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:1147](h
 
 > **run**(`program`): `AnyRuntimeValue`
 
-Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:465](https://github.com/isdk/template-engines.js/blob/e7fd5627a87b9ce2ab4df5ca32d567c23479ef12/src/template/jinja/src/runtime.ts#L465)
+Defined in: [packages/template-engines/src/template/jinja/src/runtime.ts:523](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/runtime.ts#L523)
 
 Run the program.
 
