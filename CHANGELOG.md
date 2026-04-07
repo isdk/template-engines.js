@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.10](https://github.com/isdk/template-engines.js/compare/v0.6.9...v0.6.10) (2026-04-07)
+
+
+### Features
+
+* **template:** add toJSON to StringTemplateFinalValue for transparent serialization ([7dade55](https://github.com/isdk/template-engines.js/commit/7dade55e7c19979497e3b2db807022ef515c1e84))
+* **template:** implement recursive rendering with advanced expansion control ([f74b644](https://github.com/isdk/template-engines.js/commit/f74b644fc6287574ecb18291f16cf1963287e693))
+
 ## [0.6.9](https://github.com/isdk/template-engines.js/compare/v0.6.8...v0.6.9) (2026-03-26)
 
 
