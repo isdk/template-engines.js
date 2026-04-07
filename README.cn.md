@@ -145,6 +145,11 @@ await StringTemplate.format({ template: '{{msg}}', data, expandValue: false })
 // 2. 数据级保护
 await StringTemplate.format({ template: '{{code}}', data })
 // 输出: "带有 {{syntax}} 的代码" (原样保留)
+
+// 3. JSON 序列化透明性 (新增)
+// StringTemplateFinalValue 在 JSON.stringify 时会自动解包，确保数据交换的无缝性
+console.log(JSON.stringify(data.code))
+// 输出: "带有 {{syntax}} 的代码"
 ```
 
 ### 8. 扩展引擎 (自定义格式)

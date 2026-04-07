@@ -145,6 +145,12 @@ await StringTemplate.format({ template: '{{msg}}', data, expandValue: false })
 // 2. Data-level protection
 await StringTemplate.format({ template: '{{code}}', data })
 // Output: "Code with {{syntax}}" (Preserved literally)
+
+// 3. JSON Serialization Transparency (New)
+// StringTemplateFinalValue automatically unwraps during JSON.stringify, 
+// ensuring seamless data exchange.
+console.log(JSON.stringify(data.code))
+// Output: "Code with {{syntax}}"
 ```
 
 ### 8. Extending the Engine (Custom Formats)
