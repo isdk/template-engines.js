@@ -6,7 +6,7 @@
 
 # Class: EnvStringTemplate
 
-Defined in: [packages/template-engines/src/env-template.ts:9](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L9)
+Defined in: [packages/template-engines/src/env-template.ts:9](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L9)
 
 The `StringTemplate` class is a versatile template engine that supports dynamic template creation,
 formatting, and partial data processing. It extends the `BaseFactory` class and provides methods
@@ -45,7 +45,7 @@ console.log(result); // Output: "Formatted: Hello World"
 
 > **new EnvStringTemplate**(`template?`, `options?`): `EnvStringTemplate`
 
-Defined in: [packages/template-engines/src/string-template.ts:464](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L464)
+Defined in: [packages/template-engines/src/string-template.ts:568](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L568)
 
 Initializes a new instance of the `StringTemplate` class.
 
@@ -87,7 +87,7 @@ console.log(template instanceof TestStringTemplate); // Output: true
 
 > **compiledTemplate**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:58](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L58)
+Defined in: [packages/template-engines/src/string-template.ts:134](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L134)
 
 Declares the compiled template instance.
 
@@ -101,7 +101,7 @@ Declares the compiled template instance.
 
 > **data**: `Record`\<`string`, `any`\> \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:70](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L70)
+Defined in: [packages/template-engines/src/string-template.ts:146](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L146)
 
 Declares the data object used for template interpolation.
 
@@ -111,11 +111,25 @@ Declares the data object used for template interpolation.
 
 ***
 
+### expandValue
+
+> **expandValue**: `boolean` \| `undefined`
+
+Defined in: [packages/template-engines/src/string-template.ts:158](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L158)
+
+Declares whether to expand the value as a template if it is a string and matches the template format.
+
+#### Inherited from
+
+[`StringTemplate`](StringTemplate.md).[`expandValue`](StringTemplate.md#expandvalue)
+
+***
+
 ### inputVariables
 
 > **inputVariables**: `string`[] \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:74](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L74)
+Defined in: [packages/template-engines/src/string-template.ts:150](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L150)
 
 Declares the list of input variables expected by the template.
 
@@ -129,7 +143,7 @@ Declares the list of input variables expected by the template.
 
 > **raw**: `boolean` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:78](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L78)
+Defined in: [packages/template-engines/src/string-template.ts:154](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L154)
 
 Declares whether to return the raw value if the template is a pure placeholder.
 
@@ -143,7 +157,7 @@ Declares whether to return the raw value if the template is a pure placeholder.
 
 > **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:62](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L62)
+Defined in: [packages/template-engines/src/string-template.ts:138](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L138)
 
 Declares the raw template string.
 
@@ -157,7 +171,7 @@ Declares the raw template string.
 
 > **templateFormat**: `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:66](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L66)
+Defined in: [packages/template-engines/src/string-template.ts:142](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L142)
 
 Declares the format of the template (e.g., 'default').
 
@@ -329,7 +343,7 @@ The Root Factory class
 
 > **\_format**(`data`): `string`
 
-Defined in: [packages/template-engines/src/env-template.ts:82](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L82)
+Defined in: [packages/template-engines/src/env-template.ts:82](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L82)
 
 Placeholder method for formatting the template. Must be implemented by subclasses.
 
@@ -357,7 +371,7 @@ A formatted string or a promise resolving to the formatted string.
 
 > **\_initialize**(`options?`): `void`
 
-Defined in: [packages/template-engines/src/env-template.ts:68](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L68)
+Defined in: [packages/template-engines/src/env-template.ts:68](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L68)
 
 Placeholder method for initializing the template. Must be implemented by subclasses.
 
@@ -383,7 +397,7 @@ Configuration options for initialization.
 
 > **filterData**(`data`): `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:439](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L439)
+Defined in: [packages/template-engines/src/string-template.ts:543](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L543)
 
 Filters the input data to include only the specified input variables.
 
@@ -421,7 +435,7 @@ console.log(filteredData); // Output: { name: "Alice" }
 
 > **format**(`data?`, `visited?`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:543](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L543)
+Defined in: [packages/template-engines/src/string-template.ts:647](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L647)
 
 Formats the template using the provided data, supporting asynchronous processing.
 
@@ -464,7 +478,7 @@ console.log(result); // Output: "Hello"
 
 > **getPurePlaceholderVariable**(): `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:330](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L330)
+Defined in: [packages/template-engines/src/string-template.ts:413](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L413)
 
 Returns the variable name if this template instance is a pure placeholder.
 
@@ -484,7 +498,7 @@ The variable name if the template is a pure placeholder, undefined otherwise.
 
 > **getVariables**(`template`): `string`[]
 
-Defined in: [packages/template-engines/src/env-template.ts:64](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L64)
+Defined in: [packages/template-engines/src/env-template.ts:64](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L64)
 
 #### Parameters
 
@@ -502,7 +516,7 @@ Defined in: [packages/template-engines/src/env-template.ts:64](https://github.co
 
 > **initialize**(`options?`): `void`
 
-Defined in: [packages/template-engines/src/string-template.ts:510](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L510)
+Defined in: [packages/template-engines/src/string-template.ts:614](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L614)
 
 Initializes the template instance with the provided options.
 
@@ -528,7 +542,7 @@ Configuration options for initialization.
 
 > **isPurePlaceholder**(): `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:421](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L421)
+Defined in: [packages/template-engines/src/string-template.ts:525](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L525)
 
 Checks if this template instance is a pure placeholder.
 
@@ -548,7 +562,7 @@ True if the template is a pure placeholder, false otherwise.
 
 > **partial**(`data`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:619](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L619)
+Defined in: [packages/template-engines/src/string-template.ts:739](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L739)
 
 Creates a new `StringTemplate` instance with partially filled data.
 This is useful for pre-filling some variables while leaving others to be filled later.
@@ -599,7 +613,7 @@ console.log(dateResult.date instanceof Date); // Output: true
 
 > **renderRawValue**(`value`, `data`, `visited?`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:350](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L350)
+Defined in: [packages/template-engines/src/string-template.ts:426](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L426)
 
 Renders the raw value recursively, resolving any nested templates.
 
@@ -639,7 +653,7 @@ A promise that resolves to the rendered raw value.
 
 > **toJSON**(`options`): [`StringTemplateOptions`](../interfaces/StringTemplateOptions.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:643](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L643)
+Defined in: [packages/template-engines/src/string-template.ts:763](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L763)
 
 Serializes the `StringTemplate` instance into a JSON-compatible object.
 
@@ -870,7 +884,7 @@ the forEach callback function
 
 > `static` **format**(`options`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:117](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L117)
+Defined in: [packages/template-engines/src/string-template.ts:197](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L197)
 
 Formats a template using the provided options.
 
@@ -909,7 +923,7 @@ console.log(result); // Output: "Hello"
 
 > `static` **formatIf**(`options`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:137](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L137)
+Defined in: [packages/template-engines/src/string-template.ts:217](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L217)
 
 Formats a template if the provided options represent a valid template.
 
@@ -1008,7 +1022,7 @@ the name to register
 
 > `static` **from**(`template?`, `options?`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:95](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L95)
+Defined in: [packages/template-engines/src/string-template.ts:175](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L175)
 
 Creates a new instance of the `StringTemplate` class.
 
@@ -1158,7 +1172,7 @@ the unique name in the factory
 
 > `static` **getPurePlaceholderVariable**(`templateOpt`): `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/env-template.ts:21](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L21)
+Defined in: [packages/template-engines/src/env-template.ts:21](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L21)
 
 Returns the variable name if the template is a pure placeholder.
 
@@ -1244,7 +1258,7 @@ the unique name in the factory
 
 > `static` **isPurePlaceholder**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/env-template.ts:42](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L42)
+Defined in: [packages/template-engines/src/env-template.ts:42](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L42)
 
 Checks if the template string is a pure placeholder (optionally surrounded by whitespace).
 A pure placeholder means the template contains only one template segment and no other text.
@@ -1282,7 +1296,7 @@ StringTemplate.isPurePlaceholder("{{text1}}{{text2}}"); // false
 
 > `static` **isTemplate**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/env-template.ts:48](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L48)
+Defined in: [packages/template-engines/src/env-template.ts:48](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L48)
 
 Determines whether the given options represent a valid template.
 
@@ -1320,7 +1334,7 @@ console.log(isValid); // Output: true
 
 > `static` **matchTemplateSegment**(`template`, `index`): `RegExpExecArray` \| `undefined`
 
-Defined in: [packages/template-engines/src/env-template.ts:10](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/env-template.ts#L10)
+Defined in: [packages/template-engines/src/env-template.ts:10](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/env-template.ts#L10)
 
 Matches and extracts a single template segment from the provided template options.
 This method is designed to identify individual segments of a template string.

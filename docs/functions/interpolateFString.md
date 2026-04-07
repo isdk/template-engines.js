@@ -8,7 +8,7 @@
 
 > **interpolateFString**(`nodes`, `values`): `string`
 
-Defined in: [packages/template-engines/src/template/python.ts:72](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/python.ts#L72)
+Defined in: [packages/template-engines/src/template/python.ts:72](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/python.ts#L72)
 
 Type that represents a function that takes a template string and a set
 of input values, and returns a string where all variables in the

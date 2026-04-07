@@ -8,7 +8,7 @@
 
 > **expandEnv**(`options`): [`DotenvExpandOptions`](../interfaces/DotenvExpandOptions.md)
 
-Defined in: [packages/template-engines/src/template/env.ts:121](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/env.ts#L121)
+Defined in: [packages/template-engines/src/template/env.ts:121](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/env.ts#L121)
 
 Expand environment variables in the parsed object
 

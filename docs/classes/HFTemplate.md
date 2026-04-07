@@ -6,7 +6,7 @@
 
 # Class: HFTemplate
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:22](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/index.ts#L22)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:22](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/index.ts#L22)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/index.ts:22](https
 
 > **new HFTemplate**(`template`, `options`): `Template`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:30](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/index.ts#L30)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:30](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/index.ts#L30)
 
 #### Parameters
 
@@ -38,7 +38,7 @@ The template string
 
 > **parsed**: `Program`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/index.ts#L23)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/index.ts#L23)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/index.ts:23](https
 
 > `static` **global**: [`HFEnvironment`](HFEnvironment.md)
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:25](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/index.ts#L25)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:25](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/index.ts#L25)
 
 ## Methods
 
@@ -54,7 +54,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/index.ts:25](https
 
 > **render**(`items?`): `string`
 
-Defined in: [packages/template-engines/src/template/jinja/src/index.ts:40](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/template/jinja/src/index.ts#L40)
+Defined in: [packages/template-engines/src/template/jinja/src/index.ts:40](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/index.ts#L40)
 
 #### Parameters
 

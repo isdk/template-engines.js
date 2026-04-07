@@ -6,7 +6,7 @@
 
 # Interface: StringTemplateOptions
 
-Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L15)
+Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L15)
 
 ## Indexable
 
@@ -18,7 +18,9 @@ Defined in: [packages/template-engines/src/string-template.ts:15](https://github
 
 > `optional` **compiledTemplate**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:20](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L20)
+Defined in: [packages/template-engines/src/string-template.ts:25](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L25)
+
+Pre-compiled template object to speed up formatting.
 
 ***
 
@@ -26,7 +28,29 @@ Defined in: [packages/template-engines/src/string-template.ts:20](https://github
 
 > `optional` **data**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:17](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L17)
+Defined in: [packages/template-engines/src/string-template.ts:19](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L19)
+
+The data object used for template interpolation.
+
+***
+
+### expandValue?
+
+> `optional` **expandValue**: `boolean`
+
+Defined in: [packages/template-engines/src/string-template.ts:47](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L47)
+
+Whether to expand the value as a template if it is a string and matches the template format.
+This enables recursive rendering where a variable's value can itself be a template.
+Defaults to true.
+
+#### Example
+
+```typescript
+const data = { name: "World", msg: "Hello, {{name}}!" };
+await StringTemplate.format({ template: "{{msg}}", data }); // "Hello, World!"
+await StringTemplate.format({ template: "{{msg}}", data, expandValue: false }); // "Hello, {{name}}!"
+```
 
 ***
 
@@ -34,7 +58,9 @@ Defined in: [packages/template-engines/src/string-template.ts:17](https://github
 
 > `optional` **ignoreInitialize**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:21](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L21)
+Defined in: [packages/template-engines/src/string-template.ts:27](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L27)
+
+If true, skips the initialization phase.
 
 ***
 
@@ -42,7 +68,9 @@ Defined in: [packages/template-engines/src/string-template.ts:21](https://github
 
 > `optional` **index**: `number`
 
-Defined in: [packages/template-engines/src/string-template.ts:22](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L22)
+Defined in: [packages/template-engines/src/string-template.ts:29](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L29)
+
+Starting index for template segment matching.
 
 ***
 
@@ -50,7 +78,9 @@ Defined in: [packages/template-engines/src/string-template.ts:22](https://github
 
 > `optional` **inputVariables**: `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:19](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L19)
+Defined in: [packages/template-engines/src/string-template.ts:23](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L23)
+
+The list of input variables expected by the template.
 
 ***
 
@@ -58,7 +88,10 @@ Defined in: [packages/template-engines/src/string-template.ts:19](https://github
 
 > `optional` **raw**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:23](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L23)
+Defined in: [packages/template-engines/src/string-template.ts:34](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L34)
+
+If true, returns the raw value (Object, Array, Boolean, etc.) instead of a string
+if the template is a pure placeholder (e.g., "{{user}}").
 
 ***
 
@@ -66,7 +99,9 @@ Defined in: [packages/template-engines/src/string-template.ts:23](https://github
 
 > `optional` **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L16)
+Defined in: [packages/template-engines/src/string-template.ts:17](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L17)
+
+The template string to be formatted.
 
 ***
 
@@ -74,4 +109,6 @@ Defined in: [packages/template-engines/src/string-template.ts:16](https://github
 
 > `optional` **templateFormat**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:18](https://github.com/isdk/template-engines.js/blob/8468b3d69f22c554f3c3c1a209861ed95f2c96bb/src/string-template.ts#L18)
+Defined in: [packages/template-engines/src/string-template.ts:21](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L21)
+
+The format of the template (e.g., 'hf', 'golang', 'fstring', 'env'). Defaults to 'default'.

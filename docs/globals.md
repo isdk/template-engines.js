@@ -14,6 +14,7 @@
 - [HfStringTemplate](classes/HfStringTemplate.md)
 - [HFTemplate](classes/HFTemplate.md)
 - [StringTemplate](classes/StringTemplate.md)
+- [StringTemplateFinalValue](classes/StringTemplateFinalValue.md)
 
 ## Interfaces
 
