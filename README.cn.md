@@ -216,6 +216,60 @@ console.log(result) // "你好 开发者"
 - `getPurePlaceholderVariable()` 如果该模板实例是纯占位符，则返回其变量名。
 - `toJSON()` 将模板实例序列化为 JSON。
 
+### 公用工具 (Utilities)
+
+该库提供用于识别和清理模板数据的工具函数。
+
+#### `isStringTemplateFormatable(val: any): boolean`
+
+检查值是否适合用于 `StringTemplate` 格式化。
+
+- **合规的值 (Formatable values)**:
+  - **基本类型 (Primitives)**: `string`, `number`, `boolean`, `bigint`, `symbol`, `null`, `undefined`。
+  - **函数 (Functions)**: 用作动态数据源。
+  - **数组 (Arrays)**: 递归处理。
+  - **纯对象 (Plain Objects)**: 原型为 `Object.prototype` 或 `null` 的对象。
+  - **内置对象**: `Date`, `RegExp` (及其子类)。
+  - **包装对象**: `String`, `Number`, `Boolean` 包装类。
+  - **`StringTemplateFinalValue`**: 用于字面量保护的特殊包装。
+- **不合规的值 (Non-formatable values)**:
+  - `Error` 实例。
+  - `Map`, `Set`, `Promise`。
+  - 其他自定义类实例 (且未继承自上述合规类型)。
+
+#### `pickStringTemplateData(val: any, options?: PickStringTemplateDataOptions): any`
+
+递归地深度清理对象或数组，以确保所有值都适合 `StringTemplate` 格式化。
+
+- **递归深度清理**:
+  - 遍历数组和纯对象 (仅限可枚举属性)。
+  - 通过维护引用标识安全地处理**循环引用**。
+  - 将 `StringTemplateFinalValue` 视为叶子节点 (不清理其内部内容)。
+- **选项 (Options)**:
+  - `invalidUsage?: 'remove' | 'null' | 'undefined'`: 决定如何处理不合规的值。
+    - `'remove'` (默认): 从对象中移除属性，或从数组中移除元素。
+    - `'null'`: 将不合规的值设为 `null`。
+    - `'undefined'`: 将不合规的值设为 `undefined`。
+
+**使用示例:**
+
+```typescript
+import { pickStringTemplateData } from '@isdk/template-engines';
+
+const dirtyData = {
+  name: 'Dev',
+  logger: console.log, // 允许作为函数
+  internal: new Map(), // 不合规，将被移除
+  error: new Error('fail'), // 不合规，将被移除
+  metadata: {
+    tags: ['a', new Set()], // 嵌套的不合规值
+  }
+};
+
+const cleaned = pickStringTemplateData(dirtyData);
+// 结果: { name: 'Dev', logger: console.log, metadata: { tags: ['a'] } }
+```
+
 ### 模板引擎
 
 该库支持多种模板引擎：

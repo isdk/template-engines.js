@@ -217,6 +217,60 @@ The main entry point for working with templates.
 - `getPurePlaceholderVariable()` Returns the variable name if the template instance is a pure placeholder.
 - `toJSON()` Serializes the template instance to JSON.
 
+### Utilities
+
+The library provides utility functions for identifying and cleaning template data.
+
+#### `isStringTemplateFormatable(val: any): boolean`
+
+Checks if a value is suitable for use in `StringTemplate` formatting.
+
+- **Formatable values**:
+  - **Primitives**: `string`, `number`, `boolean`, `bigint`, `symbol`, `null`, `undefined`.
+  - **Functions**: Used as dynamic data sources.
+  - **Arrays**: Recursively handled.
+  - **Plain Objects**: Objects whose prototype is `Object.prototype` or `null`.
+  - **Built-in Objects**: `Date`, `RegExp` (and their subclasses).
+  - **Wrapper Objects**: `String`, `Number`, `Boolean`.
+  - **`StringTemplateFinalValue`**: Special wrapper for literal protection.
+- **Non-formatable values**:
+  - `Error` instances.
+  - `Map`, `Set`, `Promise`.
+  - Other custom class instances (not inheriting from allowed types).
+
+#### `pickStringTemplateData(val: any, options?: PickStringTemplateDataOptions): any`
+
+Recursively deep-cleans an object or array to ensure all values are formatable by `StringTemplate`.
+
+- **Recursive Deep-Cleaning**:
+  - Traverses Arrays and Plain Objects (enumerable properties only).
+  - Handles circular references safely by maintaining reference identity.
+  - Preserves `StringTemplateFinalValue` as a leaf node (no internal cleaning).
+- **Options**:
+  - `invalidUsage?: 'remove' | 'null' | 'undefined'`: Determines how to handle non-formatable values.
+    - `'remove'` (default): Removes properties from objects or elements from arrays.
+    - `'null'`: Sets non-formatable values to `null`.
+    - `'undefined'`: Sets non-formatable values to `undefined`.
+
+**Example Usage:**
+
+```typescript
+import { pickStringTemplateData } from '@isdk/template-engines';
+
+const dirtyData = {
+  name: 'Dev',
+  logger: console.log, // Allowed as a function
+  internal: new Map(), // Non-formatable
+  error: new Error('fail'), // Non-formatable
+  metadata: {
+    tags: ['a', new Set()], // Nested non-formatable
+  }
+};
+
+const cleaned = pickStringTemplateData(dirtyData);
+// Result: { name: 'Dev', logger: console.log, metadata: { tags: ['a'] } }
+```
+
 ### Template Engines
 
 The library supports multiple template engines:
