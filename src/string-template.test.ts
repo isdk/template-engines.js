@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { HfStringTemplate } from './hf-template'
 import { StringTemplate, StringTemplateOptions } from './string-template'
 import { getValueByPath } from './template/util'

@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { FStringTemplate } from './f-string-template'
 import { StringTemplate } from './string-template'
 

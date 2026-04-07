@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { GolangStringTemplate } from './golang-template'
 import { StringTemplate } from './string-template'
 

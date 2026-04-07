@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { HfStringTemplate, createHfValueFunc } from './hf-template'
 import { StringTemplate } from './string-template'
 import { HFTemplate } from './template/jinja'

@@ -13,15 +13,63 @@ import { getValueByPath } from './template/util'
 export const defaultTemplateFormat = 'default'
 
 export interface StringTemplateOptions {
+  /** The template string to be formatted. */
   template?: string
+  /** The data object used for template interpolation. */
   data?: Record<string, any>
+  /** The format of the template (e.g., 'hf', 'golang', 'fstring', 'env'). Defaults to 'default'. */
   templateFormat?: string
+  /** The list of input variables expected by the template. */
   inputVariables?: string[]
+  /** Pre-compiled template object to speed up formatting. */
   compiledTemplate?: any
+  /** If true, skips the initialization phase. */
   ignoreInitialize?: boolean
+  /** Starting index for template segment matching. */
   index?: number
+  /**
+   * If true, returns the raw value (Object, Array, Boolean, etc.) instead of a string
+   * if the template is a pure placeholder (e.g., "{{user}}").
+   */
   raw?: boolean
+  /**
+   * Whether to expand the value as a template if it is a string and matches the template format.
+   * This enables recursive rendering where a variable's value can itself be a template.
+   * Defaults to true.
+   *
+   * @example
+   * ```typescript
+   * const data = { name: "World", msg: "Hello, {{name}}!" };
+   * await StringTemplate.format({ template: "{{msg}}", data }); // "Hello, World!"
+   * await StringTemplate.format({ template: "{{msg}}", data, expandValue: false }); // "Hello, {{name}}!"
+   * ```
+   */
+  expandValue?: boolean
   [name: string]: any
+}
+
+/**
+ * The `StringTemplateFinalValue` class is a wrapper for a value that should NOT be expanded as a template.
+ * Use this to protect business data that might contain template-like syntax from being secondary rendered.
+ *
+ * @example
+ * ```typescript
+ * const data = {
+ *   code: new StringTemplateFinalValue("function test() { return '{{val}}'; }"),
+ *   val: "something"
+ * };
+ * const result = await StringTemplate.format({ template: "{{code}}", data });
+ * console.log(result); // "function test() { return '{{val}}'; }" (preserved literally)
+ * ```
+ */
+export class StringTemplateFinalValue {
+  constructor(public value: any) {}
+  toString() {
+    return String(this.value)
+  }
+  valueOf() {
+    return this.value
+  }
 }
 
 /**
@@ -76,6 +124,10 @@ export class StringTemplate extends BaseFactory {
    * Declares whether to return the raw value if the template is a pure placeholder.
    */
   declare raw: boolean | undefined
+  /**
+   * Declares whether to expand the value as a template if it is a string and matches the template format.
+   */
+  declare expandValue: boolean | undefined
 
   /**
    * Creates a new instance of the `StringTemplate` class.
@@ -195,22 +247,29 @@ export class StringTemplate extends BaseFactory {
    * ```
    */
   static matchTemplateSegment(
-    templateOpt: StringTemplateOptions,
+    templateOpt: StringTemplateOptions | string,
     index = 0
   ): RegExpExecArray | undefined {
-    if (templateOpt?.template) {
-      const templateType = templateOpt.templateFormat || defaultTemplateFormat
+    let options: StringTemplateOptions
+    if (typeof templateOpt === 'string') {
+      options = { template: templateOpt }
+    } else {
+      options = templateOpt
+    }
+
+    if (options?.template) {
+      const templateType = options.templateFormat || defaultTemplateFormat
       const MyTemplate =
         this === StringTemplate
           ? (StringTemplate.get(templateType) as typeof StringTemplate)
           : this
-      if (templateOpt.index! > 0) {
-        index = templateOpt.index!
+      if (options.index! > 0) {
+        index = options.index!
       }
       const hasMatchTemplateSegment =
         MyTemplate!.matchTemplateSegment !== StringTemplate.matchTemplateSegment
       if (hasMatchTemplateSegment) {
-        return MyTemplate!.matchTemplateSegment(templateOpt, index)
+        return MyTemplate!.matchTemplateSegment(options, index)
       }
     }
   }
@@ -320,13 +379,9 @@ export class StringTemplate extends BaseFactory {
   }
 
   /**
-
-     * Returns the variable name if this template instance is a pure placeholder.
-
-     * @returns The variable name if the template is a pure placeholder, undefined otherwise.
-
-     */
-
+   * Returns the variable name if this template instance is a pure placeholder.
+   * @returns The variable name if the template is a pure placeholder, undefined otherwise.
+   */
   getPurePlaceholderVariable(): string | undefined {
     return (
       this.constructor as typeof StringTemplate
@@ -334,19 +389,12 @@ export class StringTemplate extends BaseFactory {
   }
 
   /**
-
-     * Renders the raw value recursively, resolving any nested templates.
-
-     * @param value - The value to render.
-
-     * @param data - The data object used for interpolation.
-
-     * @param visited - A set to track visited objects to avoid infinite recursion.
-
-     * @returns A promise that resolves to the rendered raw value.
-
-     */
-
+   * Renders the raw value recursively, resolving any nested templates.
+   * @param value - The value to render.
+   * @param data - The data object used for interpolation.
+   * @param visited - A set to track visited objects to avoid infinite recursion.
+   * @returns A promise that resolves to the rendered raw value.
+   */
   async renderRawValue(
     value: any,
 
@@ -354,9 +402,18 @@ export class StringTemplate extends BaseFactory {
 
     visited?: Set<any>
   ): Promise<any> {
+    if (value instanceof StringTemplateFinalValue) {
+      return value.value
+    }
+
     if (value && typeof value === 'object') {
       if (value instanceof StringTemplate) {
+        // ALWAYS format explicit StringTemplate objects as they represent a deliberate intent.
+        // Propagation of expandValue flag will control implicit promotions inside the instance.
         value.raw = true
+        if (value.expandValue === undefined) {
+          value.expandValue = this.expandValue
+        }
 
         return value.format(data, visited)
       }
@@ -369,53 +426,72 @@ export class StringTemplate extends BaseFactory {
         return value
       }
 
-      visited.add(value)
+      const proto = Object.getPrototypeOf(value)
+      const isPlainObject = proto === null || proto === Object.prototype
+      const isArray = Array.isArray(value)
 
-      let result: any
+      if (isArray || isPlainObject) {
+        visited.add(value)
 
-      if (Array.isArray(value)) {
-        result = await Promise.all(
-          value.map((v) => this.renderRawValue(v, data, visited))
-        )
-      } else {
-        result = {}
+        let result: any
+        let changed = false
 
-        for (const [k, v] of Object.entries(value)) {
-          result[k] = await this.renderRawValue(v, data, visited)
+        if (isArray) {
+          result = await Promise.all(
+            value.map(async (v) => {
+              const nv = await this.renderRawValue(v, data, visited)
+              if (nv !== v) changed = true
+              return nv
+            })
+          )
+        } else {
+          result = {}
+
+          for (const [k, v] of Object.entries(value)) {
+            const nv = await this.renderRawValue(v, data, visited)
+            if (nv !== v) changed = true
+            result[k] = nv
+          }
         }
+
+        visited.delete(value)
+
+        return changed ? result : value
       }
-
-      visited.delete(value)
-
-      return result
     }
 
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && this.expandValue !== false) {
       const MyClass = this.constructor as typeof StringTemplate
 
-      const options = this.toJSON()
+      if (MyClass.matchTemplateSegment(value)) {
+        const options = this.toJSON()
 
-      if (MyClass.isTemplate({ ...options, template: value })) {
-        const t = new (this.constructor as any)({
-          ...options,
+        if (MyClass.isTemplate({ ...options, template: value })) {
+          // NOTE: DO NOT add the string 'value' to 'visited' here.
+          // StringTemplate.format will handle visited tracking for the template string on entry.
+          // Tracking strings here will cause recursive resolution to fail because
+          // t.format() would immediately detect a 'circular reference' to the same string.
+          const t = new (this.constructor as any)({
+            ...options,
 
-          template: value,
+            template: value,
 
-          raw: true,
-        })
+            raw: true,
 
-        return t.format(data, visited)
+            expandValue: this.expandValue,
+          })
+
+          return t.format(data, visited)
+        }
       }
     }
+
 
     return value
   }
 
   /**
-
-     * Checks if this template instance is a pure placeholder.
-
-  
+   * Checks if this template instance is a pure placeholder.
    * @returns True if the template is a pure placeholder, false otherwise.
    */
   isPurePlaceholder(): boolean {
@@ -544,49 +620,65 @@ export class StringTemplate extends BaseFactory {
     const partialData = this.data
     data = { ...partialData, ...data }
 
-    if (this.raw) {
-      const varName = this.getPurePlaceholderVariable()
-      if (varName !== undefined) {
-        if (!visited) {
-          visited = new Set()
-        }
-        if (visited.has(this.template)) {
-          return this.template
-        }
-        visited.add(this.template)
-
-        const value = varName ? getValueByPath(data, varName) : data
-        let result: any
-        if (value !== undefined) {
-          result = await this.renderRawValue(value, data, visited)
-        }
-        visited.delete(this.template)
-        if (result !== undefined) {
-          return result
-        }
-      }
+    if (!visited) {
+      visited = new Set()
     }
 
-    if (partialData) {
-      // process partial data
-      for (const [key, value] of Object.entries(partialData)) {
-        // no overwrite and it's function
-        if (data[key] === value && typeof value === 'function') {
-          // delete the key first to avoid infinite loop
-          delete data[key]
-          data[key] = await value(data)
-        }
-      }
+    const template = this.template
+    const isString = typeof template === 'string' && template.length > 0
+
+    // Prevent infinite recursion:
+    // 1. If we're already formatting this specific template instance.
+    // 2. If we're already formatting this exact template string in the current path.
+    // NOTE: Tracking the string is essential for catching loops like a: '{{a}}'
+    // but it must be done here in format() so it's consistent for both root
+    // and 'promoted' (from renderRawValue) templates.
+    if (visited.has(this) || (isString && visited.has(template))) {
+      return this.template
     }
 
-    for (const [key, value] of Object.entries(data)) {
-      if (value instanceof StringTemplate) {
-        // avoid infinite loop
-        delete data[key]
-        data[key] = await value.format(data)
+    visited.add(this)
+    if (isString) {
+      visited.add(template)
+    }
+
+    try {
+      if (this.raw) {
+        const varName = this.getPurePlaceholderVariable()
+        if (varName !== undefined) {
+          const value = varName ? getValueByPath(data, varName) : data
+          let result: any
+          if (value !== undefined) {
+            result = await this.renderRawValue(value, data, visited)
+          }
+          if (result !== undefined) {
+            return result
+          }
+        }
+      }
+
+      if (partialData) {
+        // process partial data
+        for (const [key, value] of Object.entries(partialData)) {
+          // no overwrite and it's function
+          if (data[key] === value && typeof value === 'function') {
+            // delete the key first to avoid infinite loop
+            delete data[key]
+            data[key] = await value(data)
+          }
+        }
+      }
+
+      for (const [key, value] of Object.entries(data)) {
+        data[key] = await this.renderRawValue(value, data, visited)
+      }
+      return this._format(data)
+    } finally {
+      visited.delete(this)
+      if (isString) {
+        visited.delete(template)
       }
     }
-    return this._format(data)
   }
 
   /**
@@ -647,6 +739,7 @@ export class StringTemplate extends BaseFactory {
       inputVariables: options.inputVariables,
       compiledTemplate: options.compiledTemplate,
       raw: options.raw,
+      expandValue: options.expandValue,
     }
     if (
       options.templateFormat &&
