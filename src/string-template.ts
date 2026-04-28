@@ -526,6 +526,9 @@ export class StringTemplate extends BaseFactory {
       }
       options.template = template
     } else if (template) {
+      if (options && typeof options === 'object' && typeof template === 'object') {
+        template = { ...options, ...template }
+      }
       options = template
       template = options.template
     }
