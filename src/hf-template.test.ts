@@ -127,7 +127,12 @@ describe('HfStringTemplate', () => {
 
   it('should return raw value for pure placeholder with raw option', async () => {
     const data = { user: { profile: { id: 123 } } }
-    const result = await HfStringTemplate.from('{{ user.profile }}', {
+    let result = await HfStringTemplate.from('{{ user.profile }}', {
+      raw: true,
+    }).format(data)
+    expect(result).toStrictEqual(data.user.profile)
+
+    result = await HfStringTemplate.from("{{ user['profile'] }}", {
       raw: true,
     }).format(data)
     expect(result).toStrictEqual(data.user.profile)
