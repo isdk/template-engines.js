@@ -6,19 +6,19 @@
 
 # Interface: StringTemplateOptions
 
-Defined in: [packages/template-engines/src/string-template.ts:15](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L15)
+Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L16)
 
 ## Indexable
 
-\[`name`: `string`\]: `any`
+> \[`name`: `string`\]: `any`
 
 ## Properties
 
 ### compiledTemplate?
 
-> `optional` **compiledTemplate**: `any`
+> `optional` **compiledTemplate?**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:25](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L25)
+Defined in: [packages/template-engines/src/string-template.ts:26](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L26)
 
 Pre-compiled template object to speed up formatting.
 
@@ -26,9 +26,9 @@ Pre-compiled template object to speed up formatting.
 
 ### data?
 
-> `optional` **data**: `Record`\<`string`, `any`\>
+> `optional` **data?**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:19](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L19)
+Defined in: [packages/template-engines/src/string-template.ts:20](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L20)
 
 The data object used for template interpolation.
 
@@ -36,9 +36,9 @@ The data object used for template interpolation.
 
 ### expandValue?
 
-> `optional` **expandValue**: `boolean`
+> `optional` **expandValue?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:47](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L47)
+Defined in: [packages/template-engines/src/string-template.ts:48](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L48)
 
 Whether to expand the value as a template if it is a string and matches the template format.
 This enables recursive rendering where a variable's value can itself be a template.
@@ -56,9 +56,9 @@ await StringTemplate.format({ template: "{{msg}}", data, expandValue: false }); 
 
 ### ignoreInitialize?
 
-> `optional` **ignoreInitialize**: `boolean`
+> `optional` **ignoreInitialize?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:27](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L27)
+Defined in: [packages/template-engines/src/string-template.ts:28](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L28)
 
 If true, skips the initialization phase.
 
@@ -66,9 +66,9 @@ If true, skips the initialization phase.
 
 ### index?
 
-> `optional` **index**: `number`
+> `optional` **index?**: `number`
 
-Defined in: [packages/template-engines/src/string-template.ts:29](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L29)
+Defined in: [packages/template-engines/src/string-template.ts:30](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L30)
 
 Starting index for template segment matching.
 
@@ -76,9 +76,9 @@ Starting index for template segment matching.
 
 ### inputVariables?
 
-> `optional` **inputVariables**: `string`[]
+> `optional` **inputVariables?**: `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:23](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L23)
+Defined in: [packages/template-engines/src/string-template.ts:24](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L24)
 
 The list of input variables expected by the template.
 
@@ -86,9 +86,9 @@ The list of input variables expected by the template.
 
 ### raw?
 
-> `optional` **raw**: `boolean`
+> `optional` **raw?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:34](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L34)
+Defined in: [packages/template-engines/src/string-template.ts:35](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L35)
 
 If true, returns the raw value (Object, Array, Boolean, etc.) instead of a string
 if the template is a pure placeholder (e.g., "{{user}}").
@@ -97,9 +97,9 @@ if the template is a pure placeholder (e.g., "{{user}}").
 
 ### template?
 
-> `optional` **template**: `string`
+> `optional` **template?**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:17](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L17)
+Defined in: [packages/template-engines/src/string-template.ts:18](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L18)
 
 The template string to be formatted.
 
@@ -107,8 +107,8 @@ The template string to be formatted.
 
 ### templateFormat?
 
-> `optional` **templateFormat**: `string`
+> `optional` **templateFormat?**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:21](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L21)
+Defined in: [packages/template-engines/src/string-template.ts:22](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L22)
 
 The format of the template (e.g., 'hf', 'golang', 'fstring', 'env'). Defaults to 'default'.

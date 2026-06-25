@@ -6,9 +6,9 @@
 
 # Function: hfTokenize()
 
-> **hfTokenize**(`source`, `options`): `Token`[]
+> **hfTokenize**(`source`, `options?`): `Token`[]
 
-Defined in: [packages/template-engines/src/template/jinja/src/lexer.ts:203](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/lexer.ts#L203)
+Defined in: [packages/template-engines/src/template/jinja/src/lexer.ts:204](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/template/jinja/src/lexer.ts#L204)
 
 Generate a list of tokens from a source string.
 
@@ -18,7 +18,7 @@ Generate a list of tokens from a source string.
 
 `string`
 
-### options
+### options?
 
 `PreprocessOptions` = `{}`
 

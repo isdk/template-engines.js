@@ -23,6 +23,7 @@
 - [DotenvParseInput](interfaces/DotenvParseInput.md)
 - [DotenvParseOutput](interfaces/DotenvParseOutput.md)
 - [DotenvPopulateInput](interfaces/DotenvPopulateInput.md)
+- [PickStringTemplateDataOptions](interfaces/PickStringTemplateDataOptions.md)
 - [StringTemplateOptions](interfaces/StringTemplateOptions.md)
 
 ## Type Aliases
@@ -49,6 +50,8 @@
 - [interpolateEnv](functions/interpolateEnv.md)
 - [interpolateFString](functions/interpolateFString.md)
 - [interpolateGolangTemplate](functions/interpolateGolangTemplate.md)
+- [isStringTemplateFormatable](functions/isStringTemplateFormatable.md)
 - [matchEnvTemplateSegment](functions/matchEnvTemplateSegment.md)
 - [matchGolangTemplateSegment](functions/matchGolangTemplateSegment.md)
 - [parseFString](functions/parseFString.md)
+- [pickStringTemplateData](functions/pickStringTemplateData.md)

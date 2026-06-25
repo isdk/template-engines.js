@@ -8,11 +8,11 @@
 
 > `const` **HFBuiltins**: `object`
 
-Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/template/jinja/src/builtins.ts#L214)
+Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/template/jinja/src/builtins.ts#L214)
 
 ## Type Declaration
 
-### join()
+### join
 
 > **join**: (`value`, `separator`) => `any`
 
@@ -22,7 +22,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](h
 
 `any`
 
-##### separator
+##### separator?
 
 `string` = `','`
 
@@ -30,7 +30,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](h
 
 `any`
 
-### randomInt()
+### randomInt
 
 > **randomInt**: (`to`, `from`) => `number`
 
@@ -40,7 +40,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](h
 
 `number`
 
-##### from
+##### from?
 
 `number` = `0`
 
@@ -48,7 +48,7 @@ Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](h
 
 `number`
 
-### select()
+### select
 
 > **select**: (`obj`, `index?`) => `any`
 
@@ -64,9 +64,9 @@ Can be an object, array, or string to select from.
 
 ##### index?
 
-Optional, specifies the index or key to select. Negative values indicate indices from the end.
+`string` \| `number`
 
-`string` | `number`
+Optional, specifies the index or key to select. Negative values indicate indices from the end.
 
 #### Returns
 
@@ -99,7 +99,7 @@ console.log(select(str, 1)) // Second character
 console.log(select(str, -1)) // Last character
 ```
 
-### strftime()
+### strftime
 
 > **strftime**: (`date`, `format`, `locale?`) => `string`
 
@@ -121,7 +121,7 @@ console.log(select(str, -1)) // Last character
 
 `string`
 
-### strftime\_now()
+### strftime\_now
 
 > **strftime\_now**: (`format`, `locale?`) => `string`
 
@@ -139,7 +139,7 @@ console.log(select(str, -1)) // Last character
 
 `string`
 
-### tojson()
+### tojson
 
 > **tojson**: (`value`, `indent?`, `depth?`) => `string`
 
@@ -151,7 +151,7 @@ console.log(select(str, -1)) // Last character
 
 ##### indent?
 
-`number` | \{ `depth?`: `number`; `indent?`: `number`; \}
+`number` \| \{ `depth?`: `number`; `indent?`: `number`; \}
 
 ##### depth?
 

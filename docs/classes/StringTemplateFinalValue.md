@@ -6,7 +6,7 @@
 
 # Class: StringTemplateFinalValue
 
-Defined in: [packages/template-engines/src/string-template.ts:75](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L75)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:25](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L25)
 
 The `StringTemplateFinalValue` class is a wrapper for a value that should NOT be expanded as a template.
 Use this to protect business data that might contain template-like syntax from being secondary rendered.
@@ -38,7 +38,7 @@ console.log(JSON.stringify(data.code)); // "\"function test() { return '{{val}}'
 
 > **new StringTemplateFinalValue**(`value`): `StringTemplateFinalValue`
 
-Defined in: [packages/template-engines/src/string-template.ts:76](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L76)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:26](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L26)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Defined in: [packages/template-engines/src/string-template.ts:76](https://github
 
 > **value**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:76](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L76)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:26](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L26)
 
 ## Methods
 
@@ -64,7 +64,7 @@ Defined in: [packages/template-engines/src/string-template.ts:76](https://github
 
 > **toJSON**(`key?`): `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:96](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L96)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:46](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L46)
 
 Ensures transparent JSON serialization.
 If the wrapped value has its own `toJSON` method, it will be called.
@@ -88,7 +88,7 @@ The key of the property being serialized (passed by JSON.stringify).
 
 > **toString**(): `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:80](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L80)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:30](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L30)
 
 Returns the string representation of the wrapped value.
 
@@ -102,7 +102,7 @@ Returns the string representation of the wrapped value.
 
 > **valueOf**(): `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:86](https://github.com/isdk/template-engines.js/blob/7dade55e7c19979497e3b2db807022ef515c1e84/src/string-template.ts#L86)
+Defined in: [packages/template-engines/src/string-template-final-value.ts:36](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template-final-value.ts#L36)
 
 Returns the wrapped value itself.
 
