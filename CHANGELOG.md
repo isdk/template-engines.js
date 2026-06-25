@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.11](https://github.com/isdk/template-engines.js/compare/v0.6.10...v0.6.11) (2026-06-25)
+
+
+### Features
+
+* **jinja2:** add ~ AdditiveBinaryOperator supports ([9a37394](https://github.com/isdk/template-engines.js/commit/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5))
+* **utils:** add template data validation and cleaning utilities ([2c492fb](https://github.com/isdk/template-engines.js/commit/2c492fbd49d81fb9b35ab429d1ab52c552f8afe8))
+
+
+### Bug Fixes
+
+* should merge options and template if options exists ([cecefd1](https://github.com/isdk/template-engines.js/commit/cecefd17758c1e5881f87efaee8da11d5212854c))
+* should show error to debug ([f0468fe](https://github.com/isdk/template-engines.js/commit/f0468fe63e7c149090455fe9328ee69dc40cd2d5))
+
 ## [0.6.10](https://github.com/isdk/template-engines.js/compare/v0.6.9...v0.6.10) (2026-04-07)
 
 
