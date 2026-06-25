@@ -26,7 +26,7 @@ export const TOKEN_TYPES = Object.freeze({
   Pipe: 'Pipe', // |
 
   CallOperator: 'CallOperator', // ()
-  AdditiveBinaryOperator: 'AdditiveBinaryOperator', // + -
+	AdditiveBinaryOperator: "AdditiveBinaryOperator", // + - ~
   MultiplicativeBinaryOperator: 'MultiplicativeBinaryOperator', // * / %
   ComparisonBinaryOperator: 'ComparisonBinaryOperator', // < > <= >= == !=
   UnaryOperator: 'UnaryOperator', // ! - +
@@ -138,6 +138,7 @@ const ORDERED_MAPPING_TABLE: [string, TokenType][] = [
   // Arithmetic operators
   ['+', TOKEN_TYPES.AdditiveBinaryOperator],
   ['-', TOKEN_TYPES.AdditiveBinaryOperator],
+	["~", TOKEN_TYPES.AdditiveBinaryOperator],
   ['*', TOKEN_TYPES.MultiplicativeBinaryOperator],
   ['/', TOKEN_TYPES.MultiplicativeBinaryOperator],
   ['%', TOKEN_TYPES.MultiplicativeBinaryOperator],

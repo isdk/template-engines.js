@@ -535,16 +535,13 @@ export class Interpreter {
 
     // Logical operators
     // NOTE: Short-circuiting is handled by the `evaluate` function
-    switch (node.operator.value) {
-      case 'and':
-        return left.__bool__().value
-          ? this.evaluate(node.right, environment)
-          : left
-      case 'or':
-        return left.__bool__().value
-          ? left
-          : this.evaluate(node.right, environment)
-    }
+		switch (node.operator.value) {
+			case "and":
+				return left.__bool__().value ? this.evaluate(node.right, environment) : left;
+			case "or":
+				return left.__bool__().value ? left : this.evaluate(node.right, environment);
+		}
+
 
     // Equality operators
     const right = this.evaluate(node.right, environment)
@@ -556,9 +553,16 @@ export class Interpreter {
     }
 
     if (left instanceof UndefinedValue || right instanceof UndefinedValue) {
-      throw new Error('Cannot perform operation on undefined values')
+			if (right instanceof UndefinedValue && ["in", "not in"].includes(node.operator.value)) {
+				// Special case: `anything in undefined` is `false` and `anything not in undefined` is `true`
+				return new BooleanValue(node.operator.value === "not in");
+			}
+			throw new Error(`Cannot perform operation ${node.operator.value} on undefined values`);
     } else if (left instanceof NullValue || right instanceof NullValue) {
       throw new Error('Cannot perform operation on null values')
+		} else if (node.operator.value === "~") {
+			// toString and concatenation
+			return new StringValue(left.value.toString() + right.value.toString());
     } else if (left instanceof NumericValue && right instanceof NumericValue) {
       // Evaulate pure numeric operations with binary operators.
       switch (node.operator.value) {
