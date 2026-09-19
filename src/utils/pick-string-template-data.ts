@@ -1,5 +1,6 @@
 import { isStringTemplateFormatable } from './is-string-template-formatable'
 import { StringTemplateFinalValue } from '../string-template-final-value'
+import { isStringTemplateFinalString } from '../string-template-final-string'
 
 export interface PickStringTemplateDataOptions {
   /**
@@ -19,7 +20,8 @@ export interface PickStringTemplateDataOptions {
  * - Plain Objects: filters or replaces invalid properties.
  *
  * It preserves:
- * - Primitives, Functions, StringTemplateFinalValue instances, and built-in wrappers.
+ * - Primitives, Functions, StringTemplateFinalValue instances,
+ *   StringTemplateFinalString instances, and built-in wrappers.
  *
  * @param val - The data to clean.
  * @param options - Options for handling invalid values.
@@ -36,8 +38,14 @@ function _pickStringTemplateData(val: any, options: PickStringTemplateDataOption
     return invalidUsage === 'remove' ? undefined : (invalidUsage === 'null' ? null : undefined)
   }
 
-  // Handle primitives and "leaf" formatable objects (like FinalValue, Function, Built-in wrappers)
-  if (val === null || val === undefined || typeof val !== 'object' || val instanceof StringTemplateFinalValue) {
+  // Handle primitives and "leaf" formatable objects (like FinalValue, FinalString, Function, Built-in wrappers)
+  if (
+    val === null ||
+    val === undefined ||
+    typeof val !== 'object' ||
+    val instanceof StringTemplateFinalValue ||
+    isStringTemplateFinalString(val)
+  ) {
     return val
   }
 

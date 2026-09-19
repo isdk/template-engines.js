@@ -190,7 +190,7 @@ describe('Template', () => {
         templateFormat: 'Test',
         raw: true,
       })
-      expect(result).toBe('{{a}}')
+      expect(String(result)).toBe('{{a}}')
     })
 
     it('should handle multi-level circular references', async () => {
@@ -201,7 +201,7 @@ describe('Template', () => {
         templateFormat: 'Test',
         raw: true,
       })
-      expect(result).toBe('{{a}}')
+      expect(String(result)).toBe('{{a}}')
     })
 
     it('should handle deep mixed recursion in raw mode', async () => {

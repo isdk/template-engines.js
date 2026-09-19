@@ -175,7 +175,9 @@ export class HfStringTemplate extends StringTemplate {
         compiledTemplate = new HFTemplate(template)
       } catch (error) {
         (error as any).template = template
-        console.error('Compile Template Error', error)
+        // NOTE: isTemplate() is a probe: failing to compile is an expected
+        // outcome, not an error. Uncomment this line to debug a template.
+        // console.error('Compile Template Error', error)
       }
     }
 

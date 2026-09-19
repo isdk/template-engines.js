@@ -9,7 +9,10 @@ import {
 
 import { getValueByPath } from './template/util'
 import { StringTemplateFinalValue } from './string-template-final-value'
-import { StringTemplateFinalString } from './string-template-final-string'
+import {
+  StringTemplateFinalString,
+  isStringTemplateFinalString,
+} from './string-template-final-string'
 
 // register PromptTemplate alias as default.
 export const defaultTemplateFormat = 'default'
@@ -47,10 +50,21 @@ export interface StringTemplateOptions {
    * ```
    */
   expandValue?: boolean
+  /**
+   * Whether the rendering result should be tagged as a `StringTemplateFinalString`
+   * when it still contains template literals. Defaults to true.
+   *
+   * Set it to false to opt out of the automatic output tagging and always get a
+   * plain string back (the pre-tagging behavior). Note that this only disables
+   * *tagging*: protected values (`StringTemplateFinalValue` /
+   * `StringTemplateFinalString`) are still never expanded when used as data.
+   */
+  tagFinalString?: boolean
   [name: string]: any
 }
 
 export * from './string-template-final-value'
+export * from './string-template-final-string'
 
 /**
  * The `StringTemplate` class is a versatile template engine that supports dynamic template creation,
@@ -108,6 +122,11 @@ export class StringTemplate extends BaseFactory {
    * Declares whether to expand the value as a template if it is a string and matches the template format.
    */
   declare expandValue: boolean | undefined
+  /**
+   * Declares whether to tag the rendering result as a `StringTemplateFinalString`
+   * when it still contains template literals.
+   */
+  declare tagFinalString: boolean | undefined
 
   /**
    * Creates a new instance of the `StringTemplate` class.
@@ -392,6 +411,12 @@ export class StringTemplate extends BaseFactory {
         : finalValue
     }
 
+    // A previous rendering result that still contains template literals:
+    // pass it through untouched so it is never expanded again.
+    if (isStringTemplateFinalString(value)) {
+      return value
+    }
+
     if (value && typeof value === 'object') {
       if (value instanceof StringTemplate) {
         // ALWAYS format explicit StringTemplate objects as they represent a deliberate intent.
@@ -452,7 +477,11 @@ export class StringTemplate extends BaseFactory {
       if (MyClass.matchTemplateSegment(value)) {
         const options = this.toJSON()
 
-        if (MyClass.isTemplate({ ...options, template: value })) {
+        // NOTE: pass { template: value } only — never spread the outer options
+        // here, otherwise the outer compiledTemplate leaks into the check and
+        // makes isTemplate() return a false positive for arbitrary strings
+        // (which then crashes when a promoted instance recompiles them).
+        if (MyClass.isTemplate({ template: value })) {
           // NOTE: DO NOT add the string 'value' to 'visited' here.
           // StringTemplate.format will handle visited tracking for the template string on entry.
           // Tracking strings here will cause recursive resolution to fail because
@@ -623,7 +652,7 @@ export class StringTemplate extends BaseFactory {
     // but it must be done here in format() so it's consistent for both root
     // and 'promoted' (from renderRawValue) templates.
     if (visited.has(this) || (isString && visited.has(template))) {
-      return this.template
+      return this._wrapFinalString(this.template)
     }
 
     visited.add(this)
@@ -641,7 +670,7 @@ export class StringTemplate extends BaseFactory {
             result = await this.renderRawValue(value, data, visited)
           }
           if (result !== undefined) {
-            return result
+            return this._wrapFinalString(result)
           }
         }
       }
@@ -661,13 +690,44 @@ export class StringTemplate extends BaseFactory {
       for (const [key, value] of Object.entries(data)) {
         data[key] = await this.renderRawValue(value, data, visited)
       }
-      return this._format(data)
+      return this._wrapFinalString(await this._format(data))
     } finally {
       visited.delete(this)
       if (isString) {
         visited.delete(template)
       }
     }
+  }
+
+  /**
+   * Wraps a rendering result into a `StringTemplateFinalString` if it is a
+   * non-empty string that still contains template literals (of this template's
+   * format). Empty results and non-string results are returned as-is.
+   *
+   * This is the automatic counterpart of `StringTemplateFinalValue`: the user
+   * marks inputs that must never be expanded, the engine marks outputs that
+   * must never be expanded again.
+   *
+   * @param result - The rendering result to wrap.
+   * @returns The wrapped result, or the result itself if no wrapping applies.
+   */
+  protected _wrapFinalString(result: any): any {
+    if (this.tagFinalString === false) {
+      return result
+    }
+    if (typeof result === 'string' && result.length > 0) {
+      const MyClass = this.constructor as typeof StringTemplate
+      // Cheap pre-filter first: isTemplate() is a full compile for some engines
+      // (HF parses the whole string into an AST), so only pay for it when the
+      // result actually contains template-like syntax.
+      if (
+        MyClass.matchTemplateSegment(result) &&
+        MyClass.isTemplate({ template: result })
+      ) {
+        return new StringTemplateFinalString(result)
+      }
+    }
+    return result
   }
 
   /**
@@ -729,6 +789,7 @@ export class StringTemplate extends BaseFactory {
       compiledTemplate: options.compiledTemplate,
       raw: options.raw,
       expandValue: options.expandValue,
+      tagFinalString: options.tagFinalString,
     }
     if (
       options.templateFormat &&

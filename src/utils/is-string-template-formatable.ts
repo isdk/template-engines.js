@@ -1,4 +1,5 @@
 import { StringTemplateFinalValue } from '../string-template-final-value'
+import { isStringTemplateFinalString } from '../string-template-final-string'
 
 /**
  * Checks if a value is suitable for use in StringTemplate formatting.
@@ -9,6 +10,7 @@ import { StringTemplateFinalValue } from '../string-template-final-value'
  * - Arrays
  * - Plain Objects (prototype is Object.prototype or null)
  * - StringTemplateFinalValue instances
+ * - StringTemplateFinalString instances (previous rendering results)
  * - Built-in wrapper objects: String, Number, Boolean, Date, RegExp
  *
  * Non-formatable values include:
@@ -29,6 +31,7 @@ export function isStringTemplateFormatable(val: any): boolean {
   }
 
   if (val instanceof StringTemplateFinalValue) return true
+  if (isStringTemplateFinalString(val)) return true
   if (Array.isArray(val)) return true
 
   // Check for allowed built-in objects and their subclasses

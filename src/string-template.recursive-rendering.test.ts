@@ -10,7 +10,7 @@ describe('StringTemplate Recursive Rendering', () => {
       value: new StringTemplateFinalValue('{{ not_rendered }}'),
     }
     const result = await template.format(data)
-    expect(result).toBe('{{ not_rendered }}')
+    expect(String(result)).toBe('{{ not_rendered }}')
   })
 
   it('should render normal string as template by default', async () => {
@@ -30,7 +30,7 @@ describe('StringTemplate Recursive Rendering', () => {
       inner: 'final',
     }
     const result = await template.format(data)
-    expect(result).toBe('{{ inner }}')
+    expect(String(result)).toBe('{{ inner }}')
   })
 
   it('should propagate expandValue to nested templates', async () => {
@@ -44,7 +44,7 @@ describe('StringTemplate Recursive Rendering', () => {
     // outer will format innerTemplate.
     // innerTemplate's expandValue will be set to false by propagation because it's undefined.
     const result = await template.format(data)
-    expect(result).toBe('{{ too_deep }}')
+    expect(String(result)).toBe('{{ too_deep }}')
   })
 
   it('should respect nested template own expandValue if explicitly set', async () => {
@@ -70,7 +70,7 @@ describe('StringTemplate Recursive Rendering', () => {
       },
       expandValue: false,
     })
-    expect(result).toBe('{{ inner }}')
+    expect(String(result)).toBe('{{ inner }}')
   })
 
   it('should handle deeply nested structures with expandValue: false', async () => {
@@ -115,7 +115,7 @@ describe('StringTemplate Recursive Rendering', () => {
     expect(partial.expandValue).toBe(false)
     
     const result = await partial.format({ b: '{{ bb }}', aa: 'AA', bb: 'BB' })
-    expect(result).toBe('{{ aa }}:{{ bb }}')
+    expect(String(result)).toBe('{{ aa }}:{{ bb }}')
   })
 
   it('should preserve expandValue through toJSON and reconstruction', async () => {
@@ -127,7 +127,7 @@ describe('StringTemplate Recursive Rendering', () => {
     expect(reconstructed.expandValue).toBe(false)
     
     const result = await reconstructed.format({ a: '{{ b }}', b: 'B' })
-    expect(result).toBe('{{ b }}')
+    expect(String(result)).toBe('{{ b }}')
   })
 
   it('should handle functions returning StringTemplateFinalValue in partialData', async () => {
@@ -139,7 +139,7 @@ describe('StringTemplate Recursive Rendering', () => {
       b: 'B',
     }
     const result = await partial.format(data)
-    expect(result).toBe('{{ b }}')
+    expect(String(result)).toBe('{{ b }}')
   })
 
   it('should not break with mixed arrays and expandValue: true', async () => {
@@ -232,7 +232,7 @@ describe('StringTemplate Recursive Rendering', () => {
     }
     // This should detect the recursion through 'visited' in renderRawValue
     const result = await template.format(data)
-    expect(result).toBe('{{ a }}')
+    expect(String(result)).toBe('{{ a }}')
   })
 
   it('should handle self-referencing template string with additional text', async () => {
@@ -245,6 +245,6 @@ describe('StringTemplate Recursive Rendering', () => {
     // t2('Hello {{ a }}').format() -> renders 'Hello ' + data.a, but data.a expansion is blocked by visited tracking of 'Hello {{ a }}'.
     // Thus t2 returns 'Hello ' + 'Hello {{ a }}' = 'Hello Hello {{ a }}'.
     // t1 returns 'Hello Hello {{ a }}'.
-    expect(result).toBe('Hello Hello {{ a }}')
+    expect(String(result)).toBe('Hello Hello {{ a }}')
   })
 })
