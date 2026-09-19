@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { HfStringTemplate, createHfValueFunc } from './hf-template'
 import { StringTemplate } from './string-template'
 import { HFTemplate } from './template/jinja'
+import { isStringTemplateFinalString } from './string-template-final-string'
 
 describe('HfStringTemplate', () => {
   it('should use global env', async () => {
@@ -477,6 +478,32 @@ describe('HfStringTemplate', () => {
       expect(
         HfStringTemplate.getPurePlaceholderVariable('Hello {{var}}')
       ).toBeUndefined()
+    })
+  })
+
+  // a tagged rendering result is a String object: the engine must still treat
+  // it as a string (filters, concatenation, comparison, length)
+  describe('tagged output used as data', () => {
+    it('should keep string operations working', async () => {
+      const first = await HfStringTemplate.from('{{ v }}', {
+        expandValue: false,
+      }).format({ v: 'hello {{x}}' })
+      expect(isStringTemplateFinalString(first)).toBe(true)
+
+      expect(
+        String(await HfStringTemplate.from('{{ v | upper }}').format({ v: first }))
+      ).toBe('HELLO {{X}}')
+      expect(
+        String(await HfStringTemplate.from('{{ v ~ "!" }}').format({ v: first }))
+      ).toBe('hello {{x}}!')
+      expect(
+        await HfStringTemplate.from('{{ v.length }}').format({ v: first })
+      ).toBe('11')
+      expect(
+        await HfStringTemplate.from(
+          '{% if v == "hello {{x}}" %}EQ{% else %}NE{% endif %}'
+        ).format({ v: first })
+      ).toBe('EQ')
     })
   })
 })

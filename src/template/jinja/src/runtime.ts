@@ -1428,6 +1428,11 @@ function convertToRuntimeValues(input: unknown): AnyRuntimeValue {
     case 'object':
       if (input === null) {
         return new NullValue()
+      } else if (input instanceof String) {
+        // Boxed strings (eg. StringTemplateFinalString) must behave as strings,
+        // otherwise they become ObjectValue: string filters, comparisons and
+        // concatenation (which would yield '[object Map]') all break.
+        return new StringValue(String(input))
       } else if (Array.isArray(input)) {
         return new ArrayValue(input.map(convertToRuntimeValues))
       } else {
