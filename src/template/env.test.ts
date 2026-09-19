@@ -1,4 +1,14 @@
-import { expandEnv, expandObjEnv, getEnvVairables, interpolateEnv } from './env'
+import {
+  expandEnv,
+  expandObjEnv,
+  getEnvVairables,
+  interpolateEnv,
+} from './env'
+import { StringTemplateFinalValue } from '../string-template-final-value'
+import {
+  StringTemplateFinalString,
+  isStringTemplateFinalString,
+} from '../string-template-final-string'
 
 describe('getEnvVairables', () => {
   it('should get variable names correctly', () => {
@@ -19,6 +29,27 @@ describe('interpolateEnv', () => {
     const processEnv = { VAR1: 'value1', VAR2: 'value2' }
     const result = interpolateEnv('hi ${VAR1 ok:${VAR2}', processEnv)
     expect(result).toBe('hi ${VAR1 ok:value2')
+  })
+
+  it('should keep a StringTemplateFinalString value literal', () => {
+    const parsed = {
+      VAR1: new StringTemplateFinalString('${VAR2}'),
+      VAR2: 'value2',
+    }
+    expect(interpolateEnv('hi ${VAR1}', {}, parsed)).toBe('hi ${VAR2}')
+  })
+
+  it('should keep a StringTemplateFinalValue value literal', () => {
+    const parsed = {
+      VAR1: new StringTemplateFinalValue('${VAR2}'),
+      VAR2: 'value2',
+    }
+    expect(interpolateEnv('hi ${VAR1}', {}, parsed)).toBe('hi ${VAR2}')
+  })
+
+  it('should still expand a normal nested value', () => {
+    const parsed = { VAR1: '${VAR2}', VAR2: 'value2' }
+    expect(interpolateEnv('hi ${VAR1}', {}, parsed)).toBe('hi value2')
   })
 })
 
@@ -155,5 +186,56 @@ describe('expandObjEnv', () => {
     arr.push(arr)
     const result = expandObjEnv(arr)
     expect(result).toBe(arr)
+  })
+
+  it('should keep protected values literal', () => {
+    process.env.TEST_VAR = 'test'
+    const finalString = new StringTemplateFinalString('${TEST_VAR}')
+    const result = expandObjEnv({
+      a: finalString,
+      b: new StringTemplateFinalValue('${TEST_VAR}'),
+      c: '${TEST_VAR}',
+    })
+    expect(String(result.a)).toBe('${TEST_VAR}')
+    expect(isStringTemplateFinalString(result.a)).toBe(true)
+    expect(String(result.b)).toBe('${TEST_VAR}')
+    expect(result.c).toBe('test')
+    delete process.env.TEST_VAR
+  })
+
+  it('should keep protected values literal inside arrays', () => {
+    process.env.TEST_VAR = 'test'
+    const result = expandObjEnv([new StringTemplateFinalString('${TEST_VAR}')])
+    expect(String(result[0])).toBe('${TEST_VAR}')
+    delete process.env.TEST_VAR
+  })
+})
+
+describe('expandEnv with protected values', () => {
+  let originalProcessEnv: NodeJS.ProcessEnv
+
+  beforeEach(() => {
+    originalProcessEnv = { ...process.env }
+  })
+
+  afterEach(() => {
+    process.env = originalProcessEnv
+  })
+
+  it('should not expand a protected value', () => {
+    process.env = { VAR1: 'value1' }
+    const options = {
+      parsed: {
+        KEY1: new StringTemplateFinalString('${VAR1}') as any,
+        KEY2: new StringTemplateFinalValue('${VAR1}') as any,
+        KEY3: '${VAR1}',
+      },
+    }
+
+    const result = expandEnv(options)
+
+    expect(String(result.parsed!.KEY1)).toBe('${VAR1}')
+    expect(String(result.parsed!.KEY2)).toBe('${VAR1}')
+    expect(result.parsed!.KEY3).toBe('value1')
   })
 })

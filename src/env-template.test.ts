@@ -1,5 +1,7 @@
 import { EnvStringTemplate } from './env-template'
 import { StringTemplate } from './string-template'
+import { StringTemplateFinalValue } from './string-template-final-value'
+import { StringTemplateFinalString } from './string-template-final-string'
 
 describe('EnvStringTemplate', () => {
   it('should get inputVariables from template', () => {
@@ -244,6 +246,42 @@ describe('EnvStringTemplate', () => {
       expect(
         EnvStringTemplate.getPurePlaceholderVariable('\\$VAR')
       ).toBeUndefined()
+    })
+  })
+
+  // the env engine interpolates data values recursively on its own, so it has
+  // to honor the final markers instead of expanding them
+  describe('protected values', () => {
+    it('should not expand a StringTemplateFinalString used as data', async () => {
+      const result = await EnvStringTemplate.from('X ${MSG} Y').format({
+        MSG: new StringTemplateFinalString('Hi ${NAME}'),
+        NAME: 'EXPANDED',
+      })
+      expect(String(result)).toBe('X Hi ${NAME} Y')
+    })
+
+    it('should not expand a StringTemplateFinalValue used as data', async () => {
+      const result = await EnvStringTemplate.from('X ${MSG} Y').format({
+        MSG: new StringTemplateFinalValue('Hi ${NAME}'),
+        NAME: 'EXPANDED',
+      })
+      expect(String(result)).toBe('X Hi ${NAME} Y')
+    })
+
+    it('should keep the result of a previous pass literal', async () => {
+      const first = await StringTemplate.format({
+        template: 'Hello ${MSG}',
+        data: { MSG: 'Hi \\${NAME}' },
+        templateFormat: 'env',
+        expandValue: false,
+      })
+      expect(String(first)).toBe('Hello Hi ${NAME}')
+
+      const second = await EnvStringTemplate.from('X ${MSG} Y').format({
+        MSG: first,
+        NAME: 'EXPANDED',
+      })
+      expect(String(second)).toBe('X Hello Hi ${NAME} Y')
     })
   })
 })

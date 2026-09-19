@@ -154,7 +154,9 @@ describe('StringTemplate Recursive Rendering', () => {
     }
     const result = await template.format(data)
     expect(result[0]).toBe('A')
-    expect(result[1]).toBe('{{ b }}')
+    // a FinalValue stays protected: it is carried as a StringTemplateFinalString
+    // so that engines interpolating data on their own cannot expand it either
+    expect(String(result[1])).toBe('{{ b }}')
     expect(result[2]).toBe('literal')
   })
 

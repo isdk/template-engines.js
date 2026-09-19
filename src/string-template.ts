@@ -9,6 +9,7 @@ import {
 
 import { getValueByPath } from './template/util'
 import { StringTemplateFinalValue } from './string-template-final-value'
+import { StringTemplateFinalString } from './string-template-final-string'
 
 // register PromptTemplate alias as default.
 export const defaultTemplateFormat = 'default'
@@ -382,7 +383,13 @@ export class StringTemplate extends BaseFactory {
     visited?: Set<any>
   ): Promise<any> {
     if (value instanceof StringTemplateFinalValue) {
-      return value.value
+      const finalValue = value.value
+      // Keep the "never expand again" protection attached to the value itself:
+      // engines that interpolate data values on their own (eg. the env engine)
+      // never see the marker if we hand them a bare string.
+      return typeof finalValue === 'string'
+        ? new StringTemplateFinalString(finalValue)
+        : finalValue
     }
 
     if (value && typeof value === 'object') {

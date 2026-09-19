@@ -1,3 +1,6 @@
+import { StringTemplateFinalValue } from '../string-template-final-value'
+import { isStringTemplateFinalString } from '../string-template-final-string'
+
 //extract and modify from motdotla/dotenv-expand
 // * /
 // *   (\\)?            # is it escaped with a backslash?
@@ -13,6 +16,26 @@ const DOTENV_SUBSTITUTION_REGEX =
 
 function _resolveEscapeSequences(value: string) {
   return value.replace(/\\\$/g, '$')
+}
+
+/**
+ * Checks whether a value must be kept literally by environment interpolation.
+ *
+ * Both markers mean "this content is already final, never expand it again":
+ * - `StringTemplateFinalString`: a rendering result tagged by the engine.
+ * - `StringTemplateFinalValue`: a value explicitly protected by the user.
+ *
+ * The env engine interpolates data values recursively on its own
+ * (see `interpolateEnv`), so it has to honor these markers itself — otherwise
+ * the protection set by `StringTemplate` is silently bypassed.
+ *
+ * @param value - The value to check.
+ */
+export function isProtectedEnvValue(value: unknown): boolean {
+  return (
+    value instanceof StringTemplateFinalValue ||
+    isStringTemplateFinalString(value)
+  )
 }
 
 export function matchEnvTemplateSegment(str: string, index: number = 0) {
@@ -70,6 +93,9 @@ export function interpolateEnv(
           // avoid recursion from EXPAND_SELF=$EXPAND_SELF
           if (parsed[key] === value) {
             return parsed[key]
+          } else if (isProtectedEnvValue(parsed[key])) {
+            // protected values are final: output their literal content as-is
+            return String(parsed[key])
           } else {
             return interpolateEnv(parsed[key], processEnv, parsed)
           }
@@ -127,6 +153,11 @@ export function expandEnv(options: DotenvExpandOptions) {
   for (const key in options.parsed) {
     let value: string | undefined = options.parsed[key]
     if (!value) {
+      continue
+    }
+
+    if (isProtectedEnvValue(value)) {
+      // protected values are final: never interpolated, never unwrapped
       continue
     }
 
@@ -193,6 +224,10 @@ export function expandObjEnv(
   }
   if (!options.parsed) {
     options.parsed = options.processEnv as DotenvParseOutput
+  }
+  // protected values are leaves: their content is kept literally
+  if (isProtectedEnvValue(obj)) {
+    return obj
   }
   switch (typeof obj) {
     case 'string': {
