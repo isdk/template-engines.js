@@ -79,7 +79,7 @@
     "lint": "eslint .",
     "lint:fix": "pnpm run lint --fix",
     "test": "vitest run",
-    "release": "pnpm run clean && pnpm run build && git add -f docs && git ci -m 'docs: update API docs' && pnpm dlx commit-and-tag-version -s",
+    "release": "pnpm run clean && pnpm run build && git add -f docs && git ci -m 'docs: update API docs' && npx commit-and-tag-version -s",
     "release.alpha": "npm run release -- --prerelease alpha"
   },
   "types": "./dist/index.d.ts"
