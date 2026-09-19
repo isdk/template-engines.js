@@ -16,6 +16,7 @@ A versatile template engine library that supports multiple template formats incl
 - **Partial Data Processing**: Reuse templates by creating new instances with pre-configured data context.
 - **Recursive Rendering**: Automatically expand template variables if their values contain template-like syntax, supporting deeply nested data resolution.
 - **Expansion Control**: Use `expandValue: false` or `StringTemplateFinalValue` to prevent secondary rendering, ensuring business data integrity.
+- **Automatic Output Protection**: Rendering results that still contain template literals are returned as a `StringTemplateFinalString`, which behaves like a plain string in string contexts (interpolation, concatenation, JSON) but is never expanded again by later rendering passes.
 
 ## Installation
 
@@ -151,6 +152,30 @@ await StringTemplate.format({ template: '{{code}}', data })
 // ensuring seamless data exchange.
 console.log(JSON.stringify(data.code))
 // Output: "Code with {{syntax}}"
+
+// 4. Automatic output protection (StringTemplateFinalString)
+// If a rendering result still contains template literals (expansion disabled,
+// recursion blocked by a circular reference, or a consumed
+// StringTemplateFinalValue), it is returned
+// as a StringTemplateFinalString: a String object that interpolates, concatenates
+// and serializes just like a plain string, but is never expanded again by later
+// rendering passes.
+const first = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+})
+console.log(String(first)) // 'return "{{x}}"'
+
+// A later pass renders it literally — no flags needed:
+const second = await StringTemplate.format({
+  template: 'CODE:\n{{code}}',
+  data: { code: first, x: 'EXPANDED' },
+})
+console.log(String(second)) // 'CODE:\nreturn "{{x}}"'
+
+// To opt back into expansion (multi-stage pipelines), unwrap it explicitly:
+await StringTemplate.format({ template: String(first), data: { x: '1' } })
 ```
 
 ### 8. Extending the Engine (Custom Formats)
@@ -217,6 +242,57 @@ The main entry point for working with templates.
 - `getPurePlaceholderVariable()` Returns the variable name if the template instance is a pure placeholder.
 - `toJSON()` Serializes the template instance to JSON.
 
+### StringTemplateFinalString Class
+
+A special string-like value returned by `format()` when the rendering result still contains template literals (e.g. `expandValue: false` was used, recursion was blocked by a circular reference, or a `StringTemplateFinalValue` was consumed). It is the automatic output counterpart of `StringTemplateFinalValue`:
+
+- It extends `String`: `String(v)`, `v.toString()`, template literals and concatenation all yield the plain string content.
+- `JSON.stringify(v)` serializes it as a plain string — safe to store or send over the wire.
+- Empty results are never wrapped, so a `StringTemplateFinalString` value is always truthy.
+- When used as data in a later `format()` call, its content is kept literally and never expanded again. Unwrap it with `String(v)` to opt back into expansion.
+- Detection is cross-realm safe: use `isStringTemplateFinalString(v)` instead of `instanceof`.
+
+```ts
+import { isStringTemplateFinalString } from '@isdk/template-engines'
+
+const first = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+})
+
+isStringTemplateFinalString(first) // true
+typeof first // 'object' — it is a String object; use String(first) for strict comparisons
+```
+
+#### Boundaries & Migration
+
+**The tag lives on the value, not inside the string content**, so it travels with the value and is lost as soon as the value is converted to a plain string:
+
+- **Works**: within one process, when each layer passes the result along by reference and does no string operation on it. Layers may be fully independent libraries, even loading separate copies of this package — detection uses a `Symbol.for` brand, so it works across realms.
+- **Does not work**: across processes / services / databases / an LLM round-trip. After `JSON.stringify` it is a plain string again and the tag is gone.
+- **Operations that drop the tag**: `+`, `slice` / `replace` / `trim` / `split`, `String(v)`, `structuredClone` — anything yielding a primitive string.
+- **Position decides the role**: the same value still renders normally when passed as `template`; it is only protected when used as **data**. If a layer's output is meant to be the next layer's template, unwrap it explicitly with `String(v)`.
+
+**The return type is a breaking change**: `format()` may now return a `String` object instead of a primitive string.
+
+- `typeof result === 'string'` is now `'object'`;
+- `result === '...'` fails — compare with `String(result)` instead;
+- everything else (interpolation, `String()`, `JSON.stringify`, string methods) is unchanged.
+
+To keep the previous behaviour, turn output tagging off with `tagFinalString: false` (this only disables *tagging* — protected values are still never expanded when used as data):
+
+```ts
+const result = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+  tagFinalString: false,
+})
+
+typeof result // 'string'
+```
+
 ### Utilities
 
 The library provides utility functions for identifying and cleaning template data.
@@ -233,6 +309,7 @@ Checks if a value is suitable for use in `StringTemplate` formatting.
   - **Built-in Objects**: `Date`, `RegExp` (and their subclasses).
   - **Wrapper Objects**: `String`, `Number`, `Boolean`.
   - **`StringTemplateFinalValue`**: Special wrapper for literal protection.
+  - **`StringTemplateFinalString`**: Rendering results tagged by the engine (previous output).
 - **Non-formatable values**:
   - `Error` instances.
   - `Map`, `Set`, `Promise`.
@@ -245,7 +322,7 @@ Recursively deep-cleans an object or array to ensure all values are formatable b
 - **Recursive Deep-Cleaning**:
   - Traverses Arrays and Plain Objects (enumerable properties only).
   - Handles circular references safely by maintaining reference identity.
-  - Preserves `StringTemplateFinalValue` as a leaf node (no internal cleaning).
+  - Preserves `StringTemplateFinalValue` and `StringTemplateFinalString` as leaf nodes (no internal cleaning).
 - **Options**:
   - `invalidUsage?: 'remove' | 'null' | 'undefined'`: Determines how to handle non-formatable values.
     - `'remove'` (default): Removes properties from objects or elements from arrays.

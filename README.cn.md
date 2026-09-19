@@ -16,6 +16,8 @@
 - **部分数据处理**：通过创建带有预配置数据上下文的新实例来复用模板。
 - **递归渲染**：如果变量的值包含模板语法，将自动展开，支持深层嵌套的数据解析。
 - **展开控制**：使用 `expandValue: false` 或 `StringTemplateFinalValue` 防止二次渲染，确保业务数据的完整性。
+- **输出自动保护**：渲染结果中若仍残留模板字面量，将以 `StringTemplateFinalString` 返回——它在字符串上下文中（插值、拼接、JSON）表现得和普通字符串一样，但后续渲染层绝不会再次展开它。
+  - **注意**：该标记挂在「值」上，一旦被转成普通字符串（拼接、切片、JSON 序列化、落库、跨网络传输等）即失效；详见下文「能力边界与迁移说明」
 
 ## 安装
 
@@ -150,6 +152,27 @@ await StringTemplate.format({ template: '{{code}}', data })
 // StringTemplateFinalValue 在 JSON.stringify 时会自动解包，确保数据交换的无缝性
 console.log(JSON.stringify(data.code))
 // 输出: "带有 {{syntax}} 的代码"
+
+// 4. 输出自动保护 (StringTemplateFinalString)
+// 若渲染结果仍包含模板字面量（禁用展开、循环引用阻断了递归、或消费了
+// StringTemplateFinalValue），结果将以 StringTemplateFinalString 返回：一个 String 对象，在插值、拼接与序列化时
+// 都和普通字符串一样，但后续渲染层绝不会再次展开它。
+const first = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+})
+console.log(String(first)) // 'return "{{x}}"'
+
+// 下一层渲染无需任何标记即可原样保留：
+const second = await StringTemplate.format({
+  template: '代码:\n{{code}}',
+  data: { code: first, x: 'EXPANDED' },
+})
+console.log(String(second)) // '代码:\nreturn "{{x}}"'
+
+// 多阶段填充管线中若要恢复展开，显式解包即可：
+await StringTemplate.format({ template: String(first), data: { x: '1' } })
 ```
 
 ### 8. 扩展引擎 (自定义格式)
@@ -216,6 +239,57 @@ console.log(result) // "你好 开发者"
 - `getPurePlaceholderVariable()` 如果该模板实例是纯占位符，则返回其变量名。
 - `toJSON()` 将模板实例序列化为 JSON。
 
+### StringTemplateFinalString 类
+
+当渲染结果仍包含模板字面量时（例如使用了 `expandValue: false`、递归因循环引用被阻断、或消费了 `StringTemplateFinalValue`），`format()` 会返回这种特殊的字符串值。它是 `StringTemplateFinalValue` 的自动输出端对应物：
+
+- 继承自 `String`：`String(v)`、`v.toString()`、模板字面量和字符串拼接都会得到普通字符串内容。
+- `JSON.stringify(v)` 会将其序列化为普通字符串——可安全存储或跨网络传输。
+- 空结果永远不会被包装，因此 `StringTemplateFinalString` 的值恒为真值 (truthy)。
+- 在后续 `format()` 调用中作为数据使用时，其内容保持字面量，绝不会被再次展开。用 `String(v)` 显式解包即可恢复展开。
+- 识别方式跨 realm（多库副本）安全：请使用 `isStringTemplateFinalString(v)` 而不是 `instanceof`。
+
+```ts
+import { isStringTemplateFinalString } from '@isdk/template-engines'
+
+const first = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+})
+
+isStringTemplateFinalString(first) // true
+typeof first // 'object' —— 它是一个 String 对象；严格比较请用 String(first)
+```
+
+#### 能力边界与迁移说明
+
+**一、标记挂在「值」上，不写在字符串内容里**，所以它随值传递、也会随值被转换而丢失：
+
+- **适用**：同一进程内，各层把结果按引用往下传、且中间层不对其做字符串运算。各层可以是彼此完全独立的函数库，甚至各自加载了本库的不同副本——识别依赖 `Symbol.for` 品牌标记，跨 realm 依然有效。
+- **不适用**：跨进程 / 跨服务 / 落库 / 经 LLM 往返。`JSON.stringify` 之后就是普通字符串，标记不复存在（所以要跨进程传递，必须由调用方自己约定）。
+- **会丢失标记的操作**：`+` 拼接、`slice` / `replace` / `trim` / `split`、`String(v)`、`structuredClone`，以及任何返回原始字符串的转换。
+- **位置决定角色**：同一个值作为 `template` 传入时仍会正常渲染（多阶段管线可照旧工作）；只有作为**数据**使用时才被保护。若上一层的结果本意就是给下一层的模板，请显式 `String(v)` 解包。
+
+**二、返回值类型是破坏性变更**：`format()` 现在可能返回 `String` 对象而不是原始字符串。
+
+- `typeof result === 'string'` 会得到 `'object'`；
+- `result === '...'` 严格相等会失败，请改用 `String(result)` 比较；
+- 其余行为（模板插值、`String()`、`JSON.stringify`、字符串方法）均不变。
+
+若暂时不想改变返回值类型，用 `tagFinalString: false` 关闭输出打标（**只关闭打标**：受保护的值作为数据使用时依然不会被展开）：
+
+```ts
+const result = await StringTemplate.format({
+  template: '{{code}}',
+  data: { code: 'return "{{x}}"' },
+  expandValue: false,
+  tagFinalString: false,
+})
+
+typeof result // 'string'
+```
+
 ### 公用工具 (Utilities)
 
 该库提供用于识别和清理模板数据的工具函数。
@@ -232,6 +306,7 @@ console.log(result) // "你好 开发者"
   - **内置对象**: `Date`, `RegExp` (及其子类)。
   - **包装对象**: `String`, `Number`, `Boolean` 包装类。
   - **`StringTemplateFinalValue`**: 用于字面量保护的特殊包装。
+  - **`StringTemplateFinalString`**: 由引擎打标的渲染结果（上一次的输出）。
 - **不合规的值 (Non-formatable values)**:
   - `Error` 实例。
   - `Map`, `Set`, `Promise`。
@@ -244,7 +319,7 @@ console.log(result) // "你好 开发者"
 - **递归深度清理**:
   - 遍历数组和纯对象 (仅限可枚举属性)。
   - 通过维护引用标识安全地处理**循环引用**。
-  - 将 `StringTemplateFinalValue` 视为叶子节点 (不清理其内部内容)。
+  - 将 `StringTemplateFinalValue` 和 `StringTemplateFinalString` 视为叶子节点 (不清理其内部内容)。
 - **选项 (Options)**:
   - `invalidUsage?: 'remove' | 'null' | 'undefined'`: 决定如何处理不合规的值。
     - `'remove'` (默认): 从对象中移除属性，或从数组中移除元素。
