@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.6.12](https://github.com///compare/v0.6.11...v0.6.12) (2026-10-01)
+
+### Features
+
+* keep rendering results that still contain template literals literal ([c85d863](https://github.com///commit/c85d863954eb3a534b4d59491591ea514a462d41))
+
+### Bug Fixes
+
+* **env:** honor final value markers in env interpolation ([0873230](https://github.com///commit/0873230dbbef87b1a640076e1ce1fa13c26d5ba2))
+* **jinja:** treat boxed strings as strings in convertToRuntimeValues ([90d0574](https://github.com///commit/90d0574ecae9383cedc7ea033072bd3b78765337))
+
 ## [0.6.11](https://github.com/isdk/template-engines.js/compare/v0.6.10...v0.6.11) (2026-06-25)
 
 
