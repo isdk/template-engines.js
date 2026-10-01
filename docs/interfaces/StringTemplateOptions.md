@@ -6,7 +6,7 @@
 
 # Interface: StringTemplateOptions
 
-Defined in: [packages/template-engines/src/string-template.ts:16](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L16)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:20](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L20)
 
 ## Indexable
 
@@ -18,7 +18,7 @@ Defined in: [packages/template-engines/src/string-template.ts:16](https://github
 
 > `optional` **compiledTemplate?**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:26](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L26)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:30](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L30)
 
 Pre-compiled template object to speed up formatting.
 
@@ -28,7 +28,7 @@ Pre-compiled template object to speed up formatting.
 
 > `optional` **data?**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:20](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L20)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:24](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L24)
 
 The data object used for template interpolation.
 
@@ -38,7 +38,7 @@ The data object used for template interpolation.
 
 > `optional` **expandValue?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:48](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L48)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:52](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L52)
 
 Whether to expand the value as a template if it is a string and matches the template format.
 This enables recursive rendering where a variable's value can itself be a template.
@@ -58,7 +58,7 @@ await StringTemplate.format({ template: "{{msg}}", data, expandValue: false }); 
 
 > `optional` **ignoreInitialize?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:28](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L28)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:32](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L32)
 
 If true, skips the initialization phase.
 
@@ -68,7 +68,7 @@ If true, skips the initialization phase.
 
 > `optional` **index?**: `number`
 
-Defined in: [packages/template-engines/src/string-template.ts:30](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L30)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:34](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L34)
 
 Starting index for template segment matching.
 
@@ -78,7 +78,7 @@ Starting index for template segment matching.
 
 > `optional` **inputVariables?**: `string`[]
 
-Defined in: [packages/template-engines/src/string-template.ts:24](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L24)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:28](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L28)
 
 The list of input variables expected by the template.
 
@@ -88,10 +88,26 @@ The list of input variables expected by the template.
 
 > `optional` **raw?**: `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:35](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L35)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:39](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L39)
 
 If true, returns the raw value (Object, Array, Boolean, etc.) instead of a string
 if the template is a pure placeholder (e.g., "{{user}}").
+
+***
+
+### tagFinalString?
+
+> `optional` **tagFinalString?**: `boolean`
+
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:62](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L62)
+
+Whether the rendering result should be tagged as a `StringTemplateFinalString`
+when it still contains template literals. Defaults to true.
+
+Set it to false to opt out of the automatic output tagging and always get a
+plain string back (the pre-tagging behavior). Note that this only disables
+*tagging*: protected values (`StringTemplateFinalValue` /
+`StringTemplateFinalString`) are still never expanded when used as data.
 
 ***
 
@@ -99,7 +115,7 @@ if the template is a pure placeholder (e.g., "{{user}}").
 
 > `optional` **template?**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:18](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L18)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:22](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L22)
 
 The template string to be formatted.
 
@@ -109,6 +125,6 @@ The template string to be formatted.
 
 > `optional` **templateFormat?**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:22](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L22)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:26](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L26)
 
 The format of the template (e.g., 'hf', 'golang', 'fstring', 'env'). Defaults to 'default'.

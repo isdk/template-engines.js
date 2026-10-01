@@ -6,7 +6,7 @@
 
 # Interface: PickStringTemplateDataOptions
 
-Defined in: [packages/template-engines/src/utils/pick-string-template-data.ts:4](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/utils/pick-string-template-data.ts#L4)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/utils/pick-string-template-data.ts:5](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/utils/pick-string-template-data.ts#L5)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [packages/template-engines/src/utils/pick-string-template-data.ts:4]
 
 > `optional` **invalidUsage?**: `"undefined"` \| `"null"` \| `"remove"`
 
-Defined in: [packages/template-engines/src/utils/pick-string-template-data.ts:11](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/utils/pick-string-template-data.ts#L11)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/utils/pick-string-template-data.ts:12](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/utils/pick-string-template-data.ts#L12)
 
 What to do with non-formatable values.
 - 'remove' (default): Remove the property from objects or element from arrays.

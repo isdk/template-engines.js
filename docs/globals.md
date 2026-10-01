@@ -14,6 +14,7 @@
 - [HfStringTemplate](classes/HfStringTemplate.md)
 - [HFTemplate](classes/HFTemplate.md)
 - [StringTemplate](classes/StringTemplate.md)
+- [StringTemplateFinalString](classes/StringTemplateFinalString.md)
 - [StringTemplateFinalValue](classes/StringTemplateFinalValue.md)
 
 ## Interfaces
@@ -35,6 +36,7 @@
 ## Variables
 
 - [defaultTemplateFormat](variables/defaultTemplateFormat.md)
+- [FINAL\_STRING\_SYMBOL](variables/FINAL_STRING_SYMBOL.md)
 - [HFBuiltins](variables/HFBuiltins.md)
 - [PromptTemplateTypes](variables/PromptTemplateTypes.md)
 - [PromptTypes](variables/PromptTypes.md)
@@ -50,6 +52,8 @@
 - [interpolateEnv](functions/interpolateEnv.md)
 - [interpolateFString](functions/interpolateFString.md)
 - [interpolateGolangTemplate](functions/interpolateGolangTemplate.md)
+- [isProtectedEnvValue](functions/isProtectedEnvValue.md)
+- [isStringTemplateFinalString](functions/isStringTemplateFinalString.md)
 - [isStringTemplateFormatable](functions/isStringTemplateFormatable.md)
 - [matchEnvTemplateSegment](functions/matchEnvTemplateSegment.md)
 - [matchGolangTemplateSegment](functions/matchGolangTemplateSegment.md)

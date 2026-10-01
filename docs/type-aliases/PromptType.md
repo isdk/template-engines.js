@@ -8,4 +8,4 @@
 
 > **PromptType** = *typeof* [`PromptTypes`](../variables/PromptTypes.md)\[`number`\]
 
-Defined in: [packages/template-engines/src/consts.ts:6](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/consts.ts#L6)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/consts.ts:6](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/consts.ts#L6)

@@ -8,7 +8,7 @@
 
 > `const` **HFBuiltins**: `object`
 
-Defined in: [packages/template-engines/src/template/jinja/src/builtins.ts:214](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/template/jinja/src/builtins.ts#L214)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/template/jinja/src/builtins.ts:214](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/template/jinja/src/builtins.ts#L214)
 
 ## Type Declaration
 

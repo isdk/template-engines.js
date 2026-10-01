@@ -6,7 +6,7 @@
 
 # Interface: DotenvParseInput
 
-Defined in: [packages/template-engines/src/template/env.ts:232](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/template/env.ts#L232)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/template/env.ts:267](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/template/env.ts#L267)
 
 ## Indexable
 

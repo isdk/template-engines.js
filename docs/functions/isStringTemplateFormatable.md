@@ -8,7 +8,7 @@
 
 > **isStringTemplateFormatable**(`val`): `boolean`
 
-Defined in: [packages/template-engines/src/utils/is-string-template-formatable.ts:22](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/utils/is-string-template-formatable.ts#L22)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/utils/is-string-template-formatable.ts:24](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/utils/is-string-template-formatable.ts#L24)
 
 Checks if a value is suitable for use in StringTemplate formatting.
 
@@ -18,6 +18,7 @@ Formatable values include:
 - Arrays
 - Plain Objects (prototype is Object.prototype or null)
 - StringTemplateFinalValue instances
+- StringTemplateFinalString instances (previous rendering results)
 - Built-in wrapper objects: String, Number, Boolean, Date, RegExp
 
 Non-formatable values include:

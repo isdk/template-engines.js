@@ -8,7 +8,7 @@
 
 > **pickStringTemplateData**(`val`, `options?`): `any`
 
-Defined in: [packages/template-engines/src/utils/pick-string-template-data.ts:28](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/utils/pick-string-template-data.ts#L28)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/utils/pick-string-template-data.ts:30](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/utils/pick-string-template-data.ts#L30)
 
 Recursively picks and cleans data to ensure all values are suitable for StringTemplate.
 
@@ -17,7 +17,8 @@ It deep-cleans:
 - Plain Objects: filters or replaces invalid properties.
 
 It preserves:
-- Primitives, Functions, StringTemplateFinalValue instances, and built-in wrappers.
+- Primitives, Functions, StringTemplateFinalValue instances,
+  StringTemplateFinalString instances, and built-in wrappers.
 
 ## Parameters
 

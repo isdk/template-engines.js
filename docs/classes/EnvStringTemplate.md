@@ -6,7 +6,7 @@
 
 # Class: EnvStringTemplate
 
-Defined in: [packages/template-engines/src/env-template.ts:9](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L9)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:9](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L9)
 
 The `StringTemplate` class is a versatile template engine that supports dynamic template creation,
 formatting, and partial data processing. It extends the `BaseFactory` class and provides methods
@@ -45,7 +45,7 @@ console.log(result); // Output: "Formatted: Hello World"
 
 > **new EnvStringTemplate**(`template?`, `options?`): `EnvStringTemplate`
 
-Defined in: [packages/template-engines/src/string-template.ts:519](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L519)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:555](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L555)
 
 Initializes a new instance of the `StringTemplate` class.
 
@@ -87,7 +87,7 @@ console.log(template instanceof TestStringTemplate); // Output: true
 
 > **compiledTemplate**: `any`
 
-Defined in: [packages/template-engines/src/string-template.ts:85](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L85)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:100](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L100)
 
 Declares the compiled template instance.
 
@@ -101,7 +101,7 @@ Declares the compiled template instance.
 
 > **data**: `Record`\<`string`, `any`\> \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:97](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L97)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:112](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L112)
 
 Declares the data object used for template interpolation.
 
@@ -115,7 +115,7 @@ Declares the data object used for template interpolation.
 
 > **expandValue**: `boolean` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:109](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L109)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:124](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L124)
 
 Declares whether to expand the value as a template if it is a string and matches the template format.
 
@@ -129,7 +129,7 @@ Declares whether to expand the value as a template if it is a string and matches
 
 > **inputVariables**: `string`[] \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:101](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L101)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:116](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L116)
 
 Declares the list of input variables expected by the template.
 
@@ -143,7 +143,7 @@ Declares the list of input variables expected by the template.
 
 > **raw**: `boolean` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:105](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L105)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:120](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L120)
 
 Declares whether to return the raw value if the template is a pure placeholder.
 
@@ -153,11 +153,26 @@ Declares whether to return the raw value if the template is a pure placeholder.
 
 ***
 
+### tagFinalString
+
+> **tagFinalString**: `boolean` \| `undefined`
+
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:129](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L129)
+
+Declares whether to tag the rendering result as a `StringTemplateFinalString`
+when it still contains template literals.
+
+#### Inherited from
+
+[`StringTemplate`](StringTemplate.md).[`tagFinalString`](StringTemplate.md#tagfinalstring)
+
+***
+
 ### template
 
 > **template**: `string`
 
-Defined in: [packages/template-engines/src/string-template.ts:89](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L89)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:104](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L104)
 
 Declares the raw template string.
 
@@ -171,7 +186,7 @@ Declares the raw template string.
 
 > **templateFormat**: `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:93](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L93)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:108](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L108)
 
 Declares the format of the template (e.g., 'default').
 
@@ -185,7 +200,7 @@ Declares the format of the template (e.g., 'default').
 
 > `abstract` `static` **\_aliases**: \[`string`\]
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:59
+Defined in: custom-factory.js/lib/index.d.ts:62
 
 **`Internal`**
 
@@ -202,7 +217,7 @@ the key is alias name, the value is the registered name
 
 > `static` **\_baseNameOnly**: `number`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:82
+Defined in: custom-factory.js/lib/index.d.ts:92
 
 **`Internal`**
 
@@ -243,7 +258,7 @@ _baseNameOnly
 
 > `abstract` `static` **\_children**: `object`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:49
+Defined in: custom-factory.js/lib/index.d.ts:52
 
 **`Internal`**
 
@@ -267,7 +282,7 @@ _children
 
 > `abstract` `static` **\_Factory**: *typeof* `BaseFactory`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:41
+Defined in: custom-factory.js/lib/index.d.ts:44
 
 **`Internal`**
 
@@ -281,6 +296,29 @@ _Factory
 
 [`StringTemplate`](StringTemplate.md).[`_Factory`](StringTemplate.md#_factory)
 
+***
+
+### \_isFactory
+
+> `static` **\_isFactory**: `boolean`
+
+Defined in: custom-factory.js/lib/index.d.ts:69
+
+**`Internal`**
+
+The default isFactory value
+
+#### Default
+
+```ts
+true
+@internal
+```
+
+#### Inherited from
+
+[`StringTemplate`](StringTemplate.md).[`_isFactory`](StringTemplate.md#_isfactory)
+
 ## Accessors
 
 ### aliases
@@ -289,7 +327,7 @@ _Factory
 
 > **get** `static` **aliases**(): `string`[]
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:200
+Defined in: custom-factory.js/lib/index.d.ts:210
 
 the aliases of itself
 
@@ -301,7 +339,7 @@ the aliases of itself
 
 > **set** `static` **aliases**(`value`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:196
+Defined in: custom-factory.js/lib/index.d.ts:206
 
 ##### Parameters
 
@@ -325,7 +363,7 @@ Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factor
 
 > **get** `static` **Factory**(): *typeof* `BaseFactory`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:63
+Defined in: custom-factory.js/lib/index.d.ts:73
 
 The Root Factory class
 
@@ -343,7 +381,7 @@ The Root Factory class
 
 > **\_format**(`data`): `string`
 
-Defined in: [packages/template-engines/src/env-template.ts:82](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L82)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:82](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L82)
 
 Placeholder method for formatting the template. Must be implemented by subclasses.
 
@@ -371,7 +409,7 @@ A formatted string or a promise resolving to the formatted string.
 
 > **\_initialize**(`options?`): `void`
 
-Defined in: [packages/template-engines/src/env-template.ts:68](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L68)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:68](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L68)
 
 Placeholder method for initializing the template. Must be implemented by subclasses.
 
@@ -393,11 +431,45 @@ Configuration options for initialization.
 
 ***
 
+### \_wrapFinalString()
+
+> `protected` **\_wrapFinalString**(`result`): `any`
+
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:714](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L714)
+
+Wraps a rendering result into a `StringTemplateFinalString` if it is a
+non-empty string that still contains template literals (of this template's
+format). Empty results and non-string results are returned as-is.
+
+This is the automatic counterpart of `StringTemplateFinalValue`: the user
+marks inputs that must never be expanded, the engine marks outputs that
+must never be expanded again.
+
+#### Parameters
+
+##### result
+
+`any`
+
+The rendering result to wrap.
+
+#### Returns
+
+`any`
+
+The wrapped result, or the result itself if no wrapping applies.
+
+#### Inherited from
+
+[`StringTemplate`](StringTemplate.md).[`_wrapFinalString`](StringTemplate.md#_wrapfinalstring)
+
+***
+
 ### filterData()
 
 > **filterData**(`data`): `Record`\<`string`, `any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:494](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L494)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:530](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L530)
 
 Filters the input data to include only the specified input variables.
 
@@ -435,7 +507,7 @@ console.log(filteredData); // Output: { name: "Alice" }
 
 > **format**(`data?`, `visited?`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:601](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L601)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:637](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L637)
 
 Formats the template using the provided data, supporting asynchronous processing.
 
@@ -478,7 +550,7 @@ console.log(result); // Output: "Hello"
 
 > **getPurePlaceholderVariable**(): `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/string-template.ts:364](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L364)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:384](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L384)
 
 Returns the variable name if this template instance is a pure placeholder.
 
@@ -498,7 +570,7 @@ The variable name if the template is a pure placeholder, undefined otherwise.
 
 > **getVariables**(`template?`): `string`[]
 
-Defined in: [packages/template-engines/src/env-template.ts:64](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L64)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:64](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L64)
 
 #### Parameters
 
@@ -516,7 +588,7 @@ Defined in: [packages/template-engines/src/env-template.ts:64](https://github.co
 
 > **initialize**(`options?`): `void`
 
-Defined in: [packages/template-engines/src/string-template.ts:568](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L568)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:604](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L604)
 
 Initializes the template instance with the provided options.
 
@@ -542,7 +614,7 @@ Configuration options for initialization.
 
 > **isPurePlaceholder**(): `boolean`
 
-Defined in: [packages/template-engines/src/string-template.ts:476](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L476)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:512](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L512)
 
 Checks if this template instance is a pure placeholder.
 
@@ -562,7 +634,7 @@ True if the template is a pure placeholder, false otherwise.
 
 > **partial**(`data`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:693](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L693)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:760](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L760)
 
 Creates a new `StringTemplate` instance with partially filled data.
 This is useful for pre-filling some variables while leaving others to be filled later.
@@ -613,7 +685,7 @@ console.log(dateResult.date instanceof Date); // Output: true
 
 > **renderRawValue**(`value`, `data`, `visited?`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:377](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L377)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:397](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L397)
 
 Renders the raw value recursively, resolving any nested templates.
 
@@ -653,7 +725,7 @@ A promise that resolves to the rendered raw value.
 
 > **toJSON**(`options?`): [`StringTemplateOptions`](../interfaces/StringTemplateOptions.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:717](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L717)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:784](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L784)
 
 Serializes the `StringTemplate` instance into a JSON-compatible object.
 
@@ -693,7 +765,7 @@ console.log(serialized);
 
 > `static` **\_findRootFactory**(`aClass`): *typeof* `BaseFactory` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:99
+Defined in: custom-factory.js/lib/index.d.ts:109
 
 **`Internal`**
 
@@ -721,7 +793,7 @@ the abstract root factory class
 
 > `static` **\_get**(`name`): `any`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:234
+Defined in: custom-factory.js/lib/index.d.ts:244
 
 #### Parameters
 
@@ -743,7 +815,7 @@ Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factor
 
 > `static` **\_register**(`aClass`, `aOptions?`): `boolean`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:145
+Defined in: custom-factory.js/lib/index.d.ts:155
 
 **`Internal`**
 
@@ -779,7 +851,7 @@ return true if successful.
 
 > `static` **cleanAliases**(`aName`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:162
+Defined in: custom-factory.js/lib/index.d.ts:172
 
 remove all aliases of the registered item or itself
 
@@ -805,7 +877,7 @@ the registered item or name
 
 > `static` **createObject**(`aName`, `aOptions`): `BaseFactory` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:241
+Defined in: custom-factory.js/lib/index.d.ts:251
 
 Create a new object instance of Factory
 
@@ -833,7 +905,7 @@ Create a new object instance of Factory
 
 > `abstract` `static` **findRootFactory**(): *typeof* `BaseFactory` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:92
+Defined in: custom-factory.js/lib/index.d.ts:102
 
 **`Internal`**
 
@@ -856,9 +928,9 @@ the root factory class
 
 ### forEach()
 
-> `static` **forEach**(`cb`): `any`
+> `static` **forEach**(`cb`): `this`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:227
+Defined in: custom-factory.js/lib/index.d.ts:237
 
 executes a provided callback function once for each registered element.
 
@@ -872,7 +944,7 @@ the forEach callback function
 
 #### Returns
 
-`any`
+`this`
 
 #### Inherited from
 
@@ -884,7 +956,7 @@ the forEach callback function
 
 > `static` **format**(`options`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:148](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L148)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:168](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L168)
 
 Formats a template using the provided options.
 
@@ -923,7 +995,7 @@ console.log(result); // Output: "Hello"
 
 > `static` **formatIf**(`options`): `Promise`\<`any`\>
 
-Defined in: [packages/template-engines/src/string-template.ts:168](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L168)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:188](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L188)
 
 Formats a template if the provided options represent a valid template.
 
@@ -962,7 +1034,7 @@ console.log(result); // Output: "Valid Template"
 
 > `abstract` `static` **formatName**(`aName`): `string`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:116
+Defined in: custom-factory.js/lib/index.d.ts:126
 
 **`Internal`**
 
@@ -990,7 +1062,7 @@ defaults to returning the name unchanged. By overloading this method, case-insen
 
 > `static` **formatNameFromClass**(`aClass`, `aBaseNameOnly?`): `string`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:130
+Defined in: custom-factory.js/lib/index.d.ts:140
 
 **`Internal`**
 
@@ -1022,7 +1094,7 @@ the name to register
 
 > `static` **from**(`template?`, `options?`): [`StringTemplate`](StringTemplate.md)
 
-Defined in: [packages/template-engines/src/string-template.ts:126](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/string-template.ts#L126)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/string-template.ts:146](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/string-template.ts#L146)
 
 Creates a new instance of the `StringTemplate` class.
 
@@ -1066,7 +1138,7 @@ console.log(template instanceof TestStringTemplate); // Output: true
 
 > `static` **get**(`name`): *typeof* `BaseFactory` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:233
+Defined in: custom-factory.js/lib/index.d.ts:243
 
 Get the registered class via name
 
@@ -1092,7 +1164,7 @@ return the registered class if found the name
 
 > `static` **getAliases**(`aClass`): `string`[]
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:195
+Defined in: custom-factory.js/lib/index.d.ts:205
 
 get the aliases of the aClass
 
@@ -1120,7 +1192,7 @@ aliases
 
 > `static` **getDisplayName**(`aClass`): `string` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:206
+Defined in: custom-factory.js/lib/index.d.ts:216
 
 Get the display name from aClass
 
@@ -1146,7 +1218,7 @@ the class, name or itself, means itself if no aClass
 
 > `static` **getNameFrom**(`aClass`): `string`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:122
+Defined in: custom-factory.js/lib/index.d.ts:132
 
 Get the unique(registered) name in the factory
 
@@ -1172,7 +1244,7 @@ the unique name in the factory
 
 > `static` **getPurePlaceholderVariable**(`templateOpt`): `string` \| `undefined`
 
-Defined in: [packages/template-engines/src/env-template.ts:21](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L21)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:21](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L21)
 
 Returns the variable name if the template is a pure placeholder.
 
@@ -1208,7 +1280,7 @@ StringTemplate.getPurePlaceholderVariable("Hello {{text}}"); // undefined
 
 > `static` **getRealName**(`name`): `any`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:100
+Defined in: custom-factory.js/lib/index.d.ts:110
 
 #### Parameters
 
@@ -1230,7 +1302,7 @@ Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factor
 
 > `static` **getRealNameFromAlias**(`alias`): `string` \| `undefined`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:106
+Defined in: custom-factory.js/lib/index.d.ts:116
 
 get the unique name in the factory from an alias name
 
@@ -1258,7 +1330,7 @@ the unique name in the factory
 
 > `static` **isPurePlaceholder**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/env-template.ts:42](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L42)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:42](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L42)
 
 Checks if the template string is a pure placeholder (optionally surrounded by whitespace).
 A pure placeholder means the template contains only one template segment and no other text.
@@ -1296,7 +1368,7 @@ StringTemplate.isPurePlaceholder("{{text1}}{{text2}}"); // false
 
 > `static` **isTemplate**(`templateOpt`): `boolean`
 
-Defined in: [packages/template-engines/src/env-template.ts:48](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L48)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:48](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L48)
 
 Determines whether the given options represent a valid template.
 
@@ -1334,7 +1406,7 @@ console.log(isValid); // Output: true
 
 > `static` **matchTemplateSegment**(`template`, `index?`): `RegExpExecArray` \| `undefined`
 
-Defined in: [packages/template-engines/src/env-template.ts:10](https://github.com/isdk/template-engines.js/blob/9a37394fbf9a3672b2153ff6cd2da9a24463dcd5/src/env-template.ts#L10)
+Defined in: [@isdk/ai-tools/packages/template-engines/src/env-template.ts:10](https://github.com/isdk/template-engines.js/blob/e21191d7e11ebd1983ca82b94d2321a5f1473e20/src/env-template.ts#L10)
 
 Matches and extracts a single template segment from the provided template options.
 This method is designed to identify individual segments of a template string.
@@ -1380,7 +1452,7 @@ while (match) {
 
 > `static` **register**(...`args`): `boolean`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:137
+Defined in: custom-factory.js/lib/index.d.ts:147
 
 register the aClass to the factory
 
@@ -1406,7 +1478,7 @@ return true if successful.
 
 > `static` **registeredClass**(`aName`): `false` \| *typeof* `BaseFactory`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:151
+Defined in: custom-factory.js/lib/index.d.ts:161
 
 Check the name, alias or itself whether registered.
 
@@ -1434,7 +1506,7 @@ the registered class if registered, otherwise returns false
 
 > `static` **removeAlias**(...`aliases`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:167
+Defined in: custom-factory.js/lib/index.d.ts:177
 
 remove specified aliases
 
@@ -1460,7 +1532,7 @@ the aliases to remove
 
 > `static` **setAlias**(`aClass`, `alias`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:189
+Defined in: custom-factory.js/lib/index.d.ts:199
 
 set alias to a class
 
@@ -1490,7 +1562,7 @@ the class to set alias
 
 > `static` **setAliases**(`aClass`, ...`aAliases`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:183
+Defined in: custom-factory.js/lib/index.d.ts:193
 
 set aliases to a class
 
@@ -1532,7 +1604,7 @@ import { BaseFactory } from 'custom-factory'
 
 > `static` **setDisplayName**(`aClass`, `aDisplayName`): `void`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:212
+Defined in: custom-factory.js/lib/index.d.ts:222
 
 Set the display name to the aClass
 
@@ -1564,7 +1636,7 @@ the display name to set
 
 > `static` **unregister**(`aName`): `boolean`
 
-Defined in: node\_modules/.pnpm/custom-factory@2.3.0/node\_modules/custom-factory/lib/base-factory.d.ts:157
+Defined in: custom-factory.js/lib/index.d.ts:167
 
 unregister this class in the factory
 
